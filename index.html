@@ -1422,6 +1422,16 @@
     const backBtn = document.getElementById('nav-back-btn');
     if (backBtn) backBtn.style.display = 'none';
   }
+
+  // --- LIVE CROSS-TAB SYNC ---
+  window.addEventListener('storage', e => {
+    if (!e.key) return;
+    if (e.key === 'onboarding-v2')    { renderOnboarding(); }
+    if (e.key === 'onboarding-notes') { renderOnboarding(); renderNotesSection(); }
+    if (e.key === 'hub_notes')        { refreshNoteButtons(); renderNotesSection(); }
+    if (e.key === 'hub_wins')         { loadWins(); }
+    if (e.key === 'hub_feedback')     { loadFeedback(); }
+  });
 </script>
 </body>
 </html>
