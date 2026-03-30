@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AM Command Hub — Daemon Dias</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a2e; min-height: 100vh; }
+
+    /* HEADER */
+    .header { background: #fff; border-bottom: 1px solid #e0e4ea; padding: 14px 28px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .tt-logo { width: 28px; height: 28px; background: #009FD9; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 14px; }
+    .header-title { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+    .header-subtitle { font-size: 12px; color: #888; margin-top: 1px; }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .header-date { font-size: 13px; color: #666; font-weight: 500; }
+    .refresh-btn { background: #f0f2f5; border: 1px solid #dde1e8; border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 600; color: #444; cursor: pointer; transition: all 0.15s; }
+    .refresh-btn:hover { background: #e4e8f0; }
+
+    /* REVENUE BAR */
+    .revenue-bar { background: #fff; border-bottom: 1px solid #e0e4ea; padding: 16px 28px; }
+    .rev-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .rev-stats { display: flex; gap: 32px; align-items: center; }
+    .rev-stat { text-align: left; }
+    .rev-stat-label { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    .rev-stat-value { font-size: 20px; font-weight: 800; color: #1a1a2e; margin-top: 2px; }
+    .rev-pacing { text-align: right; }
+    .pacing-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    .pacing-pct { font-size: 28px; font-weight: 900; margin-top: 2px; }
+    .progress-track { background: #eef0f4; border-radius: 99px; height: 8px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 99px; transition: width 0.5s ease; }
+    .progress-markers { display: flex; justify-content: space-between; margin-top: 4px; }
+    .progress-marker { font-size: 10px; color: #aaa; }
+
+    /* MAIN GRID */
+    .main { padding: 20px 28px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+    /* CARDS */
+    .card { background: #fff; border-radius: 14px; border: 1px solid #e4e8f0; overflow: hidden; display: flex; flex-direction: column; }
+    .card-header { padding: 14px 16px 10px; border-bottom: 1px solid #f0f2f5; display: flex; justify-content: space-between; align-items: flex-start; }
+    .card-header-left { display: flex; flex-direction: column; gap: 2px; }
+    .card-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #444; display: flex; align-items: center; gap: 6px; }
+    .card-title-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .card-desc { font-size: 11px; color: #999; margin-top: 1px; }
+    .card-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+    .card-body { padding: 0; flex: 1; overflow: hidden; }
+    .card-items { max-height: 220px; overflow-y: auto; }
+    .card-items.expanded { max-height: 400px; }
+    .card-footer { padding: 8px 16px; border-top: 1px solid #f0f2f5; text-align: center; }
+    .expand-btn { font-size: 11px; font-weight: 600; color: #009FD9; cursor: pointer; background: none; border: none; width: 100%; }
+    .expand-btn:hover { color: #007ab8; }
+
+    /* ACCOUNT ITEMS */
+    .acct-item { padding: 10px 16px; border-bottom: 1px solid #f5f6f8; transition: background 0.1s; }
+    .acct-item:last-child { border-bottom: none; }
+    .acct-item:hover { background: #fafbfc; }
+    .acct-item.highlighted { background: #fff8e1; transition: background 0.3s; }
+    .acct-item-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .acct-name { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+    .acct-meta { font-size: 11px; color: #888; margin-top: 2px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .acct-pill { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
+    .pill-red { background: #fde8e8; color: #c0392b; }
+    .pill-yellow { background: #fef3e2; color: #d4800a; }
+    .pill-green { background: #e8f8f0; color: #1e8449; }
+    .pill-blue { background: #e6f7ff; color: #0077aa; }
+    .pill-gray { background: #f0f2f5; color: #666; }
+
+    /* NOTES BUTTON & INLINE */
+    .note-btn { background: none; border: none; font-size: 13px; cursor: pointer; padding: 0 0 0 6px; color: #ddd; transition: color 0.15s; flex-shrink: 0; line-height: 1; }
+    .note-btn:hover { color: #009FD9; }
+    .note-btn.has-note { color: #009FD9; }
+    .note-inline { display: none; padding: 8px 0 2px; border-top: 1px solid #eef0f3; margin-top: 8px; }
+    .note-inline.open { display: block; }
+    .note-inline textarea { width: 100%; border: 1px solid #dde1e8; border-radius: 8px; padding: 7px 10px; font-size: 12px; font-family: inherit; outline: none; resize: none; height: 58px; }
+    .note-inline textarea:focus { border-color: #009FD9; }
+
+    /* STAGE HEADERS */
+    .stage-header { padding: 7px 16px 5px; background: #fafbfc; border-bottom: 1px solid #f0f2f5; display: flex; align-items: center; gap: 6px; }
+    .stage-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stage-blue { color: #009FD9; }
+    .stage-orange { color: #F5A623; }
+    .stage-green { color: #27AE60; }
+
+    /* CALENDAR ITEMS */
+    .cal-item { padding: 10px 16px; border-bottom: 1px solid #f5f6f8; display: flex; gap: 12px; align-items: flex-start; text-decoration: none; color: inherit; cursor: pointer; transition: background 0.1s; }
+    .cal-item:hover { background: #f0faff; }
+    .cal-item:last-child { border-bottom: none; }
+    .cal-time { font-size: 11px; font-weight: 700; color: #009FD9; min-width: 44px; }
+    .cal-info { flex: 1; }
+    .cal-title { font-size: 13px; font-weight: 600; color: #1a1a2e; }
+    .cal-detail { font-size: 11px; color: #888; margin-top: 1px; }
+
+    /* KEY WINS */
+    .win-input-row { padding: 10px 16px; display: flex; gap: 8px; border-bottom: 1px solid #f0f2f5; }
+    .win-input { flex: 1; border: 1px solid #dde1e8; border-radius: 8px; padding: 7px 10px; font-size: 12px; font-family: inherit; outline: none; }
+    .win-input:focus { border-color: #009FD9; }
+    .win-add-btn { background: #009FD9; color: white; border: none; border-radius: 8px; padding: 7px 12px; font-size: 12px; font-weight: 600; cursor: pointer; }
+    .win-add-btn:hover { background: #007ab8; }
+    .win-item { padding: 8px 16px; border-bottom: 1px solid #f5f6f8; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .win-item:last-child { border-bottom: none; }
+    .win-text { font-size: 13px; color: #1a1a2e; flex: 1; }
+    .win-date { font-size: 10px; color: #aaa; }
+    .win-del { background: none; border: none; color: #ccc; font-size: 14px; cursor: pointer; padding: 0; }
+    .win-del:hover { color: #E74C3C; }
+
+    /* FEEDBACK VAULT */
+    .feedback-input-row { padding: 10px 16px; border-bottom: 1px solid #f0f2f5; }
+    .feedback-account { width: 100%; border: 1px solid #dde1e8; border-radius: 8px; padding: 7px 10px; font-size: 12px; font-family: inherit; outline: none; margin-bottom: 6px; }
+    .feedback-account:focus { border-color: #009FD9; }
+    .feedback-textarea { width: 100%; border: 1px solid #dde1e8; border-radius: 8px; padding: 7px 10px; font-size: 12px; font-family: inherit; outline: none; resize: none; height: 54px; }
+    .feedback-textarea:focus { border-color: #009FD9; }
+    .feedback-save-btn { width: 100%; background: #009FD9; color: white; border: none; border-radius: 8px; padding: 7px; font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 6px; }
+    .feedback-save-btn:hover { background: #007ab8; }
+    .feedback-item { padding: 8px 16px; border-bottom: 1px solid #f5f6f8; }
+    .feedback-item:last-child { border-bottom: none; }
+    .feedback-acct-name { font-size: 11px; font-weight: 700; color: #009FD9; text-transform: uppercase; letter-spacing: 0.4px; }
+    .feedback-text { font-size: 12px; color: #444; margin-top: 2px; }
+    .feedback-date { font-size: 10px; color: #bbb; margin-top: 2px; }
+
+    /* NOTES SECTION */
+    .notes-section { margin: 0 28px 28px; background: #fff; border-radius: 14px; border: 1px solid #e4e8f0; overflow: hidden; }
+    .notes-section-header { padding: 14px 16px 10px; border-bottom: 1px solid #f0f2f5; display: flex; justify-content: space-between; align-items: center; }
+    .notes-section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #444; display: flex; align-items: center; gap: 6px; }
+    .note-entry { padding: 10px 16px; border-bottom: 1px solid #f5f6f8; }
+    .note-entry:last-child { border-bottom: none; }
+    .note-acct-label { font-size: 11px; font-weight: 700; color: #009FD9; text-transform: uppercase; letter-spacing: 0.4px; cursor: pointer; }
+    .note-acct-label:hover { text-decoration: underline; }
+    .note-text { font-size: 12px; color: #444; margin-top: 3px; white-space: pre-wrap; }
+
+    /* QUICK ACTIONS */
+    .quick-actions { padding: 16px 28px 8px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .qa-btn { background: #fff; border: 1px solid #e0e4ea; border-radius: 10px; padding: 10px 18px; font-size: 12px; font-weight: 700; color: #444; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
+    .qa-btn:hover { border-color: #009FD9; color: #009FD9; background: #f0faff; }
+    .qa-icon { font-size: 14px; }
+
+    /* DOT / BADGE COLORS */
+    .dot-blue { background: #009FD9; }
+    .dot-orange { background: #F5A623; }
+    .dot-green { background: #27AE60; }
+    .dot-purple { background: #8E44AD; }
+    .dot-teal { background: #1ABC9C; }
+    .dot-red { background: #E74C3C; }
+    .badge-blue { background: #e6f7ff; color: #0077aa; }
+    .badge-orange { background: #fef3e2; color: #d4800a; }
+    .badge-green { background: #e8f8f0; color: #1e8449; }
+    .badge-purple { background: #f4eafb; color: #6c3483; }
+    .badge-red { background: #fde8e8; color: #c0392b; }
+
+    /* SCROLLBAR */
+    .card-items::-webkit-scrollbar { width: 4px; }
+    .card-items::-webkit-scrollbar-track { background: transparent; }
+    .card-items::-webkit-scrollbar-thumb { background: #dde1e8; border-radius: 4px; }
+
+    /* CARD TITLE COLORS */
+    .card-title.title-blue   { color: #009FD9; }
+    .card-title.title-orange { color: #E07B00; }
+    .card-title.title-red    { color: #C0392B; }
+    .card-title.title-teal   { color: #0f8a6a; }
+    .card-title.title-green  { color: #1e8449; }
+    .card-title.title-purple { color: #6c3483; }
+
+    /* DARK MODE TOGGLE */
+    .dark-toggle { background: #f0f2f5; border: 1px solid #e0e4ea; border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #555; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+    .dark-toggle:hover { border-color: #009FD9; color: #009FD9; }
+
+    /* ONB STATUS DROPDOWN */
+    .onb-stage-select { font-size: 10px; font-weight: 600; border: 1px solid #dde1e8; border-radius: 6px; padding: 2px 6px; color: #555; background: #fff; cursor: pointer; font-family: inherit; flex-shrink: 0; }
+    .onb-stage-select:focus { outline: none; border-color: #009FD9; }
+
+    /* ALL ACCOUNTS CARD */
+    .full-width { grid-column: 1 / -1; }
+    .accounts-search-wrap { padding: 10px 16px; border-bottom: 1px solid #f0f2f5; display: flex; align-items: center; gap: 10px; }
+    .accounts-search-input { flex: 1; border: 1px solid #dde1e8; border-radius: 8px; padding: 7px 10px; font-size: 12px; font-family: inherit; outline: none; color: #1a1a2e; background: #fff; }
+    .accounts-search-input:focus { border-color: #009FD9; box-shadow: 0 0 0 2px rgba(0,159,217,0.1); }
+    .accts-count-label { font-size: 11px; color: #aaa; white-space: nowrap; flex-shrink: 0; }
+    .accts-list-header { display: flex; align-items: center; gap: 8px; padding: 5px 14px; background: #f8f9fa; border-bottom: 2px solid #eee; }
+    .accts-list-header-name { flex: 1; font-size: 9px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; }
+    .accts-list-header-col { width: 72px; text-align: right; font-size: 9px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
+    .accts-list-header-pacing { width: 58px; text-align: right; font-size: 9px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
+    .accounts-grid-list { display: block; max-height: 320px; overflow-y: auto; }
+    .accts-row { display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-bottom: 1px solid #f5f6f8; transition: background 0.1s; }
+    .accts-row:hover { background: #fafbfc; }
+    .accts-col-name { flex: 1; min-width: 0; }
+    .accts-row-name { font-size: 12px; font-weight: 700; color: #1a1a2e; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .accts-row-contact { font-size: 11px; color: #888; margin-top: 1px; }
+    .accts-row-email { font-size: 10px; color: #bbb; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .accts-col-num { width: 72px; text-align: right; flex-shrink: 0; }
+    .accts-num { font-size: 12px; font-weight: 600; color: #1a1a2e; }
+    .accts-num-label { font-size: 9px; color: #bbb; text-transform: uppercase; letter-spacing: 0.3px; }
+    .accts-col-pacing { width: 58px; text-align: right; flex-shrink: 0; }
+    .accts-pacing { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; white-space: nowrap; }
+    .accounts-grid-list::-webkit-scrollbar { width: 4px; }
+    .accounts-grid-list::-webkit-scrollbar-thumb { background: #dde1e8; border-radius: 4px; }
+
+    /* DARK MODE */
+    body.dark { background: #0a0a0a; color: #d0d0d0; }
+    body.dark .header { background: #0f0f0f; border-color: #1e1e1e; }
+    body.dark .header-title { color: #e8e8e8; }
+    body.dark .header-subtitle, body.dark .header-date { color: #555; }
+    body.dark .refresh-btn { background: #151515; border-color: #2a2a2a; color: #888; }
+    body.dark .dark-toggle { background: #151515; border-color: #2a2a2a; color: #888; }
+    body.dark .revenue-bar { background: #0f0f0f; border-color: #1e1e1e; }
+    body.dark .rev-stat-value { color: #d8d8d8; }
+    body.dark .rev-stat-value[style*="color:#666"] { color: #888 !important; }
+    body.dark .rev-stat-value[style*="color:#999"] { color: #666 !important; }
+    body.dark .pacing-label { color: #555; }
+    body.dark .progress-track { background: #1e1e1e; }
+    body.dark .progress-marker { color: #333; }
+    body.dark .card { background: #111; border-color: #1e1e1e; }
+    body.dark .card-header { border-color: #1a1a1a; }
+    body.dark .card-title { color: #aaa; }
+    body.dark .card-title.title-blue   { color: #009FD9; }
+    body.dark .card-title.title-orange { color: #E07B00; }
+    body.dark .card-title.title-red    { color: #C0392B; }
+    body.dark .card-title.title-teal   { color: #0f8a6a; }
+    body.dark .card-title.title-green  { color: #1e8449; }
+    body.dark .card-title.title-purple { color: #6c3483; }
+    body.dark .card-desc { color: #555; }
+    body.dark .card-footer { border-color: #1a1a1a; }
+    body.dark .expand-btn { color: #009FD9; }
+    body.dark .acct-item { border-color: #181818; }
+    body.dark .acct-item:hover { background: #161616; }
+    body.dark .acct-name { color: #d0d0d0; }
+    body.dark .acct-meta { color: #777; }
+    body.dark .stage-header { background: #0d0d0d; border-color: #181818; }
+    body.dark .stage-label { color: #888; }
+    body.dark .cal-item { border-color: #181818; }
+    body.dark .cal-title { color: #d0d0d0; }
+    body.dark .cal-detail { color: #555; }
+    body.dark .win-input-row { border-color: #1a1a1a; }
+    body.dark .win-input { background: #151515; border-color: #2a2a2a; color: #d0d0d0; }
+    body.dark .win-input::placeholder { color: #333; }
+    body.dark .win-item { border-color: #181818; }
+    body.dark .win-text { color: #d0d0d0; }
+    body.dark .win-date { color: #444; }
+    body.dark .feedback-input-row { border-color: #1a1a1a; }
+    body.dark .feedback-account, body.dark .feedback-textarea { background: #151515; border-color: #2a2a2a; color: #d0d0d0; }
+    body.dark .feedback-account::placeholder, body.dark .feedback-textarea::placeholder { color: #333; }
+    body.dark .feedback-item { border-color: #181818; }
+    body.dark .feedback-text { color: #888; }
+    body.dark .feedback-date { color: #444; }
+    body.dark .note-inline { border-color: #1e1e1e; }
+    body.dark .note-inline textarea { background: #151515; border-color: #2a2a2a; color: #d0d0d0; }
+    body.dark .qa-btn { background: #111; border-color: #222; color: #888; }
+    body.dark .qa-btn:hover { border-color: #009FD9; color: #009FD9; background: #0a1a24; }
+    body.dark .notes-section { background: #111; border-color: #1e1e1e; }
+    body.dark .notes-section-header { border-color: #1a1a1a; }
+    body.dark .notes-section-title { color: #aaa; }
+    body.dark .note-entry { border-color: #181818; }
+    body.dark .note-text { color: #888; }
+    body.dark .accts-list-header { background: #0d0d0d; border-color: #222; }
+    body.dark .accounts-search-input { background: #151515; border-color: #2a2a2a; color: #d0d0d0; }
+    body.dark .accounts-search-input::placeholder { color: #333; }
+    body.dark .accounts-search-input:focus { border-color: #009FD9; }
+    body.dark .accts-row { border-color: #181818; }
+    body.dark .accts-row:hover { background: #161616; }
+    body.dark .accts-row-name { color: #d8d8d8; }
+    body.dark .accts-row-contact { color: #666; }
+    body.dark .accts-row-email { color: #444; }
+    body.dark .accts-num { color: #ccc; }
+    body.dark .accts-num-label { color: #444; }
+    body.dark .accts-count-label { color: #555; }
+    body.dark .accounts-grid-list::-webkit-scrollbar-thumb { background: #2a2a2a; }
+    body.dark .onb-stage-select { background: #1a1a1a; border-color: #2a2a2a; color: #888; }
+
+    /* ONB KANBAN (page mode) */
+    .onb-kanban { display: none; flex: 1; overflow-y: auto; }
+    #card-onboarding.page-active .card-items { display: none !important; }
+    #card-onboarding.page-active .onb-kanban { display: block !important; }
+    .onb-summary-bar { display: flex; gap: 10px; padding: 12px 20px; border-bottom: 1px solid #f0f2f5; background: #fafbfc; flex-wrap: wrap; }
+    .onb-stat { background: #fff; border: 1px solid #e4e8f0; border-radius: 8px; padding: 6px 14px; text-align: center; min-width: 64px; }
+    .onb-stat-val { font-size: 18px; font-weight: 800; }
+    .onb-stat-label { font-size: 9px; color: #999; text-transform: uppercase; letter-spacing: 0.4px; }
+    .onb-kanban-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; padding: 16px 20px; align-items: start; }
+    .onb-col { background: #fafbfc; border-radius: 10px; border: 1px solid #e4e8f0; overflow: hidden; }
+    .onb-col-header { padding: 10px 14px; border-bottom: 1px solid #e4e8f0; display: flex; justify-content: space-between; align-items: center; }
+    .onb-col-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+    .onb-col.col-intro  .onb-col-header { border-top: 3px solid #009FD9; color: #009FD9; }
+    .onb-col.col-creating .onb-col-header { border-top: 3px solid #F5A623; color: #b07700; }
+    .onb-col.col-walkthrough .onb-col-header { border-top: 3px solid #27AE60; color: #1a6b3a; }
+    .onb-col-cards { padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 50px; }
+    .onb-pro-card { background: #fff; border: 1px solid #e0e4ea; border-radius: 8px; padding: 10px 12px; transition: box-shadow 0.15s; }
+    .onb-pro-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.07); }
+    .onb-pro-name { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+    .onb-pro-biz { font-size: 10px; color: #009FD9; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; margin: 3px 0 6px; }
+    .onb-pro-meta { font-size: 11px; color: #666; display: flex; flex-direction: column; gap: 3px; margin-bottom: 6px; }
+    .onb-pro-meta a { color: #009FD9; text-decoration: none; }
+    .onb-pro-meta a:hover { text-decoration: underline; }
+    .onb-pro-alert { font-size: 10px; color: #E07B00; font-weight: 500; }
+    .onb-pro-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid #eef0f3; margin-top: 6px; }
+    body.dark .onb-summary-bar { background: #0d0d0d; border-color: #1a1a1a; }
+    body.dark .onb-stat { background: #151515; border-color: #2a2a2a; }
+    body.dark .onb-stat-label { color: #555; }
+    body.dark .onb-col { background: #0d0d0d; border-color: #1e1e1e; }
+    body.dark .onb-col-header { border-color: #1e1e1e; }
+    body.dark .onb-pro-card { background: #111; border-color: #1e1e1e; }
+    body.dark .onb-pro-name { color: #d0d0d0; }
+    body.dark .onb-pro-meta { color: #666; }
+    body.dark .onb-pro-footer { border-color: #1e1e1e; }
+
+    @media (max-width: 900px) {
+      .main { grid-template-columns: 1fr; }
+      .full-width { grid-column: 1; }
+    }
+
+    /* HAMBURGER / NAV DRAWER */
+    .hamburger-btn { background: none; border: none; font-size: 20px; cursor: pointer; padding: 4px 8px; color: #555; border-radius: 6px; line-height: 1; }
+    .hamburger-btn:hover { background: #f0f2f5; color: #1a1a2e; }
+    .nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.18); z-index: 999; display: none; }
+    .nav-overlay.open { display: block; }
+    .nav-drawer { position: fixed; top: 0; left: -300px; width: 300px; height: 100vh; background: #fff; border-right: 1px solid #e0e4ea; z-index: 1000; transition: left 0.22s ease; display: flex; flex-direction: column; box-shadow: 4px 0 28px rgba(0,0,0,0.1); overflow-y: auto; }
+    .nav-drawer.open { left: 0; }
+    .nav-drawer-header { padding: 16px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #009FD9; }
+    .nav-drawer-title { font-size: 14px; font-weight: 800; color: #1a1a2e; }
+    .nav-close-btn { background: none; border: none; font-size: 18px; cursor: pointer; color: #aaa; padding: 2px 6px; border-radius: 4px; }
+    .nav-close-btn:hover { color: #1a1a2e; background: #f0f2f5; }
+    .nav-section-label { font-size: 9px; font-weight: 800; color: #bbb; text-transform: uppercase; letter-spacing: 0.8px; padding: 14px 18px 4px; }
+    .nav-item { padding: 11px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; font-weight: 500; color: #333; transition: background 0.1s; border-left: 3px solid transparent; }
+    .nav-item:hover { background: #f0faff; color: #009FD9; border-left-color: #009FD9; }
+    .nav-item-home { border-bottom: 1px solid #f0f2f5; font-weight: 700; }
+    .nav-back-btn { display: none; background: none; border: 1px solid #dde1e8; font-size: 12px; font-weight: 600; color: #555; cursor: pointer; padding: 5px 12px; border-radius: 20px; align-items: center; gap: 4px; transition: all 0.15s; }
+    .nav-back-btn:hover { border-color: #009FD9; color: #009FD9; background: #f0faff; }
+    .page-breadcrumb { font-size: 14px; font-weight: 700; color: #1a1a2e; }
+
+    /* PAGE MODE */
+    body.page-mode .revenue-bar { display: none; }
+    body.page-mode .quick-actions { display: none; }
+    body.page-mode .main { grid-template-columns: 1fr; padding: 20px 28px; }
+    body.page-mode .card { display: none; }
+    body.page-mode .notes-section-wrap { display: none !important; }
+    .card.page-active { display: flex !important; }
+    .card.page-active .card-items { max-height: calc(100vh - 150px) !important; }
+    .card.page-active .accounts-grid-list { max-height: calc(100vh - 210px) !important; }
+    .card.page-active.full-width { grid-column: 1 !important; }
+    body.page-mode .nav-back-btn { display: flex; }
+    body.page-mode .page-breadcrumb { display: inline !important; }
+    .notes-section-wrap.page-active { display: block !important; margin: 0 28px 28px; }
+
+    /* ACCOUNTS ROW WITH NOTES */
+    .accts-row-wrap { border-bottom: 1px solid #f5f6f8; }
+    .accts-row-wrap .accts-row { border-bottom: none; }
+    .accts-row-wrap .note-inline { padding: 6px 14px 10px; background: #fafbfc; }
+    .accts-col-note { width: 28px; text-align: right; flex-shrink: 0; }
+    body.dark .accts-row-wrap { border-color: #181818; }
+    body.dark .accts-row-wrap .note-inline { background: #0d0d0d; }
+
+    /* DARK DRAWER */
+    body.dark .nav-drawer { background: #111; border-color: #1e1e1e; }
+    body.dark .nav-drawer-header { border-color: #009FD9; }
+    body.dark .nav-drawer-title { color: #e8e8e8; }
+    body.dark .nav-close-btn { color: #555; }
+    body.dark .nav-close-btn:hover { color: #e8e8e8; background: #1a1a1a; }
+    body.dark .nav-section-label { color: #444; }
+    body.dark .nav-item { color: #888; }
+    body.dark .nav-item:hover { background: #0a1a24; color: #009FD9; }
+    body.dark .hamburger-btn { color: #888; }
+    body.dark .hamburger-btn:hover { background: #1a1a1a; color: #e8e8e8; }
+    body.dark .page-breadcrumb { color: #d0d0d0; }
+    body.dark .nav-back-btn { border-color: #2a2a2a; color: #888; }
+    body.dark .nav-back-btn:hover { border-color: #009FD9; color: #009FD9; background: #0a1a24; }
+  </style>
+</head>
+<body>
+
+<!-- NAV OVERLAY -->
+<div class="nav-overlay" id="nav-overlay" onclick="closeNav()"></div>
+
+<!-- NAV DRAWER -->
+<div class="nav-drawer" id="nav-drawer">
+  <div class="nav-drawer-header">
+    <div class="nav-drawer-title">AM Command Hub</div>
+    <button class="nav-close-btn" onclick="closeNav()">✕</button>
+  </div>
+  <div class="nav-item nav-item-home" onclick="closeCardPage();closeNav();"><span style="font-size:14px;line-height:1;">🏠</span>Home</div>
+  <div class="nav-section-label">Cards</div>
+  <div class="nav-item" onclick="openCardPage('card-onboarding')"><span class="card-title-dot dot-blue"></span>Onboarding Pipeline</div>
+  <div class="nav-item" onclick="openCardPage('card-upside')"><span class="card-title-dot dot-orange"></span>Upside Accounts</div>
+  <div class="nav-item" onclick="openCardPage('card-court')"><span class="card-title-dot dot-red"></span>In Your Court</div>
+  <div class="nav-item" onclick="openCardPage('card-schedule')"><span class="card-title-dot dot-teal"></span>Today's Schedule</div>
+  <div class="nav-item" onclick="openCardPage('card-wins')"><span class="card-title-dot dot-green"></span>Key Wins</div>
+  <div class="nav-item" onclick="openCardPage('card-feedback')"><span class="card-title-dot dot-purple"></span>Feedback Vault</div>
+  <div class="nav-item" onclick="openCardPage('card-accounts')"><span class="card-title-dot dot-blue"></span>All Accounts</div>
+  <div class="nav-section-label">Notes</div>
+  <div class="nav-item" onclick="openCardPage('notes-section-wrap')"><span style="font-size:14px;line-height:1;">📝</span>All Notes</div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <button class="hamburger-btn" id="hamburger-btn" onclick="openNav()" title="Navigate cards">☰</button>
+    <div class="tt-logo">T</div>
+    <div>
+      <div class="header-title">AM Command Hub</div>
+      <div class="header-subtitle">Daemon Dias · Thumbtack</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="nav-back-btn" id="nav-back-btn" onclick="closeCardPage()" style="display:none;">← Back</button>
+    <span class="page-breadcrumb" id="page-breadcrumb" style="display:none;"></span>
+    <span class="header-date" id="header-date"></span>
+    <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
+    <button class="refresh-btn" onclick="window.location.reload()">↻ Refresh</button>
+  </div>
+</div>
+
+<!-- REVENUE BAR -->
+<div class="revenue-bar">
+  <div class="rev-top">
+    <div class="rev-stats">
+      <div class="rev-stat">
+        <div class="rev-stat-label">Revenue to Date</div>
+        <div class="rev-stat-value">$1,103,696</div>
+      </div>
+      <div class="rev-stat">
+        <div class="rev-stat-label">Should Be (P2G)</div>
+        <div class="rev-stat-value" style="color:#666;">$1,129,916</div>
+      </div>
+      <div class="rev-stat">
+        <div class="rev-stat-label">QTR Goal</div>
+        <div class="rev-stat-value" style="color:#999;">$1,155,604</div>
+      </div>
+    </div>
+    <div class="rev-pacing">
+      <div class="pacing-label">Pacing to Goal</div>
+      <div class="pacing-pct" id="pacing-pct">97.68%</div>
+    </div>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" style="width:97.68%; background:#009FD9;"></div>
+  </div>
+  <div class="progress-markers">
+    <span class="progress-marker">0%</span>
+    <span class="progress-marker">25%</span>
+    <span class="progress-marker">50%</span>
+    <span class="progress-marker">75%</span>
+    <span class="progress-marker">100%</span>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main">
+
+  <!-- CARD 1: ONBOARDING PIPELINE -->
+  <div class="card" id="card-onboarding">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-title title-blue"><span class="card-title-dot dot-blue"></span>Onboarding Pipeline</div>
+        <div class="card-desc">Live from onboarding dashboard</div>
+      </div>
+      <span class="card-badge badge-blue" id="onb-total-badge">— active</span>
+    </div>
+    <div class="card-body" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+      <div class="card-items" id="onb-items">
+        <div style="color:#bbb;font-size:12px;padding:14px 16px;">Loading from onboarding dashboard…</div>
+      </div>
+      <div class="onb-kanban" id="onb-kanban"></div>
+    </div>
+    <div class="card-footer">
+      <button class="expand-btn" onclick="toggleExpand('onb-items',this)">Show more</button>
+    </div>
+  </div>
+
+  <!-- CARD 2: UPSIDE ACCOUNTS -->
+  <div class="card" id="card-upside">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-title title-orange"><span class="card-title-dot dot-orange"></span>Upside Accounts</div>
+        <div class="card-desc">Biggest revenue gaps · highest ceiling</div>
+      </div>
+      <span class="card-badge badge-orange">Top 10</span>
+    </div>
+    <div class="card-body">
+      <div class="card-items" id="upside-items">
+
+        <div class="acct-item" data-slug="mrs-garage-door">
+          <div class="acct-item-top">
+            <div><div class="acct-name">MRS Garage Door Services</div><div class="acct-meta"><span class="acct-pill pill-red">46.5%</span><span>Gap: $48,841</span><span>Goal: $89,629</span></div><div class="acct-meta"><a href="mailto:office@mrsgaragedoor.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ office@mrsgaragedoor.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('mrs-garage-door',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-mrs-garage-door"><textarea placeholder="Add a note…" onblur="saveNote('mrs-garage-door',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="ocean-remodel">
+          <div class="acct-item-top">
+            <div><div class="acct-name">Ocean Remodel</div><div class="acct-meta"><span class="acct-pill pill-red">50.7%</span><span>Gap: $22,495</span><span>Goal: $44,593</span></div><div class="acct-meta"><a href="mailto:contact@oceanremodel.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ contact@oceanremodel.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('ocean-remodel',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-ocean-remodel"><textarea placeholder="Add a note…" onblur="saveNote('ocean-remodel',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="best-air-quality">
+          <div class="acct-item-top">
+            <div><div class="acct-name">The Best Air Quality and Restoration</div><div class="acct-meta"><span class="acct-pill pill-red">41.5%</span><span>Gap: $19,982</span><span>Goal: $33,611</span></div><div class="acct-meta"><a href="mailto:yourairspecialist@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ yourairspecialist@gmail.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('best-air-quality',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-best-air-quality"><textarea placeholder="Add a note…" onblur="saveNote('best-air-quality',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="risner-roofing">
+          <div class="acct-item-top">
+            <div><div class="acct-name">Risner Roofing</div><div class="acct-meta"><span class="acct-pill pill-red">4.0%</span><span>Gap: $18,984</span><span>Goal: $19,762</span></div><div class="acct-meta"><a href="mailto:wecare@risnerroofing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ wecare@risnerroofing.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('risner-roofing',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-risner-roofing"><textarea placeholder="Add a note…" onblur="saveNote('risner-roofing',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="phoenix-pavers">
+          <div class="acct-item-top">
+            <div><div class="acct-name">Phoenix Pavers and Turf LLC</div><div class="acct-meta"><span class="acct-pill pill-red">34.2%</span><span>Gap: $15,615</span><span>Goal: $23,463</span></div><div class="acct-meta"><a href="mailto:lupe.celaya@yahoo.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ lupe.celaya@yahoo.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('phoenix-pavers',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-phoenix-pavers"><textarea placeholder="Add a note…" onblur="saveNote('phoenix-pavers',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="a-plus-fencing">
+          <div class="acct-item-top">
+            <div><div class="acct-name">A+ Fencing Company LLC</div><div class="acct-meta"><span class="acct-pill pill-red">6.9%</span><span>Gap: $15,331</span><span>Goal: $16,440</span></div><div class="acct-meta"><a href="mailto:aplusfencing3@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ aplusfencing3@gmail.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('a-plus-fencing',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-a-plus-fencing"><textarea placeholder="Add a note…" onblur="saveNote('a-plus-fencing',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="fuse-hvac-appliance">
+          <div class="acct-item-top">
+            <div><div class="acct-name">Fuse HVAC &amp; Appliance repair</div><div class="acct-meta"><span class="acct-pill pill-red">13.8%</span><span>Gap: $14,428</span><span>Goal: $16,687</span></div><div class="acct-meta"><a href="mailto:luka23rus@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ luka23rus@gmail.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('fuse-hvac-appliance',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-fuse-hvac-appliance"><textarea placeholder="Add a note…" onblur="saveNote('fuse-hvac-appliance',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="all-ears-roofing">
+          <div class="acct-item-top">
+            <div><div class="acct-name">All Ears Roofing</div><div class="acct-meta"><span class="acct-pill pill-red">46.5%</span><span>Gap: $13,198</span><span>Goal: $24,179</span></div><div class="acct-meta"><a href="mailto:sales@allearsroofing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ sales@allearsroofing.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('all-ears-roofing',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-all-ears-roofing"><textarea placeholder="Add a note…" onblur="saveNote('all-ears-roofing',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="queta-construction">
+          <div class="acct-item-top">
+            <div><div class="acct-name">Queta Construction Group, LLC</div><div class="acct-meta"><span class="acct-pill pill-red">52.7%</span><span>Gap: $12,079</span><span>Goal: $24,941</span></div><div class="acct-meta"><a href="mailto:hrodriguez.qcg@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ hrodriguez.qcg@gmail.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('queta-construction',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-queta-construction"><textarea placeholder="Add a note…" onblur="saveNote('queta-construction',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="royal-moving-storage">
+          <div class="acct-item-top">
+            <div><div class="acct-name">Royal Moving &amp; Storage</div><div class="acct-meta"><span class="acct-pill pill-yellow">89.3%</span><span>Gap: $10,913</span><span>Goal: $86,071</span></div><div class="acct-meta"><a href="mailto:office@royalmovingco.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ office@royalmovingco.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('royal-moving-storage',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-royal-moving-storage"><textarea placeholder="Add a note…" onblur="saveNote('royal-moving-storage',this.value)"></textarea></div>
+        </div>
+
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="expand-btn" onclick="toggleExpand('upside-items',this)">Show more</button>
+    </div>
+  </div>
+
+  <!-- CARD 3: IN YOUR COURT -->
+  <div class="card" id="card-court">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-title title-red"><span class="card-title-dot dot-red"></span>In Your Court</div>
+        <div class="card-desc">Pros who've reached out · awaiting you</div>
+      </div>
+      <span class="card-badge badge-red">3</span>
+    </div>
+    <div class="card-body">
+      <div class="card-items" id="itc-items">
+
+        <div class="acct-item" data-slug="jacs-pro-plumbing">
+          <div class="acct-item-top">
+            <div><div class="acct-name">JACS Pro Plumbing — Jayden/Barb</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>3 days ago · "Do you charge a trip fee to customers?"</span></div></div>
+            <button class="note-btn" onclick="toggleNote('jacs-pro-plumbing',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-jacs-pro-plumbing"><textarea placeholder="Add a note…" onblur="saveNote('jacs-pro-plumbing',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="zekes-roofing-hatch">
+          <div class="acct-item-top">
+            <div><div class="acct-name">Zeke's Roofing — Kara Wilck (Hatch)</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>3 days ago · Hatch integration error unresolved</span></div><div class="acct-meta"><a href="mailto:john@callzekesroofing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ john@callzekesroofing.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('zekes-roofing-hatch',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-zekes-roofing-hatch"><textarea placeholder="Add a note…" onblur="saveNote('zekes-roofing-hatch',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="lb-capital-truchoice">
+          <div class="acct-item-top">
+            <div><div class="acct-name">LB Capital (TruChoice) — Robert Boley</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>3 days ago · Waiting on ServiceTitan for CRM user access</span></div></div>
+            <button class="note-btn" onclick="toggleNote('lb-capital-truchoice',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-lb-capital-truchoice"><textarea placeholder="Add a note…" onblur="saveNote('lb-capital-truchoice',this.value)"></textarea></div>
+        </div>
+
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="expand-btn" onclick="toggleExpand('itc-items',this)">Show more</button>
+    </div>
+  </div>
+
+  <!-- CARD 4: TODAY'S SCHEDULE -->
+  <div class="card" id="card-schedule">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-title title-teal"><span class="card-title-dot dot-teal"></span>Today's Schedule</div>
+        <div class="card-desc" id="cal-desc">Monday, March 30</div>
+      </div>
+      <span class="card-badge" style="background:#e6faf6;color:#0f8a6a;">11 events</span>
+    </div>
+    <div class="card-body">
+      <div class="card-items" id="cal-items">
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">9:00</div><div class="cal-info"><div class="cal-title">morn. walk</div><div class="cal-detail">15 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">9:00</div><div class="cal-info"><div class="cal-title">Emails, To-Do's, VM's</div><div class="cal-detail">60 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">9:05</div><div class="cal-info"><div class="cal-title">to do</div><div class="cal-detail">15 min · sharing c-skills / token increase</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">10:00</div><div class="cal-info"><div class="cal-title">Treva McDaniels — Mister Sparky</div><div class="cal-detail">30 min · Zoom · mcdtreva@yahoo.com</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">10:35</div><div class="cal-info"><div class="cal-title">AIC OKR</div><div class="cal-detail">25 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">11:05</div><div class="cal-info"><div class="cal-title">fill out 1:1</div><div class="cal-detail">25 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">12:00</div><div class="cal-info"><div class="cal-title">Lunch</div><div class="cal-detail">60 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">12:45</div><div class="cal-info"><div class="cal-title">lunch walk</div><div class="cal-detail">15 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">14:00</div><div class="cal-info"><div class="cal-title">Daemon / Yael</div><div class="cal-detail">30 min · Zoom · 1:1 with Yael Emmerich</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">16:30</div><div class="cal-info"><div class="cal-title">EOD Wrap</div><div class="cal-detail">30 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">16:45</div><div class="cal-info"><div class="cal-title">eod. walk</div><div class="cal-detail">15 min</div></div></a>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="expand-btn" onclick="toggleExpand('cal-items',this)">Show more</button>
+    </div>
+  </div>
+
+  <!-- CARD 5: KEY WINS -->
+  <div class="card" id="card-wins">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-title title-green"><span class="card-title-dot dot-green"></span>Key Wins</div>
+        <div class="card-desc">Capture your wins as they happen</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="win-input-row">
+        <input class="win-input" id="win-input" type="text" placeholder="e.g. OT Bay signed 3-month deal…" onkeydown="if(event.key==='Enter')addWin()"/>
+        <button class="win-add-btn" onclick="addWin()">+ Add</button>
+      </div>
+      <div class="card-items" id="wins-list"></div>
+    </div>
+    <div class="card-footer">
+      <button class="expand-btn" onclick="toggleExpand('wins-list',this)">Show more</button>
+    </div>
+  </div>
+
+  <!-- CARD 6: FEEDBACK VAULT -->
+  <div class="card" id="card-feedback">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-title title-purple"><span class="card-title-dot dot-purple"></span>Feedback Vault</div>
+        <div class="card-desc">Pro feedback · use for QBRs &amp; coaching</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="feedback-input-row">
+        <input class="feedback-account" id="fb-account" type="text" placeholder="Account name…" list="fb-accounts-datalist" autocomplete="off"/>
+        <datalist id="fb-accounts-datalist"></datalist>
+        <textarea class="feedback-textarea" id="fb-text" placeholder="What did they say?"></textarea>
+        <button class="feedback-save-btn" onclick="addFeedback()">Save Feedback</button>
+      </div>
+      <div class="card-items" id="feedback-list"></div>
+    </div>
+    <div class="card-footer">
+      <button class="expand-btn" onclick="toggleExpand('feedback-list',this)">Show more</button>
+    </div>
+  </div>
+
+
+  <!-- CARD 7: ALL ACCOUNTS -->
+  <div class="card full-width" id="card-accounts">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="card-title title-blue"><span class="card-title-dot dot-blue"></span>All Accounts</div>
+        <div class="card-desc">Your full book of business · search by name, contact, or email</div>
+      </div>
+      <span class="card-badge badge-blue" id="accts-count-badge"></span>
+    </div>
+    <div class="card-body">
+      <div class="accounts-search-wrap">
+        <input class="accounts-search-input" id="accounts-search" type="text" placeholder="Search by name, contact, or email…" oninput="filterAccountsList(this.value)"/>
+        <span class="accts-count-label" id="accts-count-label"></span>
+      </div>
+      <div class="accts-list-header">
+        <div class="accts-list-header-name">Account / Contact</div>
+        <div class="accts-list-header-col">Revenue</div>
+        <div class="accts-list-header-col">Goal</div>
+        <div class="accts-list-header-pacing">Pacing</div>
+        <div style="width:28px;flex-shrink:0;"></div>
+      </div>
+      <div class="accounts-grid-list" id="accounts-grid-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="quick-actions">
+  <button class="qa-btn"><span class="qa-icon">📋</span>/prep — Meeting Brief</button>
+  <button class="qa-btn"><span class="qa-icon">🎯</span>/score — Profile Score</button>
+  <button class="qa-btn"><span class="qa-icon">📬</span>/ketchup — Catch Up</button>
+  <button class="qa-btn"><span class="qa-icon">🚀</span>/onboarding — Tracker</button>
+</div>
+
+<!-- NOTES SECTION -->
+<div class="notes-section-wrap" id="notes-section-wrap" style="display:none;">
+  <div class="notes-section" id="notes-section">
+    <div class="notes-section-header">
+      <span class="notes-section-title">📝 All Notes</span>
+      <span id="notes-count-badge" class="card-badge badge-blue">0</span>
+    </div>
+    <div id="notes-section-list"></div>
+  </div>
+</div>
+<div style="height:28px;"></div>
+
+<script>
+  // --- Header date ---
+  document.getElementById('header-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+  // --- Pacing color: ≥100% green, ≥90% blue, ≥85% yellow, <85% red ---
+  const pacingEl = document.getElementById('pacing-pct');
+  const p = parseFloat(pacingEl.textContent);
+  pacingEl.style.color = p >= 100 ? '#27AE60' : p >= 90 ? '#009FD9' : p >= 85 ? '#F5A623' : '#E74C3C';
+
+  // --- Expand/collapse ---
+  function toggleExpand(id, btn) {
+    const el = document.getElementById(id);
+    const expanded = el.classList.toggle('expanded');
+    btn.textContent = expanded ? 'Show less' : 'Show more';
+  }
+
+  // --- NOTES SYSTEM ---
+  const NOTES_KEY = 'hub_notes';
+
+  function getNotes() {
+    return JSON.parse(localStorage.getItem(NOTES_KEY) || '{}');
+  }
+
+  function saveNote(slug, text) {
+    const notes = getNotes();
+    if (text.trim()) {
+      notes[slug] = text.trim();
+    } else {
+      delete notes[slug];
+    }
+    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+    refreshNoteButtons();
+    renderNotesSection();
+  }
+
+  function toggleNote(slug, btn) {
+    const el = document.getElementById('note-' + slug);
+    if (!el) return;
+    const isOpen = el.classList.toggle('open');
+    if (isOpen) {
+      const ta = el.querySelector('textarea');
+      const notes = getNotes();
+      ta.value = notes[slug] || '';
+      ta.focus();
+    }
+  }
+
+  function refreshNoteButtons() {
+    const notes = getNotes();
+    document.querySelectorAll('.acct-item[data-slug]').forEach(item => {
+      const slug = item.dataset.slug;
+      const btn = item.querySelector('.note-btn');
+      if (btn) {
+        btn.classList.toggle('has-note', !!notes[slug]);
+      }
+    });
+  }
+
+  function slugToName(slug) {
+    return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function scrollToAccount(slug) {
+    const el = document.querySelector(`[data-slug="${slug}"]`);
+    if (!el) return;
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+    el.classList.add('highlighted');
+    setTimeout(() => el.classList.remove('highlighted'), 2000);
+  }
+
+  function deleteNoteEntry(slug) {
+    const notes = getNotes();
+    delete notes[slug];
+    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+    const ta = document.querySelector(`#note-${slug} textarea`);
+    if (ta) ta.value = '';
+    const el = document.getElementById('note-' + slug);
+    if (el) el.classList.remove('open');
+    refreshNoteButtons();
+    renderNotesSection();
+  }
+
+  function renderNotesSection() {
+    const hubNotes = getNotes();
+    const onbNotesRaw = JSON.parse(localStorage.getItem('onboarding-notes') || '{}');
+    const allEntries = [];
+    Object.keys(hubNotes).forEach(slug => {
+      allEntries.push({ type: 'account', key: slug, label: slugToName(slug), text: hubNotes[slug] });
+    });
+    Object.keys(onbNotesRaw).forEach(proId => {
+      const pro = (typeof ONB_PROS !== 'undefined') ? ONB_PROS.find(p => p.id === proId) : null;
+      const label = pro ? pro.name + ' · ' + pro.biz : proId;
+      allEntries.push({ type: 'onboarding', key: proId, label, text: onbNotesRaw[proId] });
+    });
+    const section = document.getElementById('notes-section-wrap');
+    const list = document.getElementById('notes-section-list');
+    const badge = document.getElementById('notes-count-badge');
+    badge.textContent = allEntries.length;
+    if (!allEntries.length) {
+      section.style.display = 'none';
+      return;
+    }
+    section.style.display = '';
+    list.innerHTML = allEntries.map(n => `
+      <div class="note-entry">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+          <div>
+            <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:${n.type==='onboarding'?'#8E44AD':'#009FD9'};padding:1px 6px;border-radius:4px;background:${n.type==='onboarding'?'#f4eafb':'#e6f7ff'};">${n.type==='onboarding'?'Onboarding':'Account'}</span>
+            <div class="note-acct-label" style="margin-top:3px;" onclick="${n.type==='account'?`scrollToAccount('${n.key}')`:'void(0)'}">${n.label}</div>
+          </div>
+          <button class="win-del" onclick="${n.type==='account'?`deleteNoteEntry('${n.key}')`:`deleteOnbNoteEntry('${n.key}')`}">✕</button>
+        </div>
+        <div class="note-text">${n.text}</div>
+      </div>`).join('');
+  }
+
+  refreshNoteButtons();
+  renderNotesSection();
+
+  // --- DARK MODE ---
+  function toggleDark() {
+    const isDark = document.body.classList.toggle('dark');
+    localStorage.setItem('hub_dark', isDark ? '1' : '0');
+    document.getElementById('dark-toggle').textContent = isDark ? '☀️ Light' : '🌙 Dark';
+  }
+  if (localStorage.getItem('hub_dark') === '1') {
+    document.body.classList.add('dark');
+    document.getElementById('dark-toggle').textContent = '☀️ Light';
+  }
+
+  // --- ONBOARDING CARD (reads/writes localStorage['onboarding-v2']) ---
+  const ONB_KEY = 'onboarding-v2';
+  const ONB_PROS = [
+    {id:'card-jim-jones',       name:'Jim Jones',                  biz:'Seamless Exterior',      stage:'Introduction',        days:15, urgent:true,  email:'jimjones@seamlessexterior.com',          phone:null,                              alert:'Via LB Capital / Bill Rossell'},
+    {id:'card-eric-beezhold',   name:'Eric Beezhold',              biz:'Insulation Commandos',   stage:'Introduction',        days:14, urgent:true,  email:'eric.beezhold@insulationcommandos.com',  phone:null,                              alert:null},
+    {id:'card-mo-akbarbasha',   name:'Mohamad (Mo) Akbarbasha',    biz:'Mister Sparky PHL',      stage:'Introduction',        days:1,  urgent:false, email:'mohamad.akbarbasha@gmail.com',           phone:'201-673-2675',                    alert:'Call today 10am ET · $10K budget · New franchise', note:'$10K budget · call scheduled today'},
+    {id:'card-eliazar-jimenez', name:'Eliazar (EJ) Jimenez',       biz:'Mister Sparky SD',       stage:'Introduction',        days:2,  urgent:false, email:'eliazar.jimenez@mistersparky.com',       phone:'(480) 404-5813 · (619) 354-7187', alert:'Referred via Jeremy Ostler',        note:'via Jeremy Ostler'},
+    {id:'card-treva-mcdaniels', name:'Treva McDaniels',             biz:'Mister Sparky',          stage:'Introduction',        days:1,  urgent:false, email:'mcdtreva@yahoo.com',                     phone:'(614) 571-6175',                  alert:'Opening soon — wants call ASAP (via Drew Hunt)', note:'call 10:00 AM today'},
+    {id:'card-stacey-davis',    name:'Stacey Davis',                biz:'Ben Franklin Plumbing',  stage:'Introduction',        days:2,  urgent:false, email:'stacey.davis@benfranklinplumbing.com',   phone:null,                              alert:null},
+    {id:'card-nolan-jacobs',    name:'Nolan Jacobs',                biz:'Stand Strong Fencing',   stage:'Creating Profile',    days:20, urgent:true,  email:'NJacobs@standstrongfencing.com',         phone:null,                              alert:null},
+    {id:'card-shahbaaz',        name:'Shahbaaz K.',                 biz:'Wolf Ventures NJ',       stage:'Creating Profile',    days:15, urgent:true,  email:'skoshul@wolfventuresnj.com',             phone:null,                              alert:null},
+    {id:'card-jonathan-shea',   name:'Jonathan & Shea',             biz:'Ben Franklin Fayette',   stage:'Creating Profile',    days:7,  urgent:false, email:'greerplumbingenterprises@gmail.com',     phone:null,                              alert:'Grand opening soon — time sensitive', note:'grand opening soon'},
+    {id:'card-aleshia-rogers',  name:'Aleshia Rogers',              biz:'Spray-Net',              stage:'Creating Profile',    days:2,  urgent:false, email:'aleshia@spray-net.com',                  phone:null,                              alert:'Stuck on review step — no prior customers yet', note:'stuck on review step'},
+    {id:'card-cesar-padilla',   name:'César Padilla González',      biz:'Mister Sparky TX',       stage:'Platform Walkthrough',days:14, urgent:true,  email:'cesar.padilla.gonzalez@hotmail.com',     phone:null,                              alert:null},
+    {id:'card-john-harrison',   name:'John Harrison',               biz:"Zeke's Roofing",         stage:'Platform Walkthrough',days:9,  urgent:false, email:'john@callzekesroofing.com',              phone:null,                              alert:null},
+  ];
+
+  const STAGE_ORDER  = ['Introduction','Creating Profile','Platform Walkthrough'];
+  const STAGE_COLORS = {'Introduction':'stage-blue','Creating Profile':'stage-orange','Platform Walkthrough':'stage-green'};
+  const PILL_COLORS  = {'Introduction':'pill-blue','Creating Profile':'pill-yellow','Platform Walkthrough':'pill-green'};
+  const ARCHIVE_STAGES = ['Archive','Onboarding Complete'];
+
+  function changeOnbStatus(id, newStage) {
+    const saved = JSON.parse(localStorage.getItem(ONB_KEY) || '{}');
+    saved[id] = newStage;
+    localStorage.setItem(ONB_KEY, JSON.stringify(saved));
+    renderOnboarding();
+  }
+
+  function renderOnboarding() {
+    const saved = JSON.parse(localStorage.getItem(ONB_KEY) || '{}');
+    const pros = ONB_PROS.map(p => ({...p, stage: saved[p.id] || p.stage}))
+                         .filter(p => !ARCHIVE_STAGES.includes(p.stage));
+
+    const grouped = {};
+    STAGE_ORDER.forEach(s => { grouped[s] = []; });
+    pros.forEach(p => { if (grouped[p.stage]) grouped[p.stage].push(p); });
+
+    document.getElementById('onb-total-badge').textContent = pros.length + ' active';
+
+    const SSTYLE = {
+      'Introduction':        'background:rgba(0,159,217,0.12);color:#0077aa;',
+      'Creating Profile':    'background:rgba(245,166,35,0.12);color:#b07700;',
+      'Platform Walkthrough':'background:rgba(39,174,96,0.12);color:#1a6b3a;',
+      'Archive':             'background:rgba(180,180,180,0.12);color:#888;',
+    };
+
+    let html = '';
+    STAGE_ORDER.forEach(stage => {
+      const list = grouped[stage];
+      if (!list.length) return;
+      html += `<div class="stage-header"><span class="stage-label ${STAGE_COLORS[stage]}">${stage}</span><span class="acct-pill ${PILL_COLORS[stage]}">${list.length}</span></div>`;
+      list.forEach(pro => {
+        const pillClass = pro.urgent ? 'pill-red' : pro.days <= 7 ? 'pill-yellow' : 'pill-blue';
+        const label = pro.urgent ? `${pro.days}d urgent` : `${pro.days}d`;
+        const extra = pro.note ? `<span>${pro.note}</span>` : '';
+        const opts = [...STAGE_ORDER, 'Archive'].map(s =>
+          `<option value="${s}"${s === pro.stage ? ' selected' : ''}>${s}</option>`).join('');
+        const onbNotes = JSON.parse(localStorage.getItem('onboarding-notes') || '{}');
+        const onbNote = onbNotes[pro.id] || '';
+        const noteBtnHasNote = onbNote ? ' has-note' : '';
+        html += `
+          <div class="acct-item">
+            <div class="acct-item-top">
+              <div>
+                <div class="acct-name">${pro.name}</div>
+                <div class="acct-meta"><span class="acct-pill ${pillClass}">${label}</span><span>${pro.biz}</span>${extra}</div>
+                ${pro.email ? `<div class="acct-meta" style="margin-top:2px;"><a href="mailto:${pro.email}" style="font-size:11px;color:#009FD9;text-decoration:none;" onclick="event.stopPropagation()">✉ ${pro.email}</a></div>` : ''}
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <select class="onb-stage-select" onchange="changeOnbStatus('${pro.id}',this.value)">${opts}</select>
+                <button class="note-btn${noteBtnHasNote}" onclick="toggleHubOnbNote('${pro.id}',this)">📝</button>
+              </div>
+            </div>
+            <div class="note-inline" id="hub-onb-note-${pro.id}">
+              <textarea placeholder="Add a note…" onblur="saveHubOnbNote('${pro.id}',this.value)">${onbNote}</textarea>
+            </div>
+          </div>`;
+      });
+    });
+
+    document.getElementById('onb-items').innerHTML = html || '<div style="color:#bbb;font-size:12px;padding:14px 16px;">No active Pros in onboarding.</div>';
+  }
+
+  renderOnboarding();
+
+  // --- ONBOARDING KANBAN (page-mode full view) ---
+  function renderOnboardingKanban() {
+    const saved = JSON.parse(localStorage.getItem(ONB_KEY) || '{}');
+    const pros  = ONB_PROS.map(p => ({...p, stage: saved[p.id] || p.stage}));
+    const active   = pros.filter(p => !ARCHIVE_STAGES.includes(p.stage));
+    const archived = pros.filter(p =>  ARCHIVE_STAGES.includes(p.stage));
+    const grouped  = {};
+    STAGE_ORDER.forEach(s => { grouped[s] = []; });
+    active.forEach(p => { if (grouped[p.stage]) grouped[p.stage].push(p); });
+    const onbNotes = JSON.parse(localStorage.getItem('onboarding-notes') || '{}');
+    const COL_CLASS = {'Introduction':'col-intro','Creating Profile':'col-creating','Platform Walkthrough':'col-walkthrough'};
+
+    let html = `
+      <div class="onb-summary-bar">
+        <div class="onb-stat"><div class="onb-stat-val" style="color:#1a1a2e">${active.length}</div><div class="onb-stat-label">Active</div></div>
+        <div class="onb-stat"><div class="onb-stat-val" style="color:#009FD9">${grouped['Introduction'].length}</div><div class="onb-stat-label">Intro</div></div>
+        <div class="onb-stat"><div class="onb-stat-val" style="color:#F5A623">${grouped['Creating Profile'].length}</div><div class="onb-stat-label">Creating</div></div>
+        <div class="onb-stat"><div class="onb-stat-val" style="color:#27AE60">${grouped['Platform Walkthrough'].length}</div><div class="onb-stat-label">Walkthrough</div></div>
+        <div class="onb-stat"><div class="onb-stat-val" style="color:#bbb">${archived.length}</div><div class="onb-stat-label">Archived</div></div>
+      </div>
+      <div class="onb-kanban-grid">`;
+
+    STAGE_ORDER.forEach(stage => {
+      const list = grouped[stage];
+      html += `<div class="onb-col ${COL_CLASS[stage]}">
+        <div class="onb-col-header">
+          <span class="onb-col-title">${stage}</span>
+          <span style="font-size:11px;font-weight:700;background:rgba(0,0,0,0.07);padding:2px 8px;border-radius:10px;color:inherit;">${list.length}</span>
+        </div>
+        <div class="onb-col-cards">`;
+      list.forEach(pro => {
+        const pillClass = pro.urgent ? 'pill-red' : pro.days <= 7 ? 'pill-yellow' : 'pill-blue';
+        const daysLabel = pro.urgent ? `${pro.days}d urgent` : `${pro.days}d`;
+        const opts = [...STAGE_ORDER, 'Archive'].map(s =>
+          `<option value="${s}"${s === pro.stage ? ' selected' : ''}>${s}</option>`).join('');
+        const noteText = onbNotes[pro.id] || '';
+        const noteBtnHasNote = noteText ? ' has-note' : '';
+        html += `
+          <div class="onb-pro-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">
+              <div class="onb-pro-name">${pro.name}</div>
+              <span class="acct-pill ${pillClass}" style="font-size:9px;flex-shrink:0;margin-top:2px;">${daysLabel}</span>
+            </div>
+            <div class="onb-pro-biz">${pro.biz}</div>
+            <div class="onb-pro-meta">
+              ${pro.email  ? `<div>✉ <a href="mailto:${pro.email}">${pro.email}</a></div>` : ''}
+              ${pro.phone  ? `<div>📞 ${pro.phone}</div>` : ''}
+              ${pro.alert  ? `<div class="onb-pro-alert">⚠️ ${pro.alert}</div>` : ''}
+            </div>
+            <div class="onb-pro-footer">
+              <select class="onb-stage-select" onchange="changeOnbStatus('${pro.id}',this.value);renderOnboardingKanban();">${opts}</select>
+              <button class="note-btn${noteBtnHasNote}" onclick="toggleHubOnbKNote('${pro.id}',this)">📝</button>
+            </div>
+            <div class="note-inline" id="hub-onb-knote-${pro.id}">
+              <textarea placeholder="Add a note…" onblur="saveHubOnbNote('${pro.id}',this.value)">${noteText}</textarea>
+            </div>
+          </div>`;
+      });
+      html += `</div></div>`;
+    });
+    html += `</div>`;
+
+    if (archived.length) {
+      html += `<div style="padding:10px 20px 20px;">
+        <div style="font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">✅ Archived</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">`;
+      archived.forEach(pro => {
+        html += `<div class="onb-pro-card" style="opacity:0.55;">
+          <div class="onb-pro-name">${pro.name}</div>
+          <div class="onb-pro-biz">${pro.biz}</div>
+          ${pro.email ? `<div style="font-size:10px;color:#888;">✉ ${pro.email}</div>` : ''}
+        </div>`;
+      });
+      html += `</div></div>`;
+    }
+
+    document.getElementById('onb-kanban').innerHTML = html;
+  }
+
+  function toggleHubOnbKNote(id, btn) {
+    const el = document.getElementById('hub-onb-knote-' + id);
+    if (!el) return;
+    const isOpen = el.classList.toggle('open');
+    if (isOpen) {
+      const ta = el.querySelector('textarea');
+      ta.value = JSON.parse(localStorage.getItem('onboarding-notes') || '{}')[id] || '';
+      ta.focus();
+    }
+  }
+
+  // --- ALL ACCOUNTS ---
+  const HUB_ACCOUNTS_DEFAULT = [
+    { name: 'MRS Garage Door Services', contact: 'Matan Shoef', email: 'office@mrsgaragedoor.com', goal: 89629, revenue: 40381, pacing: 46.08 },
+    { name: 'Royal Moving & Storage', contact: 'Vladislav Iglin', email: 'office@royalmovingco.com', goal: 86071, revenue: 75014, pacing: 89.13 },
+    { name: 'Fast Layne Plumbing LLC', contact: 'David Layne', email: 'info@flplumbinganddrains.com', goal: 82205, revenue: 79422, pacing: 98.81 },
+    { name: 'OT Bay Builders', contact: 'Yotam Vezumski', email: 'office@otbaybuilders.com', goal: 73266, revenue: 119403, pacing: 166.68 },
+    { name: 'RELIABLE MOVING SERVICES', contact: 'Yerbol Mukatov', email: 'rms3105007174@yahoo.com', goal: 64785, revenue: 88220, pacing: 139.27 },
+    { name: 'Clarity Construction', contact: 'Daniel Cassorla', email: 'info@clarity-construction.com', goal: 53082, revenue: 43777, pacing: 84.35 },
+    { name: 'MaintainThat Pressure Washing', contact: 'Jalali Hartman', email: 'marketing@keptcompanies.com', goal: 50946, revenue: 70317, pacing: 141.16 },
+    { name: 'Ocean Remodel', contact: 'Dor Grinberg', email: 'contact@oceanremodel.com', goal: 44593, revenue: 22098, pacing: 50.68 },
+    { name: 'Excel Air', contact: 'Mauricio Arreguin', email: 'marreguin@excelairconditioning.com', goal: 41931, revenue: 36412, pacing: 88.81 },
+    { name: 'Legacy (Vacation Rentals)', contact: 'David Ruhlman', email: 'ruhlmandavid@gmail.com', goal: 35077, revenue: 26277, pacing: 76.61 },
+    { name: 'Garrett Mechanical', contact: 'Tommy Garrett', email: 'tommy@garrettmech.com', goal: 34092, revenue: 74341, pacing: 223.02 },
+    { name: 'The Best Air Quality and Restoration', contact: 'Valid Salikhov', email: 'yourairspecialist@gmail.com', goal: 33611, revenue: 13521, pacing: 41.14 },
+    { name: 'Fuse Service', contact: 'Oleksandr Feshchenko', email: 'support@fusesea.com', goal: 27156, revenue: 34192, pacing: 128.77 },
+    { name: 'Hvac Heroes', contact: 'Triston Wilson', email: 'hvacheroes@gmail.com', goal: 24998, revenue: 19740, pacing: 80.76 },
+    { name: 'Queta Construction Group, LLC', contact: 'Henry Rodriguez', email: 'hrodriguez.qcg@gmail.com', goal: 24941, revenue: 12862, pacing: 52.74 },
+    { name: 'All Ears Roofing', contact: 'James Manchac', email: 'sales@allearsroofing.com', goal: 24179, revenue: 10681, pacing: 45.18 },
+    { name: 'Phoenix Pavers and Turf LLC', contact: 'Guadalupe Celaya', email: 'lupe.celaya@yahoo.com', goal: 23463, revenue: 7439, pacing: 32.43 },
+    { name: 'Risner Roofing', contact: 'Cody Risner', email: 'wecare@risnerroofing.com', goal: 19762, revenue: 778, pacing: 4.03 },
+    { name: 'Fuse HVAC & Appliance repair', contact: 'Aleksei Lukianets', email: 'luka23rus@gmail.com', goal: 16687, revenue: 2259, pacing: 13.84 },
+    { name: 'A+ Fencing Company LLC', contact: 'James Vann', email: 'aplusfencing3@gmail.com', goal: 16440, revenue: 1109, pacing: 6.9 },
+    { name: 'Buzzy Mover', contact: 'Haojie Weng', email: 'buzzymover@gmail.com', goal: 15289, revenue: 24619, pacing: 164.69 },
+    { name: 'All County Perimeter', contact: 'Garrett Atz', email: 'garrett@allcountyperimeter.com', goal: 13291, revenue: 9906, pacing: 76.23 },
+    { name: 'Pro stars contractor Inc', contact: 'Manuel Lema', email: 'benithoxkishpix55@gmail.com', goal: 13216, revenue: 3010, pacing: 23.3 },
+    { name: 'KYRA CONSTRUCTION', contact: 'Liat Gauos', email: 'info@kyraconstruction.com', goal: 12139, revenue: 28309, pacing: 238.51 },
+    { name: 'Lane Roofing & Exteriors', contact: 'Lisa Stapleford', email: 'sarah@laneroofing.com', goal: 11323, revenue: 19556, pacing: 176.64 },
+    { name: 'Electric Avenue', contact: 'Jack Marquardt', email: 'electricavenue226@gmail.com', goal: 10167, revenue: 14167, pacing: 142.51 },
+    { name: 'Fuse HVAC & Appliance Repair Pasadena', contact: 'Anton Boronayev', email: 'fuse@fusepasadena.com', goal: 10127, revenue: 8003, pacing: 80.82 },
+    { name: 'Benjamin Franklin Plumbing Redmond', contact: 'Sean Mcallister', email: 'info@bfpredmond.com', goal: 9993, revenue: 11684, pacing: 119.58 },
+    { name: 'sHinE', contact: 'Sina Omosowon', email: 'sinamorufu@gmail.com', goal: 9858, revenue: 7839, pacing: 81.33 },
+    { name: 'Fuse Service HVAC Denver', contact: 'Renat Murtazin', email: 'fusedenverco@gmail.com', goal: 9519, revenue: 527, pacing: 5.66 },
+    { name: 'Fuse Service HVAC Philadelphia', contact: 'Eradzh Sattorov', email: 'fusephiladelphia@gmail.com', goal: 8900, revenue: 5240, pacing: 60.21 },
+    { name: 'Mister Sparky', contact: 'Clark Smith', email: 'customerservice@mistersparkywc.com', goal: 8380, revenue: 4757, pacing: 58.05 },
+    { name: 'Fuse HVAC & Appliance Repair', contact: 'Aleksandr Romanovskii', email: 'support@fusesbd.com', goal: 7916, revenue: 2424, pacing: 31.31 },
+    { name: 'The Junkluggers of New York City', contact: 'Michele Novy', email: 'salesnyc@junkluggers.com', goal: 7733, revenue: 3655, pacing: 48.34 },
+    { name: 'Fuse HVAC Miami-Dade', contact: 'Alexander Tolkachev', email: 'support@fusemia.com', goal: 7488, revenue: 2872, pacing: 39.23 },
+    { name: 'Voltmasters Electrical Solutions', contact: 'Gil Barnea', email: 'davie.building.solutions@gmail.com', goal: 7477, revenue: 5330, pacing: 72.92 },
+    { name: 'Paint & Rollers', contact: 'Adam Guzman', email: 'paintandrollers@gmail.com', goal: 7152, revenue: 6968, pacing: 99.65 },
+    { name: 'Fuse Service HVAC & Electrical SF', contact: 'Aleksandr Shishov', email: 'support@fuseservicesf.com', goal: 7139, revenue: 417, pacing: 5.98 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Austin Butchart', email: 'austin.butchart@benfranklinplumbing.com', goal: 6828, revenue: 0, pacing: 0 },
+    { name: 'Fuse HVAC & Appliance Repair', contact: 'Dmitriy Pasichnyk', email: 'fusemiddlesex@gmail.com', goal: 6219, revenue: 0, pacing: 0 },
+    { name: 'Fuse Service', contact: 'Oleg Minaev', email: 'fusepbc@gmail.com', goal: 5953, revenue: 4589, pacing: 78.84 },
+    { name: 'City Tech Services', contact: 'Artsiom Budykin', email: 'fuseorlandofl@gmail.com', goal: 4922, revenue: 1591, pacing: 33.05 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Arthur Cottingham Iv', email: 'hallam@theplumbingexperts.com', goal: 4626, revenue: 8190, pacing: 181.06 },
+    { name: 'ZeroMold', contact: 'Jerel Clark', email: 'cara@zeromold.net', goal: 4047, revenue: 2005, pacing: 50.66 },
+    { name: 'Fuse HVAC Jacksonville', contact: 'Alexander Tolkachev', email: 'support@fusejax.com', goal: 4042, revenue: 1057, pacing: 26.74 },
+    { name: 'Fuse HVAC & Appliance Repair Charlotte', contact: 'Bohdan Kovalenko', email: 'fuserepaircharlotte@gmail.com', goal: 3656, revenue: 1662, pacing: 46.5 },
+    { name: 'Boston Comfort Systems', contact: 'Vladimir Romanov', email: 'vladimirxromanov@gmail.com', goal: 3298, revenue: 2182, pacing: 67.67 },
+    { name: 'Benjamin Franklin Plumbing of the Triad', contact: 'Adam Tucci', email: 'adam@benfranklintriad.com', goal: 3122, revenue: 2153, pacing: 70.54 },
+    { name: 'Fuse HVAC & Appliance Repair Fort Myers', contact: 'Aleksandr Bobrov', email: 'fuseftmyers@gmail.com', goal: 3008, revenue: 0, pacing: 0 },
+    { name: 'Fuse Service HVAC & Appliance Repair', contact: 'Eduard Kobzar', email: 'fusefresno@gmail.com', goal: 2668, revenue: 855, pacing: 32.78 },
+    { name: 'Benjamin Franklin Plumbing of Grand Rapids', contact: 'Robert Evenhouse', email: 'info.0579@benfranklinplumbing.com', goal: 2533, revenue: 2907, pacing: 117.38 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Sarah Jasinski', email: 'sarah@benfranklinplumbing-semi.com', goal: 2350, revenue: 324, pacing: 14.1 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Daniel Newell', email: 'dannewell@live.com', goal: 2334, revenue: 4044, pacing: 177.19 },
+    { name: 'Fuse HVAC & Appliance Repair Austin', contact: 'Gaziz Balgabayev', email: 'support@fuseatx.com', goal: 2120, revenue: 231, pacing: 11.16 },
+    { name: 'AC/DC Refrigeration & Appliance Repair', contact: 'Victor Rusak', email: 'acdcthumbtack@gmail.com', goal: 1987, revenue: 137, pacing: 7.07 },
+    { name: 'Benjamin Franklin Plumbing of Huntington Beach', contact: 'Oscar Nunez', email: 'bf0719.hb@gmail.com', goal: 1970, revenue: 71, pacing: 3.67 },
+    { name: 'Fuse HVAC & Appliance Repair Los Angeles', contact: 'Michael Ivanchuk', email: 'fuseservicela@gmail.com', goal: 1938, revenue: 3114, pacing: 164.35 },
+    { name: 'The Maids in College Park', contact: 'Lawrenzo Borrelli', email: 'lawrenzo_borrelli@yahoo.com', goal: 1924, revenue: 3192, pacing: 169.66 },
+    { name: 'Fuse HVAC & Appliance Repair', contact: 'Ilya Khrapik', email: 'dispatch.citytech@gmail.com', goal: 1865, revenue: 0, pacing: 0 },
+    { name: 'Benjamin Franklin Plumbing of Temple, TX', contact: 'Rakesh Shah', email: 'bfleadgeneration@gmail.com', goal: 1850, revenue: 2318, pacing: 128.15 },
+    { name: 'Fuse HVAC Service & Repair', contact: 'Roman Carmaliuc', email: 'fusefortworth@gmail.com', goal: 1675, revenue: 1301, pacing: 79.44 },
+    { name: 'Fuse Service Tacoma', contact: 'Oleg Covtun', email: 'fuseservicetacoma@gmail.com', goal: 1671, revenue: 1294, pacing: 79.23 },
+    { name: 'Benjamin Franklin Plumbing of Chapel Hill', contact: 'Bassem Boulas', email: 'mightystream1@gmail.com', goal: 1639, revenue: 3298, pacing: 205.79 },
+    { name: 'FUSE Service (Appliance, HVAC & Plumbing)', contact: 'Igor Dmitriev', email: 'sfapprepair@gmail.com', goal: 1511, revenue: 89, pacing: 6.02 },
+    { name: 'Fuse Service HVAC & Electrical Tri-Valley', contact: 'Sergii Kushnarov', email: 'fusetrivalley@gmail.com', goal: 1502, revenue: 0, pacing: 0 },
+    { name: 'One Hour Heating and Cooling of Tucson', contact: 'Kevin Cerveri', email: 'tucson@onehourair.com', goal: 1483, revenue: 448, pacing: 30.92 },
+    { name: 'Fuse HVAC & Appliance Repair Daytona Beach', contact: 'Igor Mitarchuk', email: 'fusedaytona@gmail.com', goal: 1332, revenue: 570, pacing: 43.72 },
+    { name: 'Mister Sparky', contact: 'Michael Rekart', email: 'mrekart@gmail.com', goal: 1259, revenue: 884, pacing: 71.79 },
+    { name: 'Fuse Service Chicago', contact: 'Vladyslav Tofan', email: 'fusechicagoil@gmail.com', goal: 1207, revenue: 121, pacing: 10.27 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Courtney Wilkinson', email: 'service@benfranklinarlington.com', goal: 1190, revenue: 1771, pacing: 152.19 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Dominik Ellena', email: 'dominik@onehourwi.com', goal: 1138, revenue: 2642, pacing: 237.39 },
+    { name: 'FUSE HVAC, Electrical and Appliance', contact: 'Denis Riabokonev', email: 'repair@fusenapa.com', goal: 1109, revenue: 717, pacing: 66.18 },
+    { name: 'Fuse HVAC & Appliance Repair Cincinnati', contact: 'Ilya Volchyk', email: 'service@fuseohio.com', goal: 1043, revenue: 585, pacing: 57.3 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Steve Kurtz', email: 'steve.kurtz@onehourkc.com', goal: 1015, revenue: 698, pacing: 70.37 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Jeff Hunter', email: 'info.0592@benjaminfranklinplumbing.com', goal: 929, revenue: 1052, pacing: 115.8 },
+    { name: 'ZeroMold Utah', contact: 'Jerel Clark', email: 'info@zeromold.net', goal: 926, revenue: 900, pacing: 99.41 },
+    { name: 'One Hour Heating & Air Conditioning of Kyle', contact: 'Aaron Mudry', email: 'aaron.mudry@onehourair.com', goal: 916, revenue: 155, pacing: 17.35 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Roy Koldaro', email: 'onehoursd@gmail.com', goal: 911, revenue: 1695, pacing: 190.22 },
+    { name: 'Mister Sparky of Manalapan NJ', contact: 'Jacqueline Quagliaro', email: 'jackie.quagliaro@mistersparky.com', goal: 892, revenue: 210, pacing: 24.07 },
+    { name: 'One Hour Air Conditioning and Heating DFW', contact: 'Dustin Hufsey', email: 'zac.salgado@onehourairdfw.com', goal: 878, revenue: 1392, pacing: 162.1 },
+    { name: "Pitzer's One Hour Air Conditioning", contact: 'Larry Thornton', email: 'pitzersonehourair@gmail.com', goal: 836, revenue: 1948, pacing: 238.44 },
+    { name: 'ZeroMold', contact: 'Jerel Clark', email: 'zeromold1@gmail.com', goal: 817, revenue: 1593, pacing: 199.48 },
+    { name: 'Ben Franklin Plumbing Northeast Texas', contact: 'John Crymes', email: 'office@benjaminfranklinplumbingtyler.com', goal: 794, revenue: 1092, pacing: 140.54 },
+    { name: 'Fuse Service HVAC & Appliance Repair Knoxville', contact: 'Vitaly Nosovets', email: 'fuseknoxvilletn@gmail.com', goal: 769, revenue: 848, pacing: 112.89 },
+    { name: 'The Junkluggers of Willamette Valley', contact: 'Caitlyn Eaton', email: 'caitlyn.eaton@junkluggers.com', goal: 727, revenue: 3216, pacing: 452.17 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Juan Lasala', email: 'pablo.lasala@benfranklinplumbing.com', goal: 716, revenue: 872, pacing: 124.51 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Maribel Healy', email: 'info@bfptriangle.com', goal: 690, revenue: 151, pacing: 22.43 },
+    { name: 'ZeroMold - TN', contact: 'Jerel Clark', email: 'contact@zeromold.net', goal: 685, revenue: 1116, pacing: 166.61 },
+    { name: 'NEC Electric', contact: 'David Mcmullen', email: 'tracey@newportelectric.com', goal: 680, revenue: 3437, pacing: 517.36 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Andrew Galaud', email: 'oh.warnerrobins@gmail.com', goal: 666, revenue: 1116, pacing: 171.48 },
+    { name: 'DRYmedic Water Damage North Atlanta', contact: 'Jesus Baron', email: 'info@drymedicalpharettaga.com', goal: 652, revenue: 826, pacing: 129.5 },
+    { name: 'Maid to Shine LLC', contact: 'Marco Carmo', email: 'maidtoshinecompany@gmail.com', goal: 640, revenue: 1753, pacing: 280.16 },
+    { name: 'FUSE HVAC & APPLIANCE REPAIR', contact: 'Dmitrii Nazarenko', email: 'dima141180@gmail.com', goal: 591, revenue: 1736, pacing: 300.56 },
+    { name: 'Mister Sparky Evansville', contact: 'Levi Johnson', email: 'levi@mistersparkyevansville.com', goal: 529, revenue: 402, pacing: 77.82 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Jason Clark', email: 'info@benfranklinwichita.com', goal: 469, revenue: 617, pacing: 134.51 },
+    { name: 'AR2i Business Solutions', contact: 'Laura Walsh', email: 'laura.walsh@ar2i.life', goal: 449, revenue: 3519, pacing: 801.41 },
+    { name: 'Mister Sparky of Kentucky', contact: 'Marvin Talbot Jr', email: 'rsgtholdings@gmail.com', goal: 440, revenue: 2180, pacing: 507.15 },
+    { name: 'Aspen Heating and Cooling', contact: 'Gary Schultz', email: 'aspen@aspenheating.com', goal: 385, revenue: 205, pacing: 54.52 },
+    { name: 'One Hour Heating and Air Conditioning of CP', contact: 'David Lu', email: 'onehouraircp@gmail.com', goal: 376, revenue: 272, pacing: 73.99 },
+    { name: 'Benjamin Franklin Plumbing of Roseville', contact: 'Ahamed Arifraseeth Mohamed Ali', email: 'info.0764@benfranklinplumbing.com', goal: 350, revenue: 36, pacing: 10.64 },
+    { name: 'Fuse Service HVAC & Appliance Repair Vancouver', contact: 'Dmitrii Zheltyshev', email: 'fuseyvr@gmail.com', goal: 289, revenue: 0, pacing: 0 },
+    { name: 'Fuse Service: HVAC & Electrical', contact: 'Ivan Aleksandrovich', email: 'info@qualityel.com', goal: 240, revenue: 0, pacing: 0 },
+    { name: 'Spray-Net Denver West', contact: 'Brian Tiedt', email: 'brian.t@spray-net.com', goal: 212, revenue: 0, pacing: 0 },
+    { name: 'SPRAY-NET SOUTHERN KENTUCKY', contact: 'Geoge Dodson', email: 'victor@spray-net.com', goal: 182, revenue: 314, pacing: 176.79 },
+    { name: 'Mister Sparky Amarillo', contact: 'Josh Geigle', email: 'josh.geigle@mistersparkyamarillo.com', goal: 175, revenue: 251, pacing: 146.68 },
+    { name: 'Mister Sparky Electric', contact: 'Dennis Conrade', email: 'service@mistersparky.com', goal: 175, revenue: 69, pacing: 40.1 },
+    { name: 'Wolfpack Roofing & Exteriors', contact: 'Michael Boy', email: 'mboy@wolfpackrfg.com', goal: 118, revenue: 0, pacing: 0 },
+    { name: 'One Hour Heating and Air Conditioning', contact: 'Michael Vavreck', email: 'julian.carvajal@punctualpros.com', goal: 112, revenue: 137, pacing: 124.93 },
+    { name: 'Benjamin Franklin Plumbing of Billings', contact: 'Leon Riley Jr', email: 'bfpmt1@gmail.com', goal: 66, revenue: 44, pacing: 68.77 },
+    { name: 'Minuteman Heating & Air', contact: 'Courtney Wilkinson', email: 'service@minutemanheatingandac.com', goal: 64, revenue: 370, pacing: 596.04 },
+    { name: 'Fuse HVAC, Refrigeration & Electrical', contact: 'Alexandr Shepel', email: 'fusemts@gmail.com', goal: 59, revenue: 0, pacing: 0 },
+    { name: "Woofie's of Lutz", contact: 'Travis Meyerhoff', email: 'lutz@woofies.com', goal: 47, revenue: 49, pacing: 106.77 },
+    { name: "Woofie's of South Riding-Aldie", contact: 'Teferi Dejene', email: 'teferi@woofiessouthriding.com', goal: 40, revenue: 26, pacing: 66.86 },
+    { name: 'Spray-Net Jacksonville South', contact: 'Charles Fiumefreddo', email: 'charlie.f@spray-net.com', goal: 37, revenue: 0, pacing: 0 },
+    { name: 'Spray-Net Atlanta', contact: 'Patrick Fitzmaurice', email: 'patrick.fitzmaurice@spray-net.com', goal: 20, revenue: 0, pacing: 0 },
+    { name: 'Planet Roof', contact: 'Travis Kenny', email: 'info@planetroof.com', goal: 0, revenue: 472, pacing: 0 },
+    { name: 'Moving Band', contact: 'Johnathan Brodski', email: 'moving.band.llc@gmail.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'TruChoice Roofing', contact: 'Mervin Wickey', email: 'mervinlee1997@gmail.com', goal: 0, revenue: 2151, pacing: 0 },
+    { name: 'Benjamin Franklin Plumbing of Raleigh', contact: 'Joseph Hayes', email: 'info@bfraleigh.com', goal: 0, revenue: 1947, pacing: 0 },
+    { name: 'Fuse Service', contact: 'Aidyn Danabayev', email: 'support@fusehtx.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'Mister Sparky Sherman', contact: 'Russell Boswell', email: 'leads@jijservices.com', goal: 0, revenue: 1963, pacing: 0 },
+    { name: 'Pro Appliance Repair', contact: 'Roza Bermileeva', email: 'fusesantaclarita@gmail.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'Fuse HVAC & Appliance Repair Las Vegas', contact: 'Andre Bond', email: 'fusehvaclv@gmail.com', goal: 0, revenue: 170, pacing: 0 },
+    { name: 'Benjamin Franklin Plumbing of Connecticut', contact: 'Stephen Rochon', email: 's.rochon@bfp13.com', goal: 0, revenue: 7382, pacing: 0 },
+    { name: 'One Hour Heating & AC of Ellis County', contact: 'Ennis Weber', email: 'ennis.weber@onehourair.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Jason Clark', email: 'info@benfranklinok.com', goal: 0, revenue: 1606, pacing: 0 },
+    { name: 'Spray Net Charlotte', contact: 'Justin Demers', email: 'spraynetclt@gmail.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Shelly Gloyna', email: 'bfpleadske@gmail.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'BLVD Moving', contact: 'David Fimbres', email: 'leads@blvdmoving.com', goal: 0, revenue: 29243, pacing: 0 },
+    { name: 'One Hour Heating & Air Conditioning of Hazel Crest', contact: 'Dashon Bradford', email: 'bradfordshvac@yahoo.com', goal: 0, revenue: 607, pacing: 0 },
+    { name: 'Mister Sparky', contact: 'Charlie Castleman', email: 'charliecastleman@gmail.com', goal: 0, revenue: 1578, pacing: 0 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Jordan Ristau', email: 'jordan.ristau@onehourair.com', goal: 0, revenue: 419, pacing: 0 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Amanda Luipasco', email: 'info.0900@onehourair.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'Fuse Service: HVAC & Appliance Repair', contact: 'Aleksei Podieiapolskii', email: 'alextambovin@gmail.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Marty Landry', email: 'marty@onehourmagic.com', goal: 0, revenue: 1290, pacing: 0 },
+    { name: 'Spray-Net Boston North Shore', contact: 'Mark Raffle', email: 'raffle@spray-net.com', goal: 0, revenue: 287, pacing: 0 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Kristen Raizada', email: 'kristenraizada@gmail.com', goal: 0, revenue: 27, pacing: 0 },
+    { name: 'One Hour Heating and Air Conditioning', contact: 'Robert Holcomb', email: 'info.0924@onehourair.com', goal: 0, revenue: 2258, pacing: 0 },
+    { name: 'One Hour Air (Austin)', contact: 'Vinay Kumar Abburi', email: 'vinay@ctccinc.com', goal: 0, revenue: 457, pacing: 0 },
+    { name: 'One Hour Heating & Air Conditioning of Springfield', contact: 'Blaine Boyle', email: 'blaine@springfieldsontimeservice.com', goal: 0, revenue: 68, pacing: 0 },
+    { name: 'Fuse Service HVAC & Plumbing', contact: 'Sergiu Tiganu', email: 'fuse.penn@gmail.com', goal: 0, revenue: 871, pacing: 0 },
+    { name: 'Seamless Exterior', contact: 'James Jones', email: 'jimjones@seamlessexterior.com', goal: 0, revenue: 89, pacing: 0 },
+    { name: "Lee's Roofing", contact: 'Thomas Howard', email: 'csr@leesroof.com', goal: 0, revenue: 452, pacing: 0 },
+    { name: 'I AM Roofing', contact: 'Alexander Martin', email: 'alec@iamroofing.com', goal: 0, revenue: 6145, pacing: 0 },
+    { name: 'MOTIFY', contact: 'Darren White', email: 'dwhite@nationsafedrivers.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'Salty Dog Roofing & Siding', contact: 'Jason Grice', email: 'csr@saltydogroofing.com', goal: 0, revenue: 1315, pacing: 0 },
+    { name: 'Mister Sparky of Murrysville', contact: 'Rachel Ramaley', email: 'rramaley@murrysvillesparky.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'Mister Sparky of Greater Boston North', contact: 'Benjamn Bagnall', email: 'ben@mistersparkyboston.com', goal: 0, revenue: 382, pacing: 0 },
+    { name: 'Mister Sparky Greenville', contact: 'Anthony Zack', email: 'greatservice.one@gmail.com', goal: 0, revenue: 1060, pacing: 0 },
+    { name: 'OHA of Augusta', contact: 'Anthony Duggan', email: 'csr.dhac@gmail.com', goal: 0, revenue: 485, pacing: 0 },
+    { name: 'Benjamin Franklin Plumbing of Pompton Lakes', contact: 'Timothy Loranger', email: 'timlorangerbfp@gmail.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Scott Lunsford', email: 'scottlunsford2017@gmail.com', goal: 0, revenue: 879, pacing: 0 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Jayden Rodriguez-Barnett', email: 'service@benfranklindacula.com', goal: 0, revenue: 1577, pacing: 0 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Sarah Kernizan', email: 'contactus@trumbullbfplumbing.com', goal: 0, revenue: 704, pacing: 0 },
+    { name: 'Benjamin Franklin Plumbing of Bartlett', contact: 'Jessica Coleman', email: 'jess.coleman@benfranklinplumbing.com', goal: 0, revenue: 151, pacing: 0 },
+    { name: 'Stronghouse', contact: 'Alan Salmeron', email: 'asalmeron@stronghousebrands.com', goal: 0, revenue: 2522, pacing: 0 },
+    { name: "Zeke's Roofing Inc", contact: 'John Harrison', email: 'john@callzekesroofing.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'Mister Sparky of Mansfield', contact: 'Maribel Delgado', email: 'cesar.padilla.gonzalez@hotmail.com', goal: 0, revenue: 0, pacing: 0 },
+  ];
+
+  function getAccounts() {
+    const stored = localStorage.getItem('hub_accounts');
+    return stored ? JSON.parse(stored) : HUB_ACCOUNTS_DEFAULT;
+  }
+
+  function pacingPill(pct) {
+    if (!pct) return '<span class="accts-pacing" style="background:#f0f2f5;color:#aaa;">—</span>';
+    let bg, color;
+    if (pct >= 100)     { bg='#e8f8f0'; color='#1e8449'; }
+    else if (pct >= 85) { bg='#e6f7ff'; color='#0077aa'; }
+    else if (pct >= 65) { bg='#fef3e2'; color='#b07700'; }
+    else                { bg='#fde8e8'; color='#c0392b'; }
+    return `<span class="accts-pacing" style="background:${bg};color:${color};">${pct.toFixed(1)}%</span>`;
+  }
+
+  function renderAccountsCard(accounts) {
+    accounts = accounts || getAccounts();
+    const list  = document.getElementById('accounts-grid-list');
+    const badge = document.getElementById('accts-count-badge');
+    const label = document.getElementById('accts-count-label');
+    if (badge) badge.textContent = accounts.length + ' accounts';
+    if (label) label.textContent = accounts.length + ' accounts';
+    if (!list) return;
+    if (!accounts.length) {
+      list.innerHTML = '<div style="padding:20px;text-align:center;color:#bbb;font-size:12px;">No accounts match.</div>';
+      return;
+    }
+    const fmt = n => (n && n > 0) ? (n >= 1000 ? '$' + Math.round(n/1000) + 'k' : '$' + Math.round(n)) : '—';
+    const allNotes = getNotes();
+    list.innerHTML = accounts.map(a => {
+      const slug = a.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const noteText = allNotes[slug] || '';
+      const noteBtnClass = noteText ? 'note-btn has-note' : 'note-btn';
+      return `
+        <div class="accts-row-wrap">
+          <div class="accts-row">
+            <div class="accts-col-name">
+              <div class="accts-row-name">${a.name}</div>
+              ${a.contact ? `<div class="accts-row-contact">${a.contact}</div>` : ''}
+              ${a.email ? `<div class="accts-row-email">${a.email.split(',')[0].trim()}</div>` : ''}
+            </div>
+            <div class="accts-col-num"><div class="accts-num">${fmt(a.revenue)}</div><div class="accts-num-label">Rev</div></div>
+            <div class="accts-col-num"><div class="accts-num">${fmt(a.goal)}</div><div class="accts-num-label">Goal</div></div>
+            <div class="accts-col-pacing">${pacingPill(a.pacing)}</div>
+            <div class="accts-col-note"><button class="${noteBtnClass}" id="note-btn-${slug}" onclick="toggleAcctNote('${slug}',this)">📝</button></div>
+          </div>
+          <div class="note-inline" id="acct-note-${slug}">
+            <textarea placeholder="Add a note…" onblur="saveNote('${slug}',this.value)">${noteText}</textarea>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function filterAccountsList(query) {
+    const q = query.toLowerCase().trim();
+    const all = getAccounts();
+    renderAccountsCard(q ? all.filter(a =>
+      a.name.toLowerCase().includes(q) ||
+      (a.contact && a.contact.toLowerCase().includes(q)) ||
+      (a.email && a.email.toLowerCase().includes(q))
+    ) : all);
+  }
+
+  function updateFeedbackAutocomplete() {
+    const dl = document.getElementById('fb-accounts-datalist');
+    if (!dl) return;
+    dl.innerHTML = getAccounts().map(a =>
+      `<option value="${a.name}">${a.contact ? a.name + ' — ' + a.contact : ''}</option>`
+    ).join('');
+  }
+
+  renderAccountsCard();
+  updateFeedbackAutocomplete();
+
+  // --- KEY WINS ---
+  function loadWins() {
+    const wins = JSON.parse(localStorage.getItem('hub_wins') || '[]');
+    document.getElementById('wins-list').innerHTML = wins.length === 0
+      ? '<div class="acct-item"><span style="color:#bbb;font-size:12px;">No wins logged yet — add one above!</span></div>'
+      : wins.map((w,i) => `<div class="win-item"><div><div class="win-text">${w.text}</div><div class="win-date">${w.date}</div></div><button class="win-del" onclick="deleteWin(${i})">✕</button></div>`).join('');
+  }
+  function addWin() {
+    const input = document.getElementById('win-input');
+    const text = input.value.trim();
+    if (!text) return;
+    const wins = JSON.parse(localStorage.getItem('hub_wins') || '[]');
+    wins.unshift({text, date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});
+    localStorage.setItem('hub_wins', JSON.stringify(wins));
+    input.value = '';
+    loadWins();
+  }
+  function deleteWin(i) {
+    const wins = JSON.parse(localStorage.getItem('hub_wins') || '[]');
+    wins.splice(i,1);
+    localStorage.setItem('hub_wins', JSON.stringify(wins));
+    loadWins();
+  }
+  loadWins();
+
+  // --- FEEDBACK VAULT ---
+  function loadFeedback() {
+    const items = JSON.parse(localStorage.getItem('hub_feedback') || '[]');
+    document.getElementById('feedback-list').innerHTML = items.length === 0
+      ? '<div class="acct-item"><span style="color:#bbb;font-size:12px;">No feedback stored yet.</span></div>'
+      : items.map((f,i) => `<div class="feedback-item"><div style="display:flex;justify-content:space-between;"><div class="feedback-acct-name">${f.account}</div><button class="win-del" onclick="deleteFeedback(${i})">✕</button></div><div class="feedback-text">${f.text}</div><div class="feedback-date">${f.date}</div></div>`).join('');
+  }
+  function addFeedback() {
+    const account = document.getElementById('fb-account').value.trim();
+    const text = document.getElementById('fb-text').value.trim();
+    if (!account || !text) return;
+    const items = JSON.parse(localStorage.getItem('hub_feedback') || '[]');
+    items.unshift({account, text, date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});
+    localStorage.setItem('hub_feedback', JSON.stringify(items));
+    document.getElementById('fb-account').value = '';
+    document.getElementById('fb-text').value = '';
+    loadFeedback();
+  }
+  function deleteFeedback(i) {
+    const items = JSON.parse(localStorage.getItem('hub_feedback') || '[]');
+    items.splice(i,1);
+    localStorage.setItem('hub_feedback', JSON.stringify(items));
+    loadFeedback();
+  }
+  loadFeedback();
+
+  // --- ACCOUNTS NOTE TOGGLE (for dynamically rendered rows in All Accounts card) ---
+  function toggleAcctNote(slug, btn) {
+    const el = document.getElementById('acct-note-' + slug);
+    if (!el) return;
+    const isOpen = el.classList.toggle('open');
+    if (isOpen) {
+      const ta = el.querySelector('textarea');
+      ta.value = getNotes()[slug] || '';
+      ta.focus();
+    }
+  }
+
+  // --- ONBOARDING NOTE HELPERS (hub-side) ---
+  function toggleHubOnbNote(id, btn) {
+    const el = document.getElementById('hub-onb-note-' + id);
+    if (!el) return;
+    const isOpen = el.classList.toggle('open');
+    if (isOpen) {
+      const ta = el.querySelector('textarea');
+      ta.value = JSON.parse(localStorage.getItem('onboarding-notes') || '{}')[id] || '';
+      ta.focus();
+    }
+  }
+
+  function saveHubOnbNote(id, text) {
+    const notes = JSON.parse(localStorage.getItem('onboarding-notes') || '{}');
+    if (text.trim()) { notes[id] = text.trim(); } else { delete notes[id]; }
+    localStorage.setItem('onboarding-notes', JSON.stringify(notes));
+    renderNotesSection();
+    renderOnboarding();
+    const kanban = document.getElementById('onb-kanban');
+    if (kanban && document.getElementById('card-onboarding').classList.contains('page-active')) {
+      renderOnboardingKanban();
+    }
+  }
+
+  function deleteOnbNoteEntry(proId) {
+    const notes = JSON.parse(localStorage.getItem('onboarding-notes') || '{}');
+    delete notes[proId];
+    localStorage.setItem('onboarding-notes', JSON.stringify(notes));
+    renderNotesSection();
+    renderOnboarding();
+  }
+
+  // --- NAV DRAWER ---
+  const NAV_CARDS = [
+    { id: 'card-onboarding', label: 'Onboarding Pipeline' },
+    { id: 'card-upside',     label: 'Upside Accounts' },
+    { id: 'card-court',      label: 'In Your Court' },
+    { id: 'card-schedule',   label: "Today's Schedule" },
+    { id: 'card-wins',       label: 'Key Wins' },
+    { id: 'card-feedback',   label: 'Feedback Vault' },
+    { id: 'card-accounts',   label: 'All Accounts' },
+    { id: 'notes-section-wrap', label: 'All Notes' },
+  ];
+
+  function openNav() {
+    document.getElementById('nav-drawer').classList.add('open');
+    document.getElementById('nav-overlay').classList.add('open');
+  }
+
+  function closeNav() {
+    document.getElementById('nav-drawer').classList.remove('open');
+    document.getElementById('nav-overlay').classList.remove('open');
+  }
+
+  function openCardPage(cardId) {
+    closeNav();
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('page-active'));
+    const notesWrap = document.getElementById('notes-section-wrap');
+    if (notesWrap) notesWrap.classList.remove('page-active');
+    const target = document.getElementById(cardId);
+    if (target) target.classList.add('page-active');
+    document.body.classList.add('page-mode');
+    if (cardId === 'card-onboarding') renderOnboardingKanban();
+    const navItem = NAV_CARDS.find(c => c.id === cardId);
+    const bc = document.getElementById('page-breadcrumb');
+    if (bc) { bc.textContent = navItem ? navItem.label : ''; bc.style.display = 'inline'; }
+    const backBtn = document.getElementById('nav-back-btn');
+    if (backBtn) backBtn.style.display = 'flex';
+  }
+
+  function closeCardPage() {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('page-active'));
+    const notesWrap = document.getElementById('notes-section-wrap');
+    if (notesWrap) notesWrap.classList.remove('page-active');
+    document.body.classList.remove('page-mode');
+    const bc = document.getElementById('page-breadcrumb');
+    if (bc) { bc.style.display = 'none'; bc.textContent = ''; }
+    const backBtn = document.getElementById('nav-back-btn');
+    if (backBtn) backBtn.style.display = 'none';
+  }
+</script>
+</body>
+</html>
