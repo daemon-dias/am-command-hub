@@ -208,6 +208,7 @@
     body.dark .pacing-label { color: #555; }
     body.dark .progress-track { background: #1e1e1e; }
     body.dark .progress-marker { color: #333; }
+    body.dark #pace-delta { opacity: 0.85; }
     body.dark .card { background: #111; border-color: #1e1e1e; }
     body.dark .card-header { border-color: #1a1a1a; }
     body.dark .card-title { color: #aaa; }
@@ -423,12 +424,23 @@
       </div>
     </div>
     <div class="rev-pacing">
-      <div class="pacing-label">Pacing to Goal</div>
-      <div class="pacing-pct" id="pacing-pct">97.68%</div>
+      <div style="display:flex;align-items:baseline;gap:10px;justify-content:flex-end;">
+        <div style="text-align:right;">
+          <div class="pacing-label">Revenue</div>
+          <div class="pacing-pct" style="color:#009FD9;">95.5%</div>
+        </div>
+        <div style="font-size:22px;font-weight:300;color:#dde1e8;line-height:1;">|</div>
+        <div style="text-align:right;">
+          <div class="pacing-label">P2G</div>
+          <div class="pacing-pct" style="color:#9b7fd4;font-size:22px;">97.7%</div>
+        </div>
+      </div>
+      <div id="pace-delta" style="text-align:right;margin-top:4px;font-size:11px;font-weight:700;color:#E74C3C;">↓ $26,220 · 2.3% behind pace</div>
     </div>
   </div>
-  <div class="progress-track">
-    <div class="progress-fill" style="width:97.68%; background:#009FD9;"></div>
+  <div class="progress-track" style="position:relative;">
+    <div style="position:absolute;top:0;left:0;width:97.72%;height:100%;background:#c4aff0;border-radius:99px;"></div>
+    <div class="progress-fill" style="position:relative;width:95.51%;background:#009FD9;z-index:1;"></div>
   </div>
   <div class="progress-markers">
     <span class="progress-marker">0%</span>
@@ -727,10 +739,12 @@
   // --- Header date ---
   document.getElementById('header-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
 
-  // --- Pacing color: ≥100% green, ≥90% blue, ≥85% yellow, <85% red ---
-  const pacingEl = document.getElementById('pacing-pct');
-  const p = parseFloat(pacingEl.textContent);
-  pacingEl.style.color = p >= 100 ? '#27AE60' : p >= 90 ? '#009FD9' : p >= 85 ? '#F5A623' : '#E74C3C';
+  // --- Pace delta color: green if ahead, red if behind ---
+  const deltaEl = document.getElementById('pace-delta');
+  if (deltaEl) {
+    const isAhead = deltaEl.textContent.startsWith('↑');
+    deltaEl.style.color = isAhead ? '#27AE60' : '#E74C3C';
+  }
 
   // --- Expand/collapse ---
   function toggleExpand(id, btn) {
