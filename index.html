@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AM Command Hub — Daemon Dias</title>
+  <title>AM Command Hub V3 — Daemon Dias</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a2e; min-height: 100vh; }
@@ -337,7 +337,7 @@
     .card.page-active.full-width { grid-column: 1 !important; }
     body.page-mode .nav-back-btn { display: flex; }
     body.page-mode .page-breadcrumb { display: inline !important; }
-    .notes-section-wrap.page-active { display: block !important; margin: 0 28px 28px; }
+    body.page-mode .notes-section-wrap.page-active { display: block !important; margin: 0 28px 28px; }
 
     /* ACCOUNTS ROW WITH NOTES */
     .accts-row-wrap { border-bottom: 1px solid #f5f6f8; }
@@ -371,7 +371,7 @@
 <!-- NAV DRAWER -->
 <div class="nav-drawer" id="nav-drawer">
   <div class="nav-drawer-header">
-    <div class="nav-drawer-title">AM Command Hub</div>
+    <div class="nav-drawer-title">AM Command Hub V3</div>
     <button class="nav-close-btn" onclick="closeNav()">✕</button>
   </div>
   <div class="nav-item nav-item-home" onclick="closeCardPage();closeNav();"><span style="font-size:14px;line-height:1;">🏠</span>Home</div>
@@ -401,6 +401,8 @@
     <button class="nav-back-btn" id="nav-back-btn" onclick="closeCardPage()" style="display:none;">← Back</button>
     <span class="page-breadcrumb" id="page-breadcrumb" style="display:none;"></span>
     <span class="header-date" id="header-date"></span>
+    <button id="link-storage-btn" onclick="linkStateFile()" title="Link hub-state.json to persist notes &amp; stages" style="display:none;padding:5px 10px;border-radius:8px;border:1px solid #F5A623;background:rgba(245,166,35,0.1);color:#b07700;font-size:11px;font-weight:700;cursor:pointer;align-items:center;gap:5px;">🔗 Link Storage</button>
+    <span id="storage-linked-ind" title="State file linked — all changes auto-save" style="display:none;padding:5px 8px;border-radius:8px;background:rgba(39,174,96,0.1);color:#1a6b3a;font-size:11px;font-weight:700;align-items:center;gap:4px;">💾 Linked</span>
     <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
     <button class="refresh-btn" onclick="window.location.reload()">↻ Refresh</button>
   </div>
@@ -412,35 +414,35 @@
     <div class="rev-stats">
       <div class="rev-stat">
         <div class="rev-stat-label">Revenue to Date</div>
-        <div class="rev-stat-value">$1,103,696</div>
+        <div class="rev-stat-value">$1,127,077</div>
       </div>
       <div class="rev-stat">
-        <div class="rev-stat-label">Should Be (P2G)</div>
-        <div class="rev-stat-value" style="color:#666;">$1,129,916</div>
+        <div class="rev-stat-label">P2G Projection</div>
+        <div class="rev-stat-value" style="color:#666;">$1,142,757</div>
       </div>
       <div class="rev-stat">
         <div class="rev-stat-label">QTR Goal</div>
-        <div class="rev-stat-value" style="color:#999;">$1,155,604</div>
+        <div class="rev-stat-value" style="color:#999;">$1,155,597</div>
       </div>
     </div>
     <div class="rev-pacing">
       <div style="display:flex;align-items:baseline;gap:10px;justify-content:flex-end;">
         <div style="text-align:right;">
           <div class="pacing-label">Revenue</div>
-          <div class="pacing-pct" style="color:#009FD9;">95.5%</div>
+          <div class="pacing-pct" style="color:#F5A623;">97.5%</div>
         </div>
         <div style="font-size:22px;font-weight:300;color:#dde1e8;line-height:1;">|</div>
         <div style="text-align:right;">
           <div class="pacing-label">P2G</div>
-          <div class="pacing-pct" style="color:#9b7fd4;font-size:22px;">97.7%</div>
+          <div class="pacing-pct" style="color:#9b7fd4;font-size:22px;">98.9%</div>
         </div>
       </div>
-      <div id="pace-delta" style="text-align:right;margin-top:4px;font-size:11px;font-weight:700;color:#E74C3C;">↓ $26,220 · 2.3% behind pace</div>
+      <div id="pace-delta" style="text-align:right;margin-top:4px;font-size:11px;font-weight:700;color:#27AE60;">↑ $15,680 · P2G ahead of revenue</div>
     </div>
   </div>
   <div class="progress-track" style="position:relative;">
-    <div style="position:absolute;top:0;left:0;width:97.72%;height:100%;background:#c4aff0;border-radius:99px;"></div>
-    <div class="progress-fill" style="position:relative;width:95.51%;background:#009FD9;z-index:1;"></div>
+    <div style="position:absolute;top:0;left:0;width:98.89%;height:100%;background:#c4aff0;border-radius:99px;"></div>
+    <div class="progress-fill" style="position:relative;width:97.53%;background:#009FD9;z-index:1;"></div>
   </div>
   <div class="progress-markers">
     <span class="progress-marker">0%</span>
@@ -488,7 +490,7 @@
 
         <div class="acct-item" data-slug="mrs-garage-door">
           <div class="acct-item-top">
-            <div><div class="acct-name">MRS Garage Door Services</div><div class="acct-meta"><span class="acct-pill pill-red">46.5%</span><span>Gap: $48,841</span><span>Goal: $89,629</span></div><div class="acct-meta"><a href="mailto:office@mrsgaragedoor.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ office@mrsgaragedoor.com</a></div></div>
+            <div><div class="acct-name">MRS Garage Door Services</div><div class="acct-meta"><span class="acct-pill pill-red">46.6%</span><span>Gap: $48,366</span><span>Goal: $89,629</span></div><div class="acct-meta"><a href="mailto:office@mrsgaragedoor.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ office@mrsgaragedoor.com</a></div></div>
             <button class="note-btn" onclick="toggleNote('mrs-garage-door',this)">📝</button>
           </div>
           <div class="note-inline" id="note-mrs-garage-door"><textarea placeholder="Add a note…" onblur="saveNote('mrs-garage-door',this.value)"></textarea></div>
@@ -496,7 +498,7 @@
 
         <div class="acct-item" data-slug="ocean-remodel">
           <div class="acct-item-top">
-            <div><div class="acct-name">Ocean Remodel</div><div class="acct-meta"><span class="acct-pill pill-red">50.7%</span><span>Gap: $22,495</span><span>Goal: $44,593</span></div><div class="acct-meta"><a href="mailto:contact@oceanremodel.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ contact@oceanremodel.com</a></div></div>
+            <div><div class="acct-name">Ocean Remodel</div><div class="acct-meta"><span class="acct-pill pill-red">55.0%</span><span>Gap: $20,354</span><span>Goal: $44,593</span></div><div class="acct-meta"><a href="mailto:contact@oceanremodel.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ contact@oceanremodel.com</a></div></div>
             <button class="note-btn" onclick="toggleNote('ocean-remodel',this)">📝</button>
           </div>
           <div class="note-inline" id="note-ocean-remodel"><textarea placeholder="Add a note…" onblur="saveNote('ocean-remodel',this.value)"></textarea></div>
@@ -504,7 +506,7 @@
 
         <div class="acct-item" data-slug="best-air-quality">
           <div class="acct-item-top">
-            <div><div class="acct-name">The Best Air Quality and Restoration</div><div class="acct-meta"><span class="acct-pill pill-red">41.5%</span><span>Gap: $19,982</span><span>Goal: $33,611</span></div><div class="acct-meta"><a href="mailto:yourairspecialist@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ yourairspecialist@gmail.com</a></div></div>
+            <div><div class="acct-name">The Best Air Quality and Restoration</div><div class="acct-meta"><span class="acct-pill pill-red">41.4%</span><span>Gap: $19,865</span><span>Goal: $33,611</span></div><div class="acct-meta"><a href="mailto:yourairspecialist@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ yourairspecialist@gmail.com</a></div></div>
             <button class="note-btn" onclick="toggleNote('best-air-quality',this)">📝</button>
           </div>
           <div class="note-inline" id="note-best-air-quality"><textarea placeholder="Add a note…" onblur="saveNote('best-air-quality',this.value)"></textarea></div>
@@ -512,7 +514,7 @@
 
         <div class="acct-item" data-slug="risner-roofing">
           <div class="acct-item-top">
-            <div><div class="acct-name">Risner Roofing</div><div class="acct-meta"><span class="acct-pill pill-red">4.0%</span><span>Gap: $18,984</span><span>Goal: $19,762</span></div><div class="acct-meta"><a href="mailto:wecare@risnerroofing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ wecare@risnerroofing.com</a></div></div>
+            <div><div class="acct-name">Risner Roofing</div><div class="acct-meta"><span class="acct-pill pill-red">5.5%</span><span>Gap: $18,684</span><span>Goal: $19,762</span></div><div class="acct-meta"><a href="mailto:wecare@risnerroofing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ wecare@risnerroofing.com</a></div></div>
             <button class="note-btn" onclick="toggleNote('risner-roofing',this)">📝</button>
           </div>
           <div class="note-inline" id="note-risner-roofing"><textarea placeholder="Add a note…" onblur="saveNote('risner-roofing',this.value)"></textarea></div>
@@ -520,31 +522,31 @@
 
         <div class="acct-item" data-slug="phoenix-pavers">
           <div class="acct-item-top">
-            <div><div class="acct-name">Phoenix Pavers and Turf LLC</div><div class="acct-meta"><span class="acct-pill pill-red">34.2%</span><span>Gap: $15,615</span><span>Goal: $23,463</span></div><div class="acct-meta"><a href="mailto:lupe.celaya@yahoo.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ lupe.celaya@yahoo.com</a></div></div>
+            <div><div class="acct-name">Phoenix Pavers and Turf LLC</div><div class="acct-meta"><span class="acct-pill pill-red">35.6%</span><span>Gap: $15,206</span><span>Goal: $23,463</span></div><div class="acct-meta"><a href="mailto:lupe.celaya@yahoo.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ lupe.celaya@yahoo.com</a></div></div>
             <button class="note-btn" onclick="toggleNote('phoenix-pavers',this)">📝</button>
           </div>
           <div class="note-inline" id="note-phoenix-pavers"><textarea placeholder="Add a note…" onblur="saveNote('phoenix-pavers',this.value)"></textarea></div>
         </div>
 
-        <div class="acct-item" data-slug="a-plus-fencing">
-          <div class="acct-item-top">
-            <div><div class="acct-name">A+ Fencing Company LLC</div><div class="acct-meta"><span class="acct-pill pill-red">6.9%</span><span>Gap: $15,331</span><span>Goal: $16,440</span></div><div class="acct-meta"><a href="mailto:aplusfencing3@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ aplusfencing3@gmail.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('a-plus-fencing',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-a-plus-fencing"><textarea placeholder="Add a note…" onblur="saveNote('a-plus-fencing',this.value)"></textarea></div>
-        </div>
-
         <div class="acct-item" data-slug="fuse-hvac-appliance">
           <div class="acct-item-top">
-            <div><div class="acct-name">Fuse HVAC &amp; Appliance repair</div><div class="acct-meta"><span class="acct-pill pill-red">13.8%</span><span>Gap: $14,428</span><span>Goal: $16,687</span></div><div class="acct-meta"><a href="mailto:luka23rus@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ luka23rus@gmail.com</a></div></div>
+            <div><div class="acct-name">Fuse HVAC &amp; Appliance repair</div><div class="acct-meta"><span class="acct-pill pill-red">13.7%</span><span>Gap: $14,428</span><span>Goal: $16,687</span></div><div class="acct-meta"><a href="mailto:luka23rus@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ luka23rus@gmail.com</a></div></div>
             <button class="note-btn" onclick="toggleNote('fuse-hvac-appliance',this)">📝</button>
           </div>
           <div class="note-inline" id="note-fuse-hvac-appliance"><textarea placeholder="Add a note…" onblur="saveNote('fuse-hvac-appliance',this.value)"></textarea></div>
         </div>
 
+        <div class="acct-item" data-slug="a-plus-fencing">
+          <div class="acct-item-top">
+            <div><div class="acct-name">A+ Fencing Company LLC</div><div class="acct-meta"><span class="acct-pill pill-red">13.0%</span><span>Gap: $14,331</span><span>Goal: $16,440</span></div><div class="acct-meta"><a href="mailto:aplusfencing3@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ aplusfencing3@gmail.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('a-plus-fencing',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-a-plus-fencing"><textarea placeholder="Add a note…" onblur="saveNote('a-plus-fencing',this.value)"></textarea></div>
+        </div>
+
         <div class="acct-item" data-slug="all-ears-roofing">
           <div class="acct-item-top">
-            <div><div class="acct-name">All Ears Roofing</div><div class="acct-meta"><span class="acct-pill pill-red">46.5%</span><span>Gap: $13,198</span><span>Goal: $24,179</span></div><div class="acct-meta"><a href="mailto:sales@allearsroofing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ sales@allearsroofing.com</a></div></div>
+            <div><div class="acct-name">All Ears Roofing</div><div class="acct-meta"><span class="acct-pill pill-red">46.4%</span><span>Gap: $13,077</span><span>Goal: $24,179</span></div><div class="acct-meta"><a href="mailto:sales@allearsroofing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ sales@allearsroofing.com</a></div></div>
             <button class="note-btn" onclick="toggleNote('all-ears-roofing',this)">📝</button>
           </div>
           <div class="note-inline" id="note-all-ears-roofing"><textarea placeholder="Add a note…" onblur="saveNote('all-ears-roofing',this.value)"></textarea></div>
@@ -552,18 +554,18 @@
 
         <div class="acct-item" data-slug="queta-construction">
           <div class="acct-item-top">
-            <div><div class="acct-name">Queta Construction Group, LLC</div><div class="acct-meta"><span class="acct-pill pill-red">52.7%</span><span>Gap: $12,079</span><span>Goal: $24,941</span></div><div class="acct-meta"><a href="mailto:hrodriguez.qcg@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ hrodriguez.qcg@gmail.com</a></div></div>
+            <div><div class="acct-name">Queta Construction Group, LLC</div><div class="acct-meta"><span class="acct-pill pill-red">53.5%</span><span>Gap: $11,757</span><span>Goal: $24,941</span></div><div class="acct-meta"><a href="mailto:hrodriguez.qcg@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ hrodriguez.qcg@gmail.com</a></div></div>
             <button class="note-btn" onclick="toggleNote('queta-construction',this)">📝</button>
           </div>
           <div class="note-inline" id="note-queta-construction"><textarea placeholder="Add a note…" onblur="saveNote('queta-construction',this.value)"></textarea></div>
         </div>
 
-        <div class="acct-item" data-slug="royal-moving-storage">
+        <div class="acct-item" data-slug="pro-stars-contractor">
           <div class="acct-item-top">
-            <div><div class="acct-name">Royal Moving &amp; Storage</div><div class="acct-meta"><span class="acct-pill pill-yellow">89.3%</span><span>Gap: $10,913</span><span>Goal: $86,071</span></div><div class="acct-meta"><a href="mailto:office@royalmovingco.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ office@royalmovingco.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('royal-moving-storage',this)">📝</button>
+            <div><div class="acct-name">Pro Stars Contractor Inc</div><div class="acct-meta"><span class="acct-pill pill-red">23.9%</span><span>Gap: $10,089</span><span>Goal: $13,216</span></div><div class="acct-meta"><a href="mailto:benithoxkishpix55@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ benithoxkishpix55@gmail.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('pro-stars-contractor',this)">📝</button>
           </div>
-          <div class="note-inline" id="note-royal-moving-storage"><textarea placeholder="Add a note…" onblur="saveNote('royal-moving-storage',this.value)"></textarea></div>
+          <div class="note-inline" id="note-pro-stars-contractor"><textarea placeholder="Add a note…" onblur="saveNote('pro-stars-contractor',this.value)"></textarea></div>
         </div>
 
       </div>
@@ -580,33 +582,49 @@
         <div class="card-title title-red"><span class="card-title-dot dot-red"></span>In Your Court</div>
         <div class="card-desc">Pros who've reached out · awaiting you</div>
       </div>
-      <span class="card-badge badge-red">3</span>
+      <span class="card-badge badge-red">5</span>
     </div>
     <div class="card-body">
       <div class="card-items" id="itc-items">
 
-        <div class="acct-item" data-slug="jacs-pro-plumbing">
+        <div class="acct-item" data-slug="nolan-jacobs-iyc">
           <div class="acct-item-top">
-            <div><div class="acct-name">JACS Pro Plumbing — Jayden/Barb</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>3 days ago · "Do you charge a trip fee to customers?"</span></div></div>
-            <button class="note-btn" onclick="toggleNote('jacs-pro-plumbing',this)">📝</button>
+            <div><div class="acct-name">Nolan Jacobs — Stand Strong Fencing</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>Mar 30 · "Could we reschedule our call to another day or after 5?"</span></div><div class="acct-meta"><a href="mailto:NJacobs@standstrongfencing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ NJacobs@standstrongfencing.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('nolan-jacobs-iyc',this)">📝</button>
           </div>
-          <div class="note-inline" id="note-jacs-pro-plumbing"><textarea placeholder="Add a note…" onblur="saveNote('jacs-pro-plumbing',this.value)"></textarea></div>
+          <div class="note-inline" id="note-nolan-jacobs-iyc"><textarea placeholder="Add a note…" onblur="saveNote('nolan-jacobs-iyc',this.value)"></textarea></div>
         </div>
 
-        <div class="acct-item" data-slug="zekes-roofing-hatch">
+        <div class="acct-item" data-slug="aleshia-rogers-iyc">
           <div class="acct-item-top">
-            <div><div class="acct-name">Zeke's Roofing — Kara Wilck (Hatch)</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>3 days ago · Hatch integration error unresolved</span></div><div class="acct-meta"><a href="mailto:john@callzekesroofing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ john@callzekesroofing.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('zekes-roofing-hatch',this)">📝</button>
+            <div><div class="acct-name">Aleshia Rogers — Spray-Net</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>Mar 24 · Stuck on review step — no prior customers yet</span></div><div class="acct-meta"><a href="mailto:aleshia@spray-net.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ aleshia@spray-net.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('aleshia-rogers-iyc',this)">📝</button>
           </div>
-          <div class="note-inline" id="note-zekes-roofing-hatch"><textarea placeholder="Add a note…" onblur="saveNote('zekes-roofing-hatch',this.value)"></textarea></div>
+          <div class="note-inline" id="note-aleshia-rogers-iyc"><textarea placeholder="Add a note…" onblur="saveNote('aleshia-rogers-iyc',this.value)"></textarea></div>
         </div>
 
-        <div class="acct-item" data-slug="lb-capital-truchoice">
+        <div class="acct-item" data-slug="eliazar-jimenez-iyc">
           <div class="acct-item-top">
-            <div><div class="acct-name">LB Capital (TruChoice) — Robert Boley</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>3 days ago · Waiting on ServiceTitan for CRM user access</span></div></div>
-            <button class="note-btn" onclick="toggleNote('lb-capital-truchoice',this)">📝</button>
+            <div><div class="acct-name">Eliazar Jimenez — Mister Sparky SD</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>Mar 24 · "Thank you I look forward to your reply"</span></div><div class="acct-meta"><a href="mailto:eliazar.jimenez@mistersparky.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ eliazar.jimenez@mistersparky.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('eliazar-jimenez-iyc',this)">📝</button>
           </div>
-          <div class="note-inline" id="note-lb-capital-truchoice"><textarea placeholder="Add a note…" onblur="saveNote('lb-capital-truchoice',this.value)"></textarea></div>
+          <div class="note-inline" id="note-eliazar-jimenez-iyc"><textarea placeholder="Add a note…" onblur="saveNote('eliazar-jimenez-iyc',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="mo-akbarbasha-iyc">
+          <div class="acct-item-top">
+            <div><div class="acct-name">Mo Akbarbasha — Mister Sparky PHL</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>Mar 25 · "$10K annual budget — new franchise intro"</span></div><div class="acct-meta"><a href="mailto:mohamad.akbarbasha@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ mohamad.akbarbasha@gmail.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('mo-akbarbasha-iyc',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-mo-akbarbasha-iyc"><textarea placeholder="Add a note…" onblur="saveNote('mo-akbarbasha-iyc',this.value)"></textarea></div>
+        </div>
+
+        <div class="acct-item" data-slug="john-harrison-iyc">
+          <div class="acct-item-top">
+            <div><div class="acct-name">John Harrison — Zeke's Roofing</div><div class="acct-meta"><span class="acct-pill pill-red">Email</span><span>Mar 17 · "Ready to receive leads — can we hop on a quick call?"</span></div><div class="acct-meta"><a href="mailto:john@callzekesroofing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ john@callzekesroofing.com</a></div></div>
+            <button class="note-btn" onclick="toggleNote('john-harrison-iyc',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-john-harrison-iyc"><textarea placeholder="Add a note…" onblur="saveNote('john-harrison-iyc',this.value)"></textarea></div>
         </div>
 
       </div>
@@ -621,23 +639,22 @@
     <div class="card-header">
       <div class="card-header-left">
         <div class="card-title title-teal"><span class="card-title-dot dot-teal"></span>Today's Schedule</div>
-        <div class="card-desc" id="cal-desc">Monday, March 30</div>
+        <div class="card-desc" id="cal-desc">Tuesday, March 31</div>
       </div>
-      <span class="card-badge" style="background:#e6faf6;color:#0f8a6a;">11 events</span>
+      <span class="card-badge" style="background:#e6faf6;color:#0f8a6a;">10 events</span>
     </div>
     <div class="card-body">
       <div class="card-items" id="cal-items">
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">9:00</div><div class="cal-info"><div class="cal-title">morn. walk</div><div class="cal-detail">15 min</div></div></a>
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">9:00</div><div class="cal-info"><div class="cal-title">Emails, To-Do's, VM's</div><div class="cal-detail">60 min</div></div></a>
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">9:05</div><div class="cal-info"><div class="cal-title">to do</div><div class="cal-detail">15 min · sharing c-skills / token increase</div></div></a>
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">10:00</div><div class="cal-info"><div class="cal-title">Treva McDaniels — Mister Sparky</div><div class="cal-detail">30 min · Zoom · mcdtreva@yahoo.com</div></div></a>
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">10:35</div><div class="cal-info"><div class="cal-title">AIC OKR</div><div class="cal-detail">25 min</div></div></a>
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">11:05</div><div class="cal-info"><div class="cal-title">fill out 1:1</div><div class="cal-detail">25 min</div></div></a>
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">12:00</div><div class="cal-info"><div class="cal-title">Lunch</div><div class="cal-detail">60 min</div></div></a>
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">12:45</div><div class="cal-info"><div class="cal-title">lunch walk</div><div class="cal-detail">15 min</div></div></a>
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">14:00</div><div class="cal-info"><div class="cal-title">Daemon / Yael</div><div class="cal-detail">30 min · Zoom · 1:1 with Yael Emmerich</div></div></a>
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">16:30</div><div class="cal-info"><div class="cal-title">EOD Wrap</div><div class="cal-detail">30 min</div></div></a>
-        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">16:45</div><div class="cal-info"><div class="cal-title">eod. walk</div><div class="cal-detail">15 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">6:00</div><div class="cal-info"><div class="cal-title">morn. walk</div><div class="cal-detail">15 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">6:00</div><div class="cal-info"><div class="cal-title">Emails, To-Do's, VM's</div><div class="cal-detail">60 min · Daily review</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">6:05</div><div class="cal-info"><div class="cal-title">nsd-int</div><div class="cal-detail">25 min · TTOD auto-category</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">8:00</div><div class="cal-info"><div class="cal-title">Daemon / Javi 1:1</div><div class="cal-detail">30 min · jprats@thumbtack.com</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">9:00</div><div class="cal-info"><div class="cal-title">Lunch</div><div class="cal-detail">60 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">9:45</div><div class="cal-info"><div class="cal-title">lunch walk</div><div class="cal-detail">15 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">10:05</div><div class="cal-info"><div class="cal-title">National AM Sync: Collaboration Time</div><div class="cal-detail">55 min · Zoom · 14 attendees</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">11:05</div><div class="cal-info"><div class="cal-title">Check hatch issue for Zeke's Roofing</div><div class="cal-detail">25 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">13:30</div><div class="cal-info"><div class="cal-title">EOD Wrap</div><div class="cal-detail">30 min</div></div></a>
+        <a class="cal-item" href="https://calendar.google.com/calendar/r/day" target="_blank"><div class="cal-time">13:45</div><div class="cal-info"><div class="cal-title">eod. walk</div><div class="cal-detail">15 min</div></div></a>
       </div>
     </div>
     <div class="card-footer">
@@ -770,6 +787,7 @@
     localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
     refreshNoteButtons();
     renderNotesSection();
+    saveStateToFile();
   }
 
   function toggleNote(slug, btn) {
@@ -817,6 +835,7 @@
     if (el) el.classList.remove('open');
     refreshNoteButtons();
     renderNotesSection();
+    saveStateToFile();
   }
 
   function renderNotesSection() {
@@ -888,11 +907,28 @@
   const PILL_COLORS  = {'Introduction':'pill-blue','Creating Profile':'pill-yellow','Platform Walkthrough':'pill-green'};
   const ARCHIVE_STAGES = ['Archive','Onboarding Complete'];
 
+  function getQuarterLabel(isoDate) {
+    if (!isoDate) return '';
+    const d = new Date(isoDate);
+    const q = Math.floor(d.getMonth() / 3) + 1;
+    const yr = String(d.getFullYear()).slice(2);
+    return `Q${q} '${yr}`;
+  }
+
   function changeOnbStatus(id, newStage) {
     const saved = JSON.parse(localStorage.getItem(ONB_KEY) || '{}');
     saved[id] = newStage;
     localStorage.setItem(ONB_KEY, JSON.stringify(saved));
+    // Track archive date
+    const dates = JSON.parse(localStorage.getItem('hub_archive_dates') || '{}');
+    if (ARCHIVE_STAGES.includes(newStage)) {
+      if (!dates[id]) dates[id] = new Date().toISOString();
+    } else {
+      delete dates[id];
+    }
+    localStorage.setItem('hub_archive_dates', JSON.stringify(dates));
     renderOnboarding();
+    saveStateToFile();
   }
 
   function renderOnboarding() {
@@ -1016,12 +1052,17 @@
     html += `</div>`;
 
     if (archived.length) {
+      const archiveDates = JSON.parse(localStorage.getItem('hub_archive_dates') || '{}');
       html += `<div style="padding:10px 20px 20px;">
         <div style="font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">✅ Archived</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">`;
       archived.forEach(pro => {
+        const qLabel = getQuarterLabel(archiveDates[pro.id]);
         html += `<div class="onb-pro-card" style="opacity:0.55;">
-          <div class="onb-pro-name">${pro.name}</div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">
+            <div class="onb-pro-name">${pro.name}</div>
+            ${qLabel ? `<span style="flex-shrink:0;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;background:rgba(180,180,180,0.18);color:#888;">${qLabel}</span>` : ''}
+          </div>
           <div class="onb-pro-biz">${pro.biz}</div>
           ${pro.email ? `<div style="font-size:10px;color:#888;">✉ ${pro.email}</div>` : ''}
         </div>`;
@@ -1045,164 +1086,121 @@
 
   // --- ALL ACCOUNTS ---
   const HUB_ACCOUNTS_DEFAULT = [
-    { name: 'MRS Garage Door Services', contact: 'Matan Shoef', email: 'office@mrsgaragedoor.com', goal: 89629, revenue: 40381, pacing: 46.08 },
-    { name: 'Royal Moving & Storage', contact: 'Vladislav Iglin', email: 'office@royalmovingco.com', goal: 86071, revenue: 75014, pacing: 89.13 },
-    { name: 'Fast Layne Plumbing LLC', contact: 'David Layne', email: 'info@flplumbinganddrains.com', goal: 82205, revenue: 79422, pacing: 98.81 },
-    { name: 'OT Bay Builders', contact: 'Yotam Vezumski', email: 'office@otbaybuilders.com', goal: 73266, revenue: 119403, pacing: 166.68 },
-    { name: 'RELIABLE MOVING SERVICES', contact: 'Yerbol Mukatov', email: 'rms3105007174@yahoo.com', goal: 64785, revenue: 88220, pacing: 139.27 },
-    { name: 'Clarity Construction', contact: 'Daniel Cassorla', email: 'info@clarity-construction.com', goal: 53082, revenue: 43777, pacing: 84.35 },
-    { name: 'MaintainThat Pressure Washing', contact: 'Jalali Hartman', email: 'marketing@keptcompanies.com', goal: 50946, revenue: 70317, pacing: 141.16 },
-    { name: 'Ocean Remodel', contact: 'Dor Grinberg', email: 'contact@oceanremodel.com', goal: 44593, revenue: 22098, pacing: 50.68 },
-    { name: 'Excel Air', contact: 'Mauricio Arreguin', email: 'marreguin@excelairconditioning.com', goal: 41931, revenue: 36412, pacing: 88.81 },
-    { name: 'Legacy (Vacation Rentals)', contact: 'David Ruhlman', email: 'ruhlmandavid@gmail.com', goal: 35077, revenue: 26277, pacing: 76.61 },
-    { name: 'Garrett Mechanical', contact: 'Tommy Garrett', email: 'tommy@garrettmech.com', goal: 34092, revenue: 74341, pacing: 223.02 },
-    { name: 'The Best Air Quality and Restoration', contact: 'Valid Salikhov', email: 'yourairspecialist@gmail.com', goal: 33611, revenue: 13521, pacing: 41.14 },
-    { name: 'Fuse Service', contact: 'Oleksandr Feshchenko', email: 'support@fusesea.com', goal: 27156, revenue: 34192, pacing: 128.77 },
-    { name: 'Hvac Heroes', contact: 'Triston Wilson', email: 'hvacheroes@gmail.com', goal: 24998, revenue: 19740, pacing: 80.76 },
-    { name: 'Queta Construction Group, LLC', contact: 'Henry Rodriguez', email: 'hrodriguez.qcg@gmail.com', goal: 24941, revenue: 12862, pacing: 52.74 },
-    { name: 'All Ears Roofing', contact: 'James Manchac', email: 'sales@allearsroofing.com', goal: 24179, revenue: 10681, pacing: 45.18 },
-    { name: 'Phoenix Pavers and Turf LLC', contact: 'Guadalupe Celaya', email: 'lupe.celaya@yahoo.com', goal: 23463, revenue: 7439, pacing: 32.43 },
-    { name: 'Risner Roofing', contact: 'Cody Risner', email: 'wecare@risnerroofing.com', goal: 19762, revenue: 778, pacing: 4.03 },
-    { name: 'Fuse HVAC & Appliance repair', contact: 'Aleksei Lukianets', email: 'luka23rus@gmail.com', goal: 16687, revenue: 2259, pacing: 13.84 },
-    { name: 'A+ Fencing Company LLC', contact: 'James Vann', email: 'aplusfencing3@gmail.com', goal: 16440, revenue: 1109, pacing: 6.9 },
-    { name: 'Buzzy Mover', contact: 'Haojie Weng', email: 'buzzymover@gmail.com', goal: 15289, revenue: 24619, pacing: 164.69 },
-    { name: 'All County Perimeter', contact: 'Garrett Atz', email: 'garrett@allcountyperimeter.com', goal: 13291, revenue: 9906, pacing: 76.23 },
-    { name: 'Pro stars contractor Inc', contact: 'Manuel Lema', email: 'benithoxkishpix55@gmail.com', goal: 13216, revenue: 3010, pacing: 23.3 },
-    { name: 'KYRA CONSTRUCTION', contact: 'Liat Gauos', email: 'info@kyraconstruction.com', goal: 12139, revenue: 28309, pacing: 238.51 },
-    { name: 'Lane Roofing & Exteriors', contact: 'Lisa Stapleford', email: 'sarah@laneroofing.com', goal: 11323, revenue: 19556, pacing: 176.64 },
-    { name: 'Electric Avenue', contact: 'Jack Marquardt', email: 'electricavenue226@gmail.com', goal: 10167, revenue: 14167, pacing: 142.51 },
-    { name: 'Fuse HVAC & Appliance Repair Pasadena', contact: 'Anton Boronayev', email: 'fuse@fusepasadena.com', goal: 10127, revenue: 8003, pacing: 80.82 },
-    { name: 'Benjamin Franklin Plumbing Redmond', contact: 'Sean Mcallister', email: 'info@bfpredmond.com', goal: 9993, revenue: 11684, pacing: 119.58 },
-    { name: 'sHinE', contact: 'Sina Omosowon', email: 'sinamorufu@gmail.com', goal: 9858, revenue: 7839, pacing: 81.33 },
-    { name: 'Fuse Service HVAC Denver', contact: 'Renat Murtazin', email: 'fusedenverco@gmail.com', goal: 9519, revenue: 527, pacing: 5.66 },
-    { name: 'Fuse Service HVAC Philadelphia', contact: 'Eradzh Sattorov', email: 'fusephiladelphia@gmail.com', goal: 8900, revenue: 5240, pacing: 60.21 },
-    { name: 'Mister Sparky', contact: 'Clark Smith', email: 'customerservice@mistersparkywc.com', goal: 8380, revenue: 4757, pacing: 58.05 },
-    { name: 'Fuse HVAC & Appliance Repair', contact: 'Aleksandr Romanovskii', email: 'support@fusesbd.com', goal: 7916, revenue: 2424, pacing: 31.31 },
-    { name: 'The Junkluggers of New York City', contact: 'Michele Novy', email: 'salesnyc@junkluggers.com', goal: 7733, revenue: 3655, pacing: 48.34 },
-    { name: 'Fuse HVAC Miami-Dade', contact: 'Alexander Tolkachev', email: 'support@fusemia.com', goal: 7488, revenue: 2872, pacing: 39.23 },
-    { name: 'Voltmasters Electrical Solutions', contact: 'Gil Barnea', email: 'davie.building.solutions@gmail.com', goal: 7477, revenue: 5330, pacing: 72.92 },
-    { name: 'Paint & Rollers', contact: 'Adam Guzman', email: 'paintandrollers@gmail.com', goal: 7152, revenue: 6968, pacing: 99.65 },
-    { name: 'Fuse Service HVAC & Electrical SF', contact: 'Aleksandr Shishov', email: 'support@fuseservicesf.com', goal: 7139, revenue: 417, pacing: 5.98 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Austin Butchart', email: 'austin.butchart@benfranklinplumbing.com', goal: 6828, revenue: 0, pacing: 0 },
-    { name: 'Fuse HVAC & Appliance Repair', contact: 'Dmitriy Pasichnyk', email: 'fusemiddlesex@gmail.com', goal: 6219, revenue: 0, pacing: 0 },
-    { name: 'Fuse Service', contact: 'Oleg Minaev', email: 'fusepbc@gmail.com', goal: 5953, revenue: 4589, pacing: 78.84 },
-    { name: 'City Tech Services', contact: 'Artsiom Budykin', email: 'fuseorlandofl@gmail.com', goal: 4922, revenue: 1591, pacing: 33.05 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Arthur Cottingham Iv', email: 'hallam@theplumbingexperts.com', goal: 4626, revenue: 8190, pacing: 181.06 },
-    { name: 'ZeroMold', contact: 'Jerel Clark', email: 'cara@zeromold.net', goal: 4047, revenue: 2005, pacing: 50.66 },
-    { name: 'Fuse HVAC Jacksonville', contact: 'Alexander Tolkachev', email: 'support@fusejax.com', goal: 4042, revenue: 1057, pacing: 26.74 },
-    { name: 'Fuse HVAC & Appliance Repair Charlotte', contact: 'Bohdan Kovalenko', email: 'fuserepaircharlotte@gmail.com', goal: 3656, revenue: 1662, pacing: 46.5 },
-    { name: 'Boston Comfort Systems', contact: 'Vladimir Romanov', email: 'vladimirxromanov@gmail.com', goal: 3298, revenue: 2182, pacing: 67.67 },
-    { name: 'Benjamin Franklin Plumbing of the Triad', contact: 'Adam Tucci', email: 'adam@benfranklintriad.com', goal: 3122, revenue: 2153, pacing: 70.54 },
-    { name: 'Fuse HVAC & Appliance Repair Fort Myers', contact: 'Aleksandr Bobrov', email: 'fuseftmyers@gmail.com', goal: 3008, revenue: 0, pacing: 0 },
-    { name: 'Fuse Service HVAC & Appliance Repair', contact: 'Eduard Kobzar', email: 'fusefresno@gmail.com', goal: 2668, revenue: 855, pacing: 32.78 },
-    { name: 'Benjamin Franklin Plumbing of Grand Rapids', contact: 'Robert Evenhouse', email: 'info.0579@benfranklinplumbing.com', goal: 2533, revenue: 2907, pacing: 117.38 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Sarah Jasinski', email: 'sarah@benfranklinplumbing-semi.com', goal: 2350, revenue: 324, pacing: 14.1 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Daniel Newell', email: 'dannewell@live.com', goal: 2334, revenue: 4044, pacing: 177.19 },
-    { name: 'Fuse HVAC & Appliance Repair Austin', contact: 'Gaziz Balgabayev', email: 'support@fuseatx.com', goal: 2120, revenue: 231, pacing: 11.16 },
-    { name: 'AC/DC Refrigeration & Appliance Repair', contact: 'Victor Rusak', email: 'acdcthumbtack@gmail.com', goal: 1987, revenue: 137, pacing: 7.07 },
-    { name: 'Benjamin Franklin Plumbing of Huntington Beach', contact: 'Oscar Nunez', email: 'bf0719.hb@gmail.com', goal: 1970, revenue: 71, pacing: 3.67 },
-    { name: 'Fuse HVAC & Appliance Repair Los Angeles', contact: 'Michael Ivanchuk', email: 'fuseservicela@gmail.com', goal: 1938, revenue: 3114, pacing: 164.35 },
-    { name: 'The Maids in College Park', contact: 'Lawrenzo Borrelli', email: 'lawrenzo_borrelli@yahoo.com', goal: 1924, revenue: 3192, pacing: 169.66 },
-    { name: 'Fuse HVAC & Appliance Repair', contact: 'Ilya Khrapik', email: 'dispatch.citytech@gmail.com', goal: 1865, revenue: 0, pacing: 0 },
-    { name: 'Benjamin Franklin Plumbing of Temple, TX', contact: 'Rakesh Shah', email: 'bfleadgeneration@gmail.com', goal: 1850, revenue: 2318, pacing: 128.15 },
-    { name: 'Fuse HVAC Service & Repair', contact: 'Roman Carmaliuc', email: 'fusefortworth@gmail.com', goal: 1675, revenue: 1301, pacing: 79.44 },
-    { name: 'Fuse Service Tacoma', contact: 'Oleg Covtun', email: 'fuseservicetacoma@gmail.com', goal: 1671, revenue: 1294, pacing: 79.23 },
-    { name: 'Benjamin Franklin Plumbing of Chapel Hill', contact: 'Bassem Boulas', email: 'mightystream1@gmail.com', goal: 1639, revenue: 3298, pacing: 205.79 },
-    { name: 'FUSE Service (Appliance, HVAC & Plumbing)', contact: 'Igor Dmitriev', email: 'sfapprepair@gmail.com', goal: 1511, revenue: 89, pacing: 6.02 },
-    { name: 'Fuse Service HVAC & Electrical Tri-Valley', contact: 'Sergii Kushnarov', email: 'fusetrivalley@gmail.com', goal: 1502, revenue: 0, pacing: 0 },
-    { name: 'One Hour Heating and Cooling of Tucson', contact: 'Kevin Cerveri', email: 'tucson@onehourair.com', goal: 1483, revenue: 448, pacing: 30.92 },
-    { name: 'Fuse HVAC & Appliance Repair Daytona Beach', contact: 'Igor Mitarchuk', email: 'fusedaytona@gmail.com', goal: 1332, revenue: 570, pacing: 43.72 },
-    { name: 'Mister Sparky', contact: 'Michael Rekart', email: 'mrekart@gmail.com', goal: 1259, revenue: 884, pacing: 71.79 },
-    { name: 'Fuse Service Chicago', contact: 'Vladyslav Tofan', email: 'fusechicagoil@gmail.com', goal: 1207, revenue: 121, pacing: 10.27 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Courtney Wilkinson', email: 'service@benfranklinarlington.com', goal: 1190, revenue: 1771, pacing: 152.19 },
-    { name: 'One Hour Heating & Air Conditioning', contact: 'Dominik Ellena', email: 'dominik@onehourwi.com', goal: 1138, revenue: 2642, pacing: 237.39 },
-    { name: 'FUSE HVAC, Electrical and Appliance', contact: 'Denis Riabokonev', email: 'repair@fusenapa.com', goal: 1109, revenue: 717, pacing: 66.18 },
-    { name: 'Fuse HVAC & Appliance Repair Cincinnati', contact: 'Ilya Volchyk', email: 'service@fuseohio.com', goal: 1043, revenue: 585, pacing: 57.3 },
-    { name: 'One Hour Heating & Air Conditioning', contact: 'Steve Kurtz', email: 'steve.kurtz@onehourkc.com', goal: 1015, revenue: 698, pacing: 70.37 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Jeff Hunter', email: 'info.0592@benjaminfranklinplumbing.com', goal: 929, revenue: 1052, pacing: 115.8 },
-    { name: 'ZeroMold Utah', contact: 'Jerel Clark', email: 'info@zeromold.net', goal: 926, revenue: 900, pacing: 99.41 },
-    { name: 'One Hour Heating & Air Conditioning of Kyle', contact: 'Aaron Mudry', email: 'aaron.mudry@onehourair.com', goal: 916, revenue: 155, pacing: 17.35 },
-    { name: 'One Hour Heating & Air Conditioning', contact: 'Roy Koldaro', email: 'onehoursd@gmail.com', goal: 911, revenue: 1695, pacing: 190.22 },
-    { name: 'Mister Sparky of Manalapan NJ', contact: 'Jacqueline Quagliaro', email: 'jackie.quagliaro@mistersparky.com', goal: 892, revenue: 210, pacing: 24.07 },
-    { name: 'One Hour Air Conditioning and Heating DFW', contact: 'Dustin Hufsey', email: 'zac.salgado@onehourairdfw.com', goal: 878, revenue: 1392, pacing: 162.1 },
-    { name: "Pitzer's One Hour Air Conditioning", contact: 'Larry Thornton', email: 'pitzersonehourair@gmail.com', goal: 836, revenue: 1948, pacing: 238.44 },
-    { name: 'ZeroMold', contact: 'Jerel Clark', email: 'zeromold1@gmail.com', goal: 817, revenue: 1593, pacing: 199.48 },
-    { name: 'Ben Franklin Plumbing Northeast Texas', contact: 'John Crymes', email: 'office@benjaminfranklinplumbingtyler.com', goal: 794, revenue: 1092, pacing: 140.54 },
-    { name: 'Fuse Service HVAC & Appliance Repair Knoxville', contact: 'Vitaly Nosovets', email: 'fuseknoxvilletn@gmail.com', goal: 769, revenue: 848, pacing: 112.89 },
-    { name: 'The Junkluggers of Willamette Valley', contact: 'Caitlyn Eaton', email: 'caitlyn.eaton@junkluggers.com', goal: 727, revenue: 3216, pacing: 452.17 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Juan Lasala', email: 'pablo.lasala@benfranklinplumbing.com', goal: 716, revenue: 872, pacing: 124.51 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Maribel Healy', email: 'info@bfptriangle.com', goal: 690, revenue: 151, pacing: 22.43 },
-    { name: 'ZeroMold - TN', contact: 'Jerel Clark', email: 'contact@zeromold.net', goal: 685, revenue: 1116, pacing: 166.61 },
-    { name: 'NEC Electric', contact: 'David Mcmullen', email: 'tracey@newportelectric.com', goal: 680, revenue: 3437, pacing: 517.36 },
-    { name: 'One Hour Heating & Air Conditioning', contact: 'Andrew Galaud', email: 'oh.warnerrobins@gmail.com', goal: 666, revenue: 1116, pacing: 171.48 },
-    { name: 'DRYmedic Water Damage North Atlanta', contact: 'Jesus Baron', email: 'info@drymedicalpharettaga.com', goal: 652, revenue: 826, pacing: 129.5 },
-    { name: 'Maid to Shine LLC', contact: 'Marco Carmo', email: 'maidtoshinecompany@gmail.com', goal: 640, revenue: 1753, pacing: 280.16 },
-    { name: 'FUSE HVAC & APPLIANCE REPAIR', contact: 'Dmitrii Nazarenko', email: 'dima141180@gmail.com', goal: 591, revenue: 1736, pacing: 300.56 },
-    { name: 'Mister Sparky Evansville', contact: 'Levi Johnson', email: 'levi@mistersparkyevansville.com', goal: 529, revenue: 402, pacing: 77.82 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Jason Clark', email: 'info@benfranklinwichita.com', goal: 469, revenue: 617, pacing: 134.51 },
-    { name: 'AR2i Business Solutions', contact: 'Laura Walsh', email: 'laura.walsh@ar2i.life', goal: 449, revenue: 3519, pacing: 801.41 },
-    { name: 'Mister Sparky of Kentucky', contact: 'Marvin Talbot Jr', email: 'rsgtholdings@gmail.com', goal: 440, revenue: 2180, pacing: 507.15 },
-    { name: 'Aspen Heating and Cooling', contact: 'Gary Schultz', email: 'aspen@aspenheating.com', goal: 385, revenue: 205, pacing: 54.52 },
-    { name: 'One Hour Heating and Air Conditioning of CP', contact: 'David Lu', email: 'onehouraircp@gmail.com', goal: 376, revenue: 272, pacing: 73.99 },
-    { name: 'Benjamin Franklin Plumbing of Roseville', contact: 'Ahamed Arifraseeth Mohamed Ali', email: 'info.0764@benfranklinplumbing.com', goal: 350, revenue: 36, pacing: 10.64 },
-    { name: 'Fuse Service HVAC & Appliance Repair Vancouver', contact: 'Dmitrii Zheltyshev', email: 'fuseyvr@gmail.com', goal: 289, revenue: 0, pacing: 0 },
-    { name: 'Fuse Service: HVAC & Electrical', contact: 'Ivan Aleksandrovich', email: 'info@qualityel.com', goal: 240, revenue: 0, pacing: 0 },
-    { name: 'Spray-Net Denver West', contact: 'Brian Tiedt', email: 'brian.t@spray-net.com', goal: 212, revenue: 0, pacing: 0 },
-    { name: 'SPRAY-NET SOUTHERN KENTUCKY', contact: 'Geoge Dodson', email: 'victor@spray-net.com', goal: 182, revenue: 314, pacing: 176.79 },
-    { name: 'Mister Sparky Amarillo', contact: 'Josh Geigle', email: 'josh.geigle@mistersparkyamarillo.com', goal: 175, revenue: 251, pacing: 146.68 },
-    { name: 'Mister Sparky Electric', contact: 'Dennis Conrade', email: 'service@mistersparky.com', goal: 175, revenue: 69, pacing: 40.1 },
-    { name: 'Wolfpack Roofing & Exteriors', contact: 'Michael Boy', email: 'mboy@wolfpackrfg.com', goal: 118, revenue: 0, pacing: 0 },
-    { name: 'One Hour Heating and Air Conditioning', contact: 'Michael Vavreck', email: 'julian.carvajal@punctualpros.com', goal: 112, revenue: 137, pacing: 124.93 },
-    { name: 'Benjamin Franklin Plumbing of Billings', contact: 'Leon Riley Jr', email: 'bfpmt1@gmail.com', goal: 66, revenue: 44, pacing: 68.77 },
-    { name: 'Minuteman Heating & Air', contact: 'Courtney Wilkinson', email: 'service@minutemanheatingandac.com', goal: 64, revenue: 370, pacing: 596.04 },
-    { name: 'Fuse HVAC, Refrigeration & Electrical', contact: 'Alexandr Shepel', email: 'fusemts@gmail.com', goal: 59, revenue: 0, pacing: 0 },
-    { name: "Woofie's of Lutz", contact: 'Travis Meyerhoff', email: 'lutz@woofies.com', goal: 47, revenue: 49, pacing: 106.77 },
-    { name: "Woofie's of South Riding-Aldie", contact: 'Teferi Dejene', email: 'teferi@woofiessouthriding.com', goal: 40, revenue: 26, pacing: 66.86 },
-    { name: 'Spray-Net Jacksonville South', contact: 'Charles Fiumefreddo', email: 'charlie.f@spray-net.com', goal: 37, revenue: 0, pacing: 0 },
-    { name: 'Spray-Net Atlanta', contact: 'Patrick Fitzmaurice', email: 'patrick.fitzmaurice@spray-net.com', goal: 20, revenue: 0, pacing: 0 },
-    { name: 'Planet Roof', contact: 'Travis Kenny', email: 'info@planetroof.com', goal: 0, revenue: 472, pacing: 0 },
-    { name: 'Moving Band', contact: 'Johnathan Brodski', email: 'moving.band.llc@gmail.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'TruChoice Roofing', contact: 'Mervin Wickey', email: 'mervinlee1997@gmail.com', goal: 0, revenue: 2151, pacing: 0 },
-    { name: 'Benjamin Franklin Plumbing of Raleigh', contact: 'Joseph Hayes', email: 'info@bfraleigh.com', goal: 0, revenue: 1947, pacing: 0 },
-    { name: 'Fuse Service', contact: 'Aidyn Danabayev', email: 'support@fusehtx.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'Mister Sparky Sherman', contact: 'Russell Boswell', email: 'leads@jijservices.com', goal: 0, revenue: 1963, pacing: 0 },
-    { name: 'Pro Appliance Repair', contact: 'Roza Bermileeva', email: 'fusesantaclarita@gmail.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'Fuse HVAC & Appliance Repair Las Vegas', contact: 'Andre Bond', email: 'fusehvaclv@gmail.com', goal: 0, revenue: 170, pacing: 0 },
-    { name: 'Benjamin Franklin Plumbing of Connecticut', contact: 'Stephen Rochon', email: 's.rochon@bfp13.com', goal: 0, revenue: 7382, pacing: 0 },
-    { name: 'One Hour Heating & AC of Ellis County', contact: 'Ennis Weber', email: 'ennis.weber@onehourair.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Jason Clark', email: 'info@benfranklinok.com', goal: 0, revenue: 1606, pacing: 0 },
-    { name: 'Spray Net Charlotte', contact: 'Justin Demers', email: 'spraynetclt@gmail.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Shelly Gloyna', email: 'bfpleadske@gmail.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'BLVD Moving', contact: 'David Fimbres', email: 'leads@blvdmoving.com', goal: 0, revenue: 29243, pacing: 0 },
-    { name: 'One Hour Heating & Air Conditioning of Hazel Crest', contact: 'Dashon Bradford', email: 'bradfordshvac@yahoo.com', goal: 0, revenue: 607, pacing: 0 },
-    { name: 'Mister Sparky', contact: 'Charlie Castleman', email: 'charliecastleman@gmail.com', goal: 0, revenue: 1578, pacing: 0 },
-    { name: 'One Hour Heating & Air Conditioning', contact: 'Jordan Ristau', email: 'jordan.ristau@onehourair.com', goal: 0, revenue: 419, pacing: 0 },
-    { name: 'One Hour Heating & Air Conditioning', contact: 'Amanda Luipasco', email: 'info.0900@onehourair.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'Fuse Service: HVAC & Appliance Repair', contact: 'Aleksei Podieiapolskii', email: 'alextambovin@gmail.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'One Hour Heating & Air Conditioning', contact: 'Marty Landry', email: 'marty@onehourmagic.com', goal: 0, revenue: 1290, pacing: 0 },
-    { name: 'Spray-Net Boston North Shore', contact: 'Mark Raffle', email: 'raffle@spray-net.com', goal: 0, revenue: 287, pacing: 0 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Kristen Raizada', email: 'kristenraizada@gmail.com', goal: 0, revenue: 27, pacing: 0 },
-    { name: 'One Hour Heating and Air Conditioning', contact: 'Robert Holcomb', email: 'info.0924@onehourair.com', goal: 0, revenue: 2258, pacing: 0 },
-    { name: 'One Hour Air (Austin)', contact: 'Vinay Kumar Abburi', email: 'vinay@ctccinc.com', goal: 0, revenue: 457, pacing: 0 },
-    { name: 'One Hour Heating & Air Conditioning of Springfield', contact: 'Blaine Boyle', email: 'blaine@springfieldsontimeservice.com', goal: 0, revenue: 68, pacing: 0 },
-    { name: 'Fuse Service HVAC & Plumbing', contact: 'Sergiu Tiganu', email: 'fuse.penn@gmail.com', goal: 0, revenue: 871, pacing: 0 },
-    { name: 'Seamless Exterior', contact: 'James Jones', email: 'jimjones@seamlessexterior.com', goal: 0, revenue: 89, pacing: 0 },
-    { name: "Lee's Roofing", contact: 'Thomas Howard', email: 'csr@leesroof.com', goal: 0, revenue: 452, pacing: 0 },
-    { name: 'I AM Roofing', contact: 'Alexander Martin', email: 'alec@iamroofing.com', goal: 0, revenue: 6145, pacing: 0 },
-    { name: 'MOTIFY', contact: 'Darren White', email: 'dwhite@nationsafedrivers.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'Salty Dog Roofing & Siding', contact: 'Jason Grice', email: 'csr@saltydogroofing.com', goal: 0, revenue: 1315, pacing: 0 },
-    { name: 'Mister Sparky of Murrysville', contact: 'Rachel Ramaley', email: 'rramaley@murrysvillesparky.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'Mister Sparky of Greater Boston North', contact: 'Benjamn Bagnall', email: 'ben@mistersparkyboston.com', goal: 0, revenue: 382, pacing: 0 },
-    { name: 'Mister Sparky Greenville', contact: 'Anthony Zack', email: 'greatservice.one@gmail.com', goal: 0, revenue: 1060, pacing: 0 },
-    { name: 'OHA of Augusta', contact: 'Anthony Duggan', email: 'csr.dhac@gmail.com', goal: 0, revenue: 485, pacing: 0 },
-    { name: 'Benjamin Franklin Plumbing of Pompton Lakes', contact: 'Timothy Loranger', email: 'timlorangerbfp@gmail.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'One Hour Heating & Air Conditioning', contact: 'Scott Lunsford', email: 'scottlunsford2017@gmail.com', goal: 0, revenue: 879, pacing: 0 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Jayden Rodriguez-Barnett', email: 'service@benfranklindacula.com', goal: 0, revenue: 1577, pacing: 0 },
-    { name: 'Benjamin Franklin Plumbing', contact: 'Sarah Kernizan', email: 'contactus@trumbullbfplumbing.com', goal: 0, revenue: 704, pacing: 0 },
-    { name: 'Benjamin Franklin Plumbing of Bartlett', contact: 'Jessica Coleman', email: 'jess.coleman@benfranklinplumbing.com', goal: 0, revenue: 151, pacing: 0 },
-    { name: 'Stronghouse', contact: 'Alan Salmeron', email: 'asalmeron@stronghousebrands.com', goal: 0, revenue: 2522, pacing: 0 },
-    { name: "Zeke's Roofing Inc", contact: 'John Harrison', email: 'john@callzekesroofing.com', goal: 0, revenue: 0, pacing: 0 },
-    { name: 'Mister Sparky of Mansfield', contact: 'Maribel Delgado', email: 'cesar.padilla.gonzalez@hotmail.com', goal: 0, revenue: 0, pacing: 0 },
+    { name: 'MRS Garage Door Services', contact: 'Matan Shoef', email: 'office@mrsgaragedoor.com', goal: 89629, revenue: 41263, pacing: 46.55 },
+    { name: 'Royal Moving & Storage', contact: 'Vladislav Iglin', email: 'office@royalmovingco.com', goal: 86071, revenue: 77373, pacing: 90.9 },
+    { name: 'Fast Layne Plumbing LLC', contact: 'David Layne', email: 'info@flplumbinganddrains.com', goal: 82205, revenue: 80547, pacing: 99.08 },
+    { name: 'OT Bay Builders', contact: 'Yotam Vezumski', email: 'office@otbaybuilders.com', goal: 73266, revenue: 121765, pacing: 168.06 },
+    { name: 'RELIABLE MOVING SERVICES - 3 HOUR min. charge', contact: 'Yerbol Mukatov', email: 'rms3105007174@yahoo.com', goal: 64785, revenue: 90647, pacing: 141.49 },
+    { name: 'Clarity Construction', contact: 'Daniel Cassorla', email: 'info@clarity-construction.com', goal: 53082, revenue: 45706, pacing: 87.07 },
+    { name: 'MaintainThat Pressure Washing', contact: 'Jalali Hartman', email: 'marketing@keptcompanies.com', goal: 50946, revenue: 70317, pacing: 139.57 },
+    { name: 'Ocean Remodel', contact: 'Dor Grinberg', email: 'contact@oceanremodel.com', goal: 44593, revenue: 24239, pacing: 54.97 },
+    { name: 'Excel Air', contact: 'Mauricio Arreguin', email: 'marreguin@excelairconditioning.com', goal: 41931, revenue: 38535, pacing: 92.93 },
+    { name: 'Legacy (Vacation Rentals)', contact: 'David Ruhlman', email: 'ruhlmandavid@gmail.com', goal: 35077, revenue: 26782, pacing: 77.21 },
+    { name: 'Garrett Mechanical -Plumbing, HVAC, Electrical', contact: 'Tommy Garrett', email: 'tommy@garrettmech.com', goal: 34092, revenue: 76276, pacing: 226.25 },
+    { name: 'The Best Air Quality and Restoration', contact: 'Valid Salikhov', email: 'yourairspecialist@gmail.com', goal: 33611, revenue: 13746, pacing: 41.36 },
+    { name: 'Fuse Service', contact: 'Oleksandr Feshchenko', email: 'support@fusesea.com', goal: 27156, revenue: 34708, pacing: 129.25 },
+    { name: 'Hvac Heroes', contact: 'Triston Wilson', email: 'hvacheroes@gmail.com', goal: 24998, revenue: 20218, pacing: 81.79 },
+    { name: 'Queta Construction Group, LLC', contact: 'Henry Rodriguez', email: 'hrodriguez.qcg@gmail.com', goal: 24941, revenue: 13184, pacing: 53.45 },
+    { name: 'All Ears Roofing', contact: 'James Manchac', email: 'sales@allearsroofing.com', goal: 24179, revenue: 11102, pacing: 46.43 },
+    { name: 'Phoenix Pavers and Turf LLC', contact: 'Guadalupe Celaya', email: 'lupe.celaya@yahoo.com', goal: 23463, revenue: 8257, pacing: 35.59 },
+    { name: 'Risner Roofing', contact: 'Cody Risner', email: 'wecare@risnerroofing.com', goal: 19762, revenue: 1078, pacing: 5.52 },
+    { name: 'Fuse HVAC & Appliance repair', contact: 'Aleksei Lukianets', email: 'luka23rus@gmail.com', goal: 16687, revenue: 2259, pacing: 13.69 },
+    { name: 'A+ Fencing Company LLC', contact: 'James Vann', email: 'aplusfencing3@gmail.com', goal: 16440, revenue: 2109, pacing: 12.97 },
+    { name: 'Buzzy Mover', contact: 'Haojie Weng', email: 'buzzymover@gmail.com', goal: 15289, revenue: 25229, pacing: 166.87 },
+    { name: 'All County Perimeter', contact: 'Garrett Atz', email: 'garrett@allcountyperimeter.com', goal: 13291, revenue: 10129, pacing: 77.07 },
+    { name: 'Pro stars contractor Inc', contact: 'Manuel Lema', email: 'benithoxkishpix55@gmail.com', goal: 13216, revenue: 3127, pacing: 23.93 },
+    { name: 'KYRA CONSTRUCTION', contact: 'Liat Gauos', email: 'info@kyraconstruction.com', goal: 12139, revenue: 29325, pacing: 244.29 },
+    { name: 'Lane Roofing & Exteriors', contact: 'Lisa Stapleford', email: 'sarah@laneroofing.com', goal: 11323, revenue: 20286, pacing: 181.17 },
+    { name: 'Electric Avenue', contact: 'Jack Marquardt', email: 'electricavenue226@gmail.com', goal: 10167, revenue: 14404, pacing: 143.27 },
+    { name: 'Fuse HVAC & Appliance Repair Pasadena', contact: 'Anton Boronayev', email: 'fuse@fusepasadena.com', goal: 10127, revenue: 8003, pacing: 79.92 },
+    { name: 'Benjamin Franklin Plumbing Redmond', contact: 'Sean Mcallister', email: 'info@bfpredmond.com', goal: 9993, revenue: 12312, pacing: 124.59 },
+    { name: 'sHinE', contact: 'Sina Omosowon', email: 'sinamorufu@gmail.com', goal: 9858, revenue: 7994, pacing: 82.0 },
+    { name: 'Fuse Service HVAC & Appliance Repair Denver', contact: 'Renat Murtazin', email: 'fusedenverco@gmail.com', goal: 9519, revenue: 527, pacing: 5.59 },
+    { name: 'Fuse Service HVAC & Appliance Repair Philadelphia', contact: 'Eradzh Sattorov', email: 'fusephiladelphia@gmail.com', goal: 8900, revenue: 5375, pacing: 61.07 },
+    { name: 'Mister Sparky', contact: 'Clark Smith', email: 'customerservice@mistersparkywc.com', goal: 8380, revenue: 4801, pacing: 57.94 },
+    { name: 'Fuse HVAC & Appliance Repair', contact: 'Aleksandr Romanovskii', email: 'support@fusesbd.com', goal: 7916, revenue: 2424, pacing: 30.96 },
+    { name: 'The Junkluggers of New York City', contact: 'Michele Novy', email: 'mnovy@authoritybrandsllc.com', goal: 7733, revenue: 3655, pacing: 47.8 },
+    { name: 'Fuse HVAC Miami-Dade', contact: 'Alexander Tolkachev', email: 'support@fusemia.com', goal: 7488, revenue: 2872, pacing: 38.79 },
+    { name: 'Voltmasters Electrical Solutions', contact: 'Gil Barnea', email: 'davie.building.solutions@gmail.com', goal: 7477, revenue: 5330, pacing: 72.1 },
+    { name: 'Paint & Rollers “Your Project, Our Legacy”', contact: 'Adam Guzman', email: 'paintandrollers@gmail.com', goal: 7152, revenue: 7173, pacing: 101.41 },
+    { name: 'Fuse Service HVAC & Electrical SF', contact: 'Aleksandr Shishov', email: 'support@fuseservicesf.com', goal: 7139, revenue: 417, pacing: 5.91 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Austin Butchart', email: 'austin.butchart@benfranklinplumbing.com', goal: 6828, revenue: 0, pacing: 0.0 },
+    { name: 'Fuse HVAC & Appliance Repair', contact: 'Dmitriy Pasichnyk', email: 'fusemiddlesex@gmail.com', goal: 6219, revenue: 0, pacing: 0.0 },
+    { name: 'Fuse Service', contact: 'Oleg Minaev', email: 'fusepbc@gmail.com', goal: 5953, revenue: 4674, pacing: 79.4 },
+    { name: 'City Tech Services', contact: 'Artsiom Budykin', email: 'fuseorlandofl@gmail.com', goal: 4922, revenue: 1612, pacing: 33.13 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Arthur Cottingham Iv', email: 'hallam@theplumbingexperts.com', goal: 4626, revenue: 8433, pacing: 184.36 },
+    { name: 'ZeroMold', contact: 'Jerel Clark, ZeroMold', email: 'cara@zeromold.net', goal: 4047, revenue: 2231, pacing: 55.74 },
+    { name: 'Fuse HVAC Jacksonville', contact: 'Alexander Tolkachev', email: 'support@fusejax.com', goal: 4042, revenue: 1057, pacing: 26.44 },
+    { name: 'Fuse HVAC & Appliance Repair Charlotte', contact: 'Bohdan Kovalenko', email: 'fuserepaircharlotte@gmail.com', goal: 3656, revenue: 1662, pacing: 45.98 },
+    { name: 'Boston Comfort Systems', contact: 'Vladimir Romanov', email: 'vladimirxromanov@gmail.com', goal: 3298, revenue: 2218, pacing: 68.01 },
+    { name: 'Benjamin Franklin Plumbing of the Triad', contact: 'Adam Tucci', email: 'adam@benfranklintriad.com', goal: 3122, revenue: 2153, pacing: 69.74 },
+    { name: 'Fuse HVAC & Appliance Repair Fort Myers', contact: 'Aleksandr Bobrov', email: 'fuseftmyers@gmail.com', goal: 3008, revenue: 0, pacing: 0.0 },
+    { name: 'Fuse Service HVAC, Electrical & Appliance Repair', contact: 'Eduard Kobzar', email: 'fusefresno@gmail.com', goal: 2668, revenue: 855, pacing: 32.41 },
+    { name: 'Benjamin Franklin Plumbing of Grand Rapids', contact: 'Robert Evenhouse', email: 'info.0579@benfranklinplumbing.com', goal: 2533, revenue: 3031, pacing: 121.02 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Sarah Jasinski', email: 'sarah@benfranklinplumbing-semi.com', goal: 2350, revenue: 324, pacing: 13.94 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Daniel Newell', email: 'dannewell@live.com', goal: 2334, revenue: 4319, pacing: 187.13 },
+    { name: 'Fuse HVAC & Appliance Repair Austin', contact: 'Gaziz Balgabayev', email: 'support@fuseatx.com', goal: 2120, revenue: 231, pacing: 11.04 },
+    { name: 'AC/DC Refrigeration & Appliance Repair', contact: 'Victor Rusak', email: 'acdcthumbtack@gmail.com', goal: 1987, revenue: 137, pacing: 6.99 },
+    { name: 'Benjamin Franklin Plumbing of Huntington Beach', contact: 'Oscar Nunez', email: 'bf0719.hb@gmail.com', goal: 1970, revenue: 71, pacing: 3.62 },
+    { name: 'Fuse HVAC & Appliance Repair Los Angeles', contact: 'Michael Ivanchuk', email: 'fuseservicela@gmail.com', goal: 1938, revenue: 3114, pacing: 162.5 },
+    { name: 'The Maids in College Park', contact: 'Lawrenzo Borrelli Borrelli', email: 'lawrenzo_borrelli@yahoo.com', goal: 1924, revenue: 3192, pacing: 167.76 },
+    { name: 'Fuse HVAC & Appliance Repair', contact: 'Ilya Khrapik', email: 'dispatch.citytech@gmail.com', goal: 1865, revenue: 0, pacing: 0.0 },
+    { name: 'Benjamin Franklin Plumbing of Temple, TX', contact: 'Rakesh Shah', email: 'bfleadgeneration@gmail.com', goal: 1850, revenue: 2363, pacing: 129.16 },
+    { name: 'Fuse HVAC Service & Repair', contact: 'Roman Carmaliuc', email: 'fusefortworth@gmail.com', goal: 1675, revenue: 1301, pacing: 78.54 },
+    { name: 'Fuse Service Tacoma', contact: 'Oleg Covtun', email: 'fuseservicetacoma@gmail.com', goal: 1671, revenue: 1294, pacing: 78.34 },
+    { name: 'Benjamin Franklin Plumbing of Chapel Hill & Durham', contact: 'Bassem Boulas', email: 'mightystream1@gmail.com', goal: 1639, revenue: 3442, pacing: 212.35 },
+    { name: 'FUSE Service (Appliance, HVAC & Plumbing)', contact: 'Igor Dmitriev', email: 'sfapprepair@gmail.com', goal: 1511, revenue: 89, pacing: 5.95 },
+    { name: 'Fuse Service HVAC & Electrical Tri-Valley', contact: 'Sergii Kushnarov', email: 'fusetrivalley@gmail.com', goal: 1502, revenue: 0, pacing: 0.0 },
+    { name: 'One Hour Heating and Cooling of Tucson', contact: 'Kevin Cerveri', email: 'tucson@onehourair.com', goal: 1483, revenue: 837, pacing: 57.04 },
+    { name: 'Fuse HVAC & Appliance Repair Daytona Beach', contact: 'Igor Mitarchuk', email: 'fusedaytona@gmail.com', goal: 1332, revenue: 570, pacing: 43.23 },
+    { name: 'Mister Sparky', contact: 'Michael Rekart', email: 'mrekart@gmail.com', goal: 1259, revenue: 917, pacing: 73.68 },
+    { name: 'Fuse Service Chicago', contact: 'Vladyslav Tofan', email: 'fusechicagoil@gmail.com', goal: 1207, revenue: 121, pacing: 10.16 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Courtney Wilkinson', email: 'service@benfranklinarlington.com', goal: 1190, revenue: 1790, pacing: 152.13 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Dominik Ellena', email: 'dominik@onehourwi.com', goal: 1138, revenue: 2808, pacing: 249.51 },
+    { name: 'FUSE HVAC, Electrical and Appliance', contact: 'Denis Riabokonev', email: 'repair@fusenapa.com', goal: 1109, revenue: 717, pacing: 65.43 },
+    { name: 'Fuse HVAC & Appliance Repair Cincinnati', contact: 'Ilya Volchyk', email: 'service@fuseohio.com', goal: 1043, revenue: 640, pacing: 62.02 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Steve Kurtz', email: 'james.loeffelbein@onehourkc.com', goal: 1015, revenue: 698, pacing: 69.58 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Jeff Hunter', email: 'info.0592@benjaminfranklinplumbing.com', goal: 929, revenue: 1052, pacing: 114.5 },
+    { name: 'ZeroMold Utah', contact: 'Jerel Clark', email: 'info@zeromold.net', goal: 926, revenue: 900, pacing: 98.29 },
+    { name: 'One Hour Heating & Air Conditioning of Kyle', contact: 'Aaron Mudry', email: 'aaron.mudry@onehourair.com', goal: 916, revenue: 155, pacing: 17.16 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Roy Koldaro', email: 'onehoursd@gmail.com', goal: 911, revenue: 1832, pacing: 203.25 },
+    { name: 'Mister Sparky of Manalapan NJ', contact: 'Jacqueline Quagliaro', email: 'jackie.quagliaro@mistersparky.com', goal: 892, revenue: 210, pacing: 23.8 },
+    { name: 'One Hour Air Conditioning and Heating DFW', contact: 'Dustin Hufsey', email: 'zac.salgado@onehourairdfw.com', goal: 878, revenue: 1461, pacing: 168.14 },
+    { name: 'Pitzer\'s One Hour Air Conditioning', contact: 'Larry Thornton', email: 'pitzersonehourair@gmail.com', goal: 836, revenue: 2017, pacing: 244.1 },
+    { name: 'ZeroMold', contact: 'Jerel Clark', email: 'zeromold1@gmail.com', goal: 817, revenue: 1807, pacing: 223.64 },
+    { name: 'Ben Franklin Plumbing Northeast Texas', contact: 'John Crymes', email: 'office@benjaminfranklinplumbingtyler.com', goal: 794, revenue: 1092, pacing: 138.96 },
+    { name: 'Fuse Service HVAC & Appliance Repair Knoxville', contact: 'Vitaly Nosovets', email: 'fuseknoxvilletn@gmail.com', goal: 769, revenue: 848, pacing: 111.62 },
+    { name: 'The Junkluggers of Willamette Valley', contact: 'Caitlyn Eaton', email: 'caitlyn.eaton@junkluggers.com', goal: 727, revenue: 3216, pacing: 447.09 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Juan Lasala', email: 'pablo.lasala@benfranklinplumbing.com', goal: 716, revenue: 931, pacing: 131.4 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Maribel Healy', email: 'info@bfptriangle.com', goal: 690, revenue: 171, pacing: 25.02 },
+    { name: 'ZeroMold - TN', contact: 'Jerel Clark', email: 'contact@zeromold.net', goal: 685, revenue: 1116, pacing: 164.74 },
+    { name: 'NEC Electric', contact: 'David Mcmullen', email: 'tracey@newportelectric.com', goal: 680, revenue: 3516, pacing: 523.22 },
+    { name: 'One Hour Heating & Air Conditioning', contact: 'Andrew Galaud', email: 'oh.warnerrobins@gmail.com', goal: 666, revenue: 1116, pacing: 169.55 },
+    { name: 'DRYmedic Water Damage North Atlanta & Alpharetta', contact: 'Jesus Baron', email: 'info@drymedicalpharettaga.com', goal: 652, revenue: 1109, pacing: 171.87 },
+    { name: 'Maid to Shine LLC', contact: 'Marco Carmo', email: 'maidtoshinecompany@gmail.com', goal: 640, revenue: 1753, pacing: 277.01 },
+    { name: 'FUSE HVAC & APPLIANCE REPAIR', contact: 'Dmitrii Nazarenko', email: 'dima141180@gmail.com', goal: 591, revenue: 1736, pacing: 297.18 },
+    { name: 'Mister Sparky Evansville', contact: 'Levi Johnson', email: 'levi@mistersparkyevansville.com', goal: 529, revenue: 426, pacing: 81.46 },
+    { name: 'Benjamin Franklin Plumbing', contact: 'Jason Clark', email: 'info@benfranklinwichita.com', goal: 469, revenue: 617, pacing: 133.0 },
+    { name: 'AR2i Business Solutions', contact: 'Laura Walsh', email: 'laura.walsh@ar2i.life', goal: 449, revenue: 3519, pacing: 792.41 },
+    { name: 'Mister Sparky of Kentucky', contact: 'Marvin Talbot Jr', email: 'rsgtholdings@gmail.com', goal: 440, revenue: 2307, pacing: 530.59 },
+    { name: 'Aspen Heating and Cooling', contact: 'Gary Schultz', email: 'aspen@aspenheating.com', goal: 385, revenue: 205, pacing: 53.9 },
+    { name: 'One Hour Heating and Air Conditioning of CP', contact: 'David Lu', email: 'onehouraircp@gmail.com', goal: 376, revenue: 272, pacing: 73.16 },
+    { name: 'Benjamin Franklin Plumbing of Roseville', contact: 'Ahamed Arifraseeth Mohamed Ali', email: 'info.0764@benfranklinplumbing.com', goal: 350, revenue: 36, pacing: 10.52 },
+    { name: 'Fuse Service HVAC & Appliance Repair Vancouver', contact: 'Dmitrii Zheltyshev', email: 'fuseyvr@gmail.com', goal: 289, revenue: 0, pacing: 0.0 },
+    { name: 'Fuse Service: HVAC & Electrical', contact: 'Ivan Aleksandrovich', email: 'info@qualityel.com', goal: 240, revenue: 0, pacing: 0.0 },
+    { name: 'Spray-Net Denver West', contact: 'Brian Tiedt', email: 'brian.t@spray-net.com', goal: 212, revenue: 0, pacing: 0.0 },
+    { name: 'SPRAY-NET SOUTHERN KENTUCKY', contact: 'Geoge Dodson', email: 'victor@spray-net.com', goal: 182, revenue: 314, pacing: 174.8 },
+    { name: 'Mister Sparky Amarillo', contact: 'Josh Geigle', email: 'josh.geigle@mistersparkyamarillo.com', goal: 175, revenue: 251, pacing: 145.03 },
+    { name: 'Mister Sparky Electric', contact: 'Dennis Conrade', email: 'service@mistersparky.com', goal: 175, revenue: 69, pacing: 39.65 },
+    { name: 'Wolfpack Roofing & Exteriors', contact: 'Michael Boy', email: 'mboy@wolfpackrfg.com', goal: 118, revenue: 0, pacing: 0.0 },
+    { name: 'One Hour Heating and Air Conditioning', contact: 'Michael Vavreck', email: 'julian.carvajal@punctualpros.com', goal: 112, revenue: 137, pacing: 123.52 },
+    { name: 'Benjamin Franklin Plumbing of Billings', contact: 'Leon Riley Jr', email: 'bfpmt1@gmail.com', goal: 66, revenue: 91, pacing: 140.26 },
+    { name: 'Minuteman Heating & Air', contact: 'Courtney Wilkinson', email: 'service@minutemanheatingandac.com', goal: 64, revenue: 439, pacing: 698.06 },
+    { name: 'Fuse HVAC, Refrigeration & Electrical', contact: 'Alexandr Shepel', email: 'fusemts@gmail.com', goal: 59, revenue: 0, pacing: 0.0 },
+    { name: 'Woofie\'s of Lutz', contact: 'Travis Meyerhoff', email: 'lutz@woofies.com', goal: 47, revenue: 49, pacing: 105.57 },
+    { name: 'Woofie\'s of South Riding-Aldie', contact: 'Teferi Dejene', email: 'teferi@woofiessouthriding.com', goal: 40, revenue: 26, pacing: 66.11 },
+    { name: 'Spray-Net Jacksonville South', contact: 'Charles Fiumefreddo', email: 'charlie.f@spray-net.com', goal: 37, revenue: 0, pacing: 0.0 },
+    { name: 'Spray-Net Atlanta', contact: 'Patrick Fitzmaurice', email: 'patrick.fitzmaurice@spray-net.com', goal: 20, revenue: 0, pacing: 0.0 },
   ];
 
   function getAccounts() {
@@ -1364,6 +1362,7 @@
     if (kanban && document.getElementById('card-onboarding').classList.contains('page-active')) {
       renderOnboardingKanban();
     }
+    saveStateToFile();
   }
 
   function deleteOnbNoteEntry(proId) {
@@ -1372,6 +1371,7 @@
     localStorage.setItem('onboarding-notes', JSON.stringify(notes));
     renderNotesSection();
     renderOnboarding();
+    saveStateToFile();
   }
 
   // --- NAV DRAWER ---
@@ -1422,6 +1422,108 @@
     const backBtn = document.getElementById('nav-back-btn');
     if (backBtn) backBtn.style.display = 'none';
   }
+
+  // --- FILE PERSISTENCE ---
+  function _hubOpenDB() {
+    return new Promise((res, rej) => {
+      const req = indexedDB.open('hub-persistence', 1);
+      req.onupgradeneeded = e => e.target.result.createObjectStore('fileHandles');
+      req.onsuccess = e => res(e.target.result);
+      req.onerror = () => rej();
+    });
+  }
+  async function _hubGetHandle() {
+    try {
+      const db = await _hubOpenDB();
+      return new Promise(res => {
+        const tx = db.transaction('fileHandles', 'readonly');
+        const req = tx.objectStore('fileHandles').get('stateFile');
+        req.onsuccess = e => res(e.target.result || null);
+        req.onerror = () => res(null);
+      });
+    } catch { return null; }
+  }
+  async function _hubStoreHandle(handle) {
+    try {
+      const db = await _hubOpenDB();
+      return new Promise((res, rej) => {
+        const tx = db.transaction('fileHandles', 'readwrite');
+        tx.objectStore('fileHandles').put(handle, 'stateFile');
+        tx.oncomplete = res; tx.onerror = rej;
+      });
+    } catch {}
+  }
+  function _showLinkBtn() {
+    const btn = document.getElementById('link-storage-btn');
+    if (btn) btn.style.display = 'inline-flex';
+    const ind = document.getElementById('storage-linked-ind');
+    if (ind) ind.style.display = 'none';
+  }
+  function _showLinkedIndicator() {
+    const btn = document.getElementById('link-storage-btn');
+    if (btn) btn.style.display = 'none';
+    const ind = document.getElementById('storage-linked-ind');
+    if (ind) ind.style.display = 'inline-flex';
+  }
+  async function loadStateFromFile() {
+    const handle = await _hubGetHandle();
+    if (!handle) { _showLinkBtn(); return; }
+    try {
+      let perm = await handle.queryPermission({ mode: 'readwrite' });
+      if (perm !== 'granted') perm = await handle.requestPermission({ mode: 'readwrite' });
+      if (perm !== 'granted') { _showLinkBtn(); return; }
+      const file = await handle.getFile();
+      const state = JSON.parse(await file.text());
+      if (state.onboarding_stages) localStorage.setItem('onboarding-v2', JSON.stringify(state.onboarding_stages));
+      if (state.onboarding_notes) localStorage.setItem('onboarding-notes', JSON.stringify(state.onboarding_notes));
+      if (state.account_notes)    localStorage.setItem('hub_notes', JSON.stringify(state.account_notes));
+      if (state.hub_wins)         localStorage.setItem('hub_wins', JSON.stringify(state.hub_wins));
+      if (state.hub_feedback)     localStorage.setItem('hub_feedback', JSON.stringify(state.hub_feedback));
+      if (state.archive_dates)    localStorage.setItem('hub_archive_dates', JSON.stringify(state.archive_dates));
+      _showLinkedIndicator();
+      renderOnboarding(); refreshNoteButtons(); renderNotesSection();
+    } catch(e) {
+      console.warn('[Hub] Could not load state:', e);
+      _showLinkBtn();
+    }
+  }
+  async function saveStateToFile() {
+    const handle = await _hubGetHandle();
+    if (!handle) return;
+    try {
+      const state = {
+        onboarding_stages: JSON.parse(localStorage.getItem('onboarding-v2') || '{}'),
+        onboarding_notes:  JSON.parse(localStorage.getItem('onboarding-notes') || '{}'),
+        account_notes:     JSON.parse(localStorage.getItem('hub_notes') || '{}'),
+        hub_wins:          JSON.parse(localStorage.getItem('hub_wins') || '[]'),
+        hub_feedback:      JSON.parse(localStorage.getItem('hub_feedback') || '[]'),
+        archive_dates:     JSON.parse(localStorage.getItem('hub_archive_dates') || '{}'),
+      };
+      const writable = await handle.createWritable();
+      await writable.write(JSON.stringify(state, null, 2));
+      await writable.close();
+    } catch(e) { console.warn('[Hub] Could not save state:', e); }
+  }
+  async function linkStateFile() {
+    try {
+      // If we already have a stored handle, just re-request permission (post-restart case)
+      const existing = await _hubGetHandle();
+      if (existing) {
+        const perm = await existing.requestPermission({ mode: 'readwrite' });
+        if (perm === 'granted') { await loadStateFromFile(); return; }
+      }
+      // First-time setup: open file picker
+      const [handle] = await window.showOpenFilePicker({
+        types: [{ description: 'Hub State', accept: { 'application/json': ['.json'] } }],
+        id: 'hub-state'
+      });
+      await _hubStoreHandle(handle);
+      await loadStateFromFile();
+    } catch {}
+  }
+
+  // Initialize file persistence on load
+  loadStateFromFile();
 
   // --- LIVE CROSS-TAB SYNC ---
   window.addEventListener('storage', e => {
