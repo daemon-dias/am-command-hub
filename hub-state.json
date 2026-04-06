@@ -1,8 +1,35 @@
 {
-  "onboarding_stages": {},
-  "onboarding_notes": {},
-  "account_notes": {},
+  "onboarding_stages": {
+    "card-jim-jones": "Archive",
+    "card-cesar-padilla": "Archive",
+    "card-john-harrison": "Archive",
+    "card-nolan-jacobs": "Archive",
+    "card-aleshia-rogers": "Platform Walkthrough",
+    "card-mo-akbarbasha": "Creating Profile",
+    "card-eric-beezhold": "Archive",
+    "card-treva-mcdaniels": "Creating Profile",
+    "card-stacey-davis": "Creating Profile"
+  },
+  "onboarding_notes": {
+    "card-john-harrison": "Waiting for hatch integration",
+    "card-nolan-jacobs": "Nivah's account",
+    "card-eric-beezhold": "Nivah's account",
+    "card-eliazar-jimenez": "Deciding between Scorpion and TT",
+    "card-mo-akbarbasha": "Ghosted",
+    "card-shahbaaz": "Ghosted",
+    "card-stacey-davis": "Ghosted",
+    "card-jonathan-shea": "Ghosted"
+  },
+  "account_notes": {
+    "nolan-jacobs-iyc": "Solved, Nivah's account"
+  },
   "hub_wins": [],
   "hub_feedback": [],
-  "archive_dates": {}
+  "archive_dates": {
+    "card-jim-jones": "2026-03-31T16:38:06.434Z",
+    "card-cesar-padilla": "2026-03-31T18:11:59.750Z",
+    "card-john-harrison": "2026-03-31T18:12:15.312Z",
+    "card-nolan-jacobs": "2026-03-31T18:12:26.721Z",
+    "card-eric-beezhold": "2026-03-31T18:12:51.345Z"
+  }
 }
