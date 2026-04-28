@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AM Command Hub V3 — Daemon Dias</title>
+  <title>AM Command Hub V4 — Daemon Dias</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #1a1a2e; min-height: 100vh; }
@@ -35,7 +35,11 @@
     .progress-marker { font-size: 10px; color: #aaa; }
 
     /* MAIN GRID */
-    .main { padding: 20px 28px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .main { padding: 20px 28px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    #card-upside    { order: 1; }
+    #card-onboarding { order: 2; }
+    #card-feedback  { order: 3; }
+    #card-schedule  { order: 4; }
 
     /* CARDS */
     .card { background: #fff; border-radius: 14px; border: 1px solid #e4e8f0; overflow: hidden; display: flex; flex-direction: column; }
@@ -92,16 +96,7 @@
     .cal-title { font-size: 13px; font-weight: 600; color: #1a1a2e; }
     .cal-detail { font-size: 11px; color: #888; margin-top: 1px; }
 
-    /* KEY WINS */
-    .win-input-row { padding: 10px 16px; display: flex; gap: 8px; border-bottom: 1px solid #f0f2f5; }
-    .win-input { flex: 1; border: 1px solid #dde1e8; border-radius: 8px; padding: 7px 10px; font-size: 12px; font-family: inherit; outline: none; }
-    .win-input:focus { border-color: #009FD9; }
-    .win-add-btn { background: #009FD9; color: white; border: none; border-radius: 8px; padding: 7px 12px; font-size: 12px; font-weight: 600; cursor: pointer; }
-    .win-add-btn:hover { background: #007ab8; }
-    .win-item { padding: 8px 16px; border-bottom: 1px solid #f5f6f8; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-    .win-item:last-child { border-bottom: none; }
-    .win-text { font-size: 13px; color: #1a1a2e; flex: 1; }
-    .win-date { font-size: 10px; color: #aaa; }
+    /* DELETE BUTTON (shared) */
     .win-del { background: none; border: none; color: #ccc; font-size: 14px; cursor: pointer; padding: 0; }
     .win-del:hover { color: #E74C3C; }
 
@@ -121,6 +116,7 @@
 
     /* NOTES SECTION */
     .notes-section { margin: 0 28px 28px; background: #fff; border-radius: 14px; border: 1px solid #e4e8f0; overflow: hidden; }
+    #notes-section-list { max-height: 260px; overflow-y: auto; }
     .notes-section-header { padding: 14px 16px 10px; border-bottom: 1px solid #f0f2f5; display: flex; justify-content: space-between; align-items: center; }
     .notes-section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; color: #444; display: flex; align-items: center; gap: 6px; }
     .note-entry { padding: 10px 16px; border-bottom: 1px solid #f5f6f8; }
@@ -153,13 +149,7 @@
     .card-items::-webkit-scrollbar-track { background: transparent; }
     .card-items::-webkit-scrollbar-thumb { background: #dde1e8; border-radius: 4px; }
 
-    /* CARD TITLE COLORS */
-    .card-title.title-blue   { color: #009FD9; }
-    .card-title.title-orange { color: #E07B00; }
-    .card-title.title-red    { color: #C0392B; }
-    .card-title.title-teal   { color: #0f8a6a; }
-    .card-title.title-green  { color: #1e8449; }
-    .card-title.title-purple { color: #6c3483; }
+    /* CARD TITLE COLORS — stripped, all use default #444 */
 
     /* DARK MODE TOGGLE */
     .dark-toggle { background: #f0f2f5; border: 1px solid #e0e4ea; border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #555; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
@@ -212,12 +202,6 @@
     body.dark .card { background: #111; border-color: #1e1e1e; }
     body.dark .card-header { border-color: #1a1a1a; }
     body.dark .card-title { color: #aaa; }
-    body.dark .card-title.title-blue   { color: #009FD9; }
-    body.dark .card-title.title-orange { color: #E07B00; }
-    body.dark .card-title.title-red    { color: #C0392B; }
-    body.dark .card-title.title-teal   { color: #0f8a6a; }
-    body.dark .card-title.title-green  { color: #1e8449; }
-    body.dark .card-title.title-purple { color: #6c3483; }
     body.dark .card-desc { color: #555; }
     body.dark .card-footer { border-color: #1a1a1a; }
     body.dark .expand-btn { color: #009FD9; }
@@ -230,12 +214,6 @@
     body.dark .cal-item { border-color: #181818; }
     body.dark .cal-title { color: #d0d0d0; }
     body.dark .cal-detail { color: #555; }
-    body.dark .win-input-row { border-color: #1a1a1a; }
-    body.dark .win-input { background: #151515; border-color: #2a2a2a; color: #d0d0d0; }
-    body.dark .win-input::placeholder { color: #333; }
-    body.dark .win-item { border-color: #181818; }
-    body.dark .win-text { color: #d0d0d0; }
-    body.dark .win-date { color: #444; }
     body.dark .feedback-input-row { border-color: #1a1a1a; }
     body.dark .feedback-account, body.dark .feedback-textarea { background: #151515; border-color: #2a2a2a; color: #d0d0d0; }
     body.dark .feedback-account::placeholder, body.dark .feedback-textarea::placeholder { color: #333; }
@@ -251,19 +229,6 @@
     body.dark .notes-section-title { color: #aaa; }
     body.dark .note-entry { border-color: #181818; }
     body.dark .note-text { color: #888; }
-    body.dark .accts-list-header { background: #0d0d0d; border-color: #222; }
-    body.dark .accounts-search-input { background: #151515; border-color: #2a2a2a; color: #d0d0d0; }
-    body.dark .accounts-search-input::placeholder { color: #333; }
-    body.dark .accounts-search-input:focus { border-color: #009FD9; }
-    body.dark .accts-row { border-color: #181818; }
-    body.dark .accts-row:hover { background: #161616; }
-    body.dark .accts-row-name { color: #d8d8d8; }
-    body.dark .accts-row-contact { color: #666; }
-    body.dark .accts-row-email { color: #444; }
-    body.dark .accts-num { color: #ccc; }
-    body.dark .accts-num-label { color: #444; }
-    body.dark .accts-count-label { color: #555; }
-    body.dark .accounts-grid-list::-webkit-scrollbar-thumb { background: #2a2a2a; }
     body.dark .onb-stage-select { background: #1a1a1a; border-color: #2a2a2a; color: #888; }
 
     /* ONB KANBAN (page mode) */
@@ -278,12 +243,14 @@
     .onb-col { background: #fafbfc; border-radius: 10px; border: 1px solid #e4e8f0; overflow: hidden; }
     .onb-col-header { padding: 10px 14px; border-bottom: 1px solid #e4e8f0; display: flex; justify-content: space-between; align-items: center; }
     .onb-col-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-    .onb-col.col-intro  .onb-col-header { border-top: 3px solid #009FD9; color: #009FD9; }
-    .onb-col.col-creating .onb-col-header { border-top: 3px solid #F5A623; color: #b07700; }
-    .onb-col.col-walkthrough .onb-col-header { border-top: 3px solid #27AE60; color: #1a6b3a; }
+    .onb-col .onb-col-header { border-top: 2px solid #e4e8f0; color: #555; }
+    .onb-col.col-won .onb-col-header { color: #555; }
+    .onb-col.col-lost .onb-col-header { color: #888; }
     .onb-col-cards { padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 50px; }
     .onb-pro-card { background: #fff; border: 1px solid #e0e4ea; border-radius: 8px; padding: 10px 12px; transition: box-shadow 0.15s; }
     .onb-pro-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.07); }
+    .onb-del-btn { background: none; border: none; font-size: 12px; color: #ccc; cursor: pointer; padding: 0 0 0 4px; line-height: 1; flex-shrink: 0; transition: color 0.15s; }
+    .onb-del-btn:hover { color: #E74C3C; }
     .onb-pro-name { font-size: 13px; font-weight: 700; color: #1a1a2e; }
     .onb-pro-biz { font-size: 10px; color: #009FD9; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; margin: 3px 0 6px; }
     .onb-pro-meta { font-size: 11px; color: #666; display: flex; flex-direction: column; gap: 3px; margin-bottom: 6px; }
@@ -371,20 +338,17 @@
 <!-- NAV DRAWER -->
 <div class="nav-drawer" id="nav-drawer">
   <div class="nav-drawer-header">
-    <div class="nav-drawer-title">AM Command Hub V3</div>
+    <div class="nav-drawer-title">AM Command Hub V4</div>
     <button class="nav-close-btn" onclick="closeNav()">✕</button>
   </div>
   <div class="nav-item nav-item-home" onclick="closeCardPage();closeNav();"><span style="font-size:14px;line-height:1;">🏠</span>Home</div>
   <div class="nav-section-label">Cards</div>
-  <div class="nav-item" onclick="openCardPage('card-onboarding')"><span class="card-title-dot dot-blue"></span>Onboarding Pipeline</div>
-  <div class="nav-item" onclick="openCardPage('card-upside')"><span class="card-title-dot dot-orange"></span>Upside Accounts</div>
-  <div class="nav-item" onclick="openCardPage('card-court')"><span class="card-title-dot dot-red"></span>In Your Court</div>
-  <div class="nav-item" onclick="openCardPage('card-schedule')"><span class="card-title-dot dot-teal"></span>Today's Schedule</div>
-  <div class="nav-item" onclick="openCardPage('card-wins')"><span class="card-title-dot dot-green"></span>Key Wins</div>
-  <div class="nav-item" onclick="openCardPage('card-feedback')"><span class="card-title-dot dot-purple"></span>Feedback Vault</div>
-  <div class="nav-item" onclick="openCardPage('card-accounts')"><span class="card-title-dot dot-blue"></span>All Accounts</div>
+  <div class="nav-item" onclick="openCardPage('card-onboarding')">Onboarding Pipeline</div>
+  <div class="nav-item" onclick="openCardPage('card-upside')">Upside Accounts</div>
+  <div class="nav-item" onclick="openCardPage('card-schedule')">Today's Schedule</div>
+  <div class="nav-item" onclick="openCardPage('card-feedback')">Feedback Vault</div>
   <div class="nav-section-label">Notes</div>
-  <div class="nav-item" onclick="openCardPage('notes-section-wrap')"><span style="font-size:14px;line-height:1;">📝</span>All Notes</div>
+  <div class="nav-item" onclick="openCardPage('notes-section-wrap')">📝 All Notes</div>
 </div>
 
 <!-- HEADER -->
@@ -398,7 +362,7 @@
     </div>
   </div>
   <div class="header-right">
-    <button class="nav-back-btn" id="nav-back-btn" onclick="closeCardPage()" style="display:none;">← Back</button>
+    <button class="nav-back-btn" id="nav-back-btn" onclick="closeCardPage()">← Back</button>
     <span class="page-breadcrumb" id="page-breadcrumb" style="display:none;"></span>
     <span class="header-date" id="header-date"></span>
     <button id="link-storage-btn" onclick="linkStateFile()" title="Link hub-state.json to persist notes &amp; stages" style="display:none;padding:5px 10px;border-radius:8px;border:1px solid #F5A623;background:rgba(245,166,35,0.1);color:#b07700;font-size:11px;font-weight:700;cursor:pointer;align-items:center;gap:5px;">🔗 Link Storage</button>
@@ -417,8 +381,8 @@
         <div class="rev-stat-value">$307,625</div>
       </div>
       <div class="rev-stat">
-        <div class="rev-stat-label">P2G Projection</div>
-        <div class="rev-stat-value" style="color:#666;">$350,294</div>
+        <div class="rev-stat-label">P2G Revenue</div>
+        <div class="rev-stat-value" style="color:#666;">$366,216</div>
       </div>
       <div class="rev-stat">
         <div class="rev-stat-label">QTR Goal</div>
@@ -434,14 +398,14 @@
         <div style="font-size:22px;font-weight:300;color:#dde1e8;line-height:1;">|</div>
         <div style="text-align:right;">
           <div class="pacing-label">P2G</div>
-          <div class="pacing-pct" style="color:#9b7fd4;font-size:22px;">24.2%</div>
+          <div class="pacing-pct" style="color:#9b7fd4;font-size:22px;">25.27%</div>
         </div>
       </div>
-      <div id="pace-delta" style="text-align:right;margin-top:4px;font-size:11px;font-weight:700;color:#E74C3C;">Q2 Day 24 · $307,625 booked · P2G $350,294 · 24.2% of QTR goal · ↓ $74,446 behind pace</div>
+      <div id="pace-delta" style="text-align:right;margin-top:4px;font-size:11px;font-weight:700;color:#E74C3C;">Q2 Day 28 · $307,625 booked · P2G $366,216 · 25.27% of QTR goal · ↓ $58,591 behind pace</div>
     </div>
   </div>
   <div class="progress-track" style="position:relative;">
-    <div style="position:absolute;top:0;left:0;width:24.2%;height:100%;background:#c4aff0;border-radius:99px;"></div>
+    <div style="position:absolute;top:0;left:0;width:25.27%;height:100%;background:#c4aff0;border-radius:99px;"></div>
     <div class="progress-fill" style="position:relative;width:21.23%;background:#009FD9;z-index:1;"></div>
   </div>
   <div class="progress-markers">
@@ -460,10 +424,29 @@
   <div class="card" id="card-onboarding">
     <div class="card-header">
       <div class="card-header-left">
-        <div class="card-title title-blue"><span class="card-title-dot dot-blue"></span>Onboarding Pipeline</div>
+        <div class="card-title">Onboarding Pipeline</div>
         <div class="card-desc">Live from onboarding dashboard</div>
       </div>
-      <span class="card-badge badge-blue" id="onb-total-badge">— active</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="card-badge badge-blue" id="onb-total-badge">— active</span>
+        <button onclick="toggleAddProForm()" style="background:#009FD9;color:#fff;border:none;border-radius:6px;width:24px;height:24px;font-size:15px;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;">+</button>
+      </div>
+    </div>
+    <div id="add-pro-form" style="display:none;padding:10px 16px 8px;border-bottom:1px solid #f0f2f5;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+        <input id="add-pro-name"  type="text" placeholder="Name *"  style="border:1px solid #dde1e8;border-radius:6px;padding:6px 10px;font-size:12px;font-family:inherit;outline:none;"/>
+        <input id="add-pro-biz"   type="text" placeholder="Business *" style="border:1px solid #dde1e8;border-radius:6px;padding:6px 10px;font-size:12px;font-family:inherit;outline:none;"/>
+        <input id="add-pro-email" type="text" placeholder="Email"    style="border:1px solid #dde1e8;border-radius:6px;padding:6px 10px;font-size:12px;font-family:inherit;outline:none;"/>
+        <select id="add-pro-stage" style="border:1px solid #dde1e8;border-radius:6px;padding:6px 10px;font-size:12px;font-family:inherit;outline:none;background:#fff;">
+          <option value="Introduction">Introduction</option>
+          <option value="Creating Profile">Creating Profile</option>
+          <option value="Platform Walkthrough">Platform Walkthrough</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="submitAddPro()" style="background:#009FD9;color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;">Add</button>
+        <button onclick="toggleAddProForm()" style="background:#f0f2f5;color:#555;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;">Cancel</button>
+      </div>
     </div>
     <div class="card-body" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
       <div class="card-items" id="onb-items">
@@ -480,94 +463,14 @@
   <div class="card" id="card-upside">
     <div class="card-header">
       <div class="card-header-left">
-        <div class="card-title title-orange"><span class="card-title-dot dot-orange"></span>Upside Accounts</div>
-        <div class="card-desc">Biggest revenue gaps · highest ceiling</div>
+        <div class="card-title">Upside Accounts</div>
+        <div class="card-desc" id="upside-desc">Biggest gaps vs. expected pace · top 10</div>
       </div>
-      <span class="card-badge badge-orange">Top 10</span>
+      <span class="card-badge" style="background:#f0f2f5;color:#666;" id="upside-badge">Top 10</span>
     </div>
     <div class="card-body">
       <div class="card-items" id="upside-items">
-
-        <div class="acct-item" data-slug="mrs-garage-door">
-          <div class="acct-item-top">
-            <div><div class="acct-name">MRS Garage Door Services</div><div class="acct-meta"><span class="acct-pill pill-red">21.50% pacing</span><span>Gap: $94,425</span><span>Goal: $99,356</span></div><div class="acct-meta"><a href="mailto:office@mrsgaragedoor.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ office@mrsgaragedoor.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('mrs-garage-door',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-mrs-garage-door"><textarea placeholder="Add a note…" onblur="saveNote('mrs-garage-door',this.value)"></textarea></div>
-        </div>
-
-        <div class="acct-item" data-slug="royal-moving">
-          <div class="acct-item-top">
-            <div><div class="acct-name">Royal Moving &amp; Storage</div><div class="acct-meta"><span class="acct-pill pill-red">43.21% pacing</span><span>Gap: $75,995</span><span>Goal: $84,413</span></div><div class="acct-meta"><a href="mailto:office@royalmovingco.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ office@royalmovingco.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('royal-moving',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-royal-moving"><textarea placeholder="Add a note…" onblur="saveNote('royal-moving',this.value)"></textarea></div>
-        </div>
-
-        <div class="acct-item" data-slug="ocean-remodel">
-          <div class="acct-item-top">
-            <div><div class="acct-name">Ocean Remodel</div><div class="acct-meta"><span class="acct-pill pill-red">30.17% pacing</span><span>Gap: $58,407</span><span>Goal: $62,778</span></div><div class="acct-meta"><a href="mailto:contact@oceanremodel.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ contact@oceanremodel.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('ocean-remodel',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-ocean-remodel"><textarea placeholder="Add a note…" onblur="saveNote('ocean-remodel',this.value)"></textarea></div>
-        </div>
-
-        <div class="acct-item" data-slug="pro-stars-contractor">
-          <div class="acct-item-top">
-            <div><div class="acct-name">Pro Stars Contractor Inc</div><div class="acct-meta"><span class="acct-pill pill-red">13.60% pacing</span><span>Gap: $52,045</span><span>Goal: $53,731</span></div><div class="acct-meta"><a href="mailto:benithoxkishpix55@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ benithoxkishpix55@gmail.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('pro-stars-contractor',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-pro-stars-contractor"><textarea placeholder="Add a note…" onblur="saveNote('pro-stars-contractor',this.value)"></textarea></div>
-        </div>
-
-        <div class="acct-item" data-slug="the-best-air-quality">
-          <div class="acct-item-top">
-            <div><div class="acct-name">The Best Air Quality and Restoration</div><div class="acct-meta"><span class="acct-pill pill-red">36.55% pacing</span><span>Gap: $43,224</span><span>Goal: $47,206</span></div><div class="acct-meta"><a href="mailto:yourairspecialist@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ yourairspecialist@gmail.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('the-best-air-quality',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-the-best-air-quality"><textarea placeholder="Add a note…" onblur="saveNote('the-best-air-quality',this.value)"></textarea></div>
-        </div>
-
-        <div class="acct-item" data-slug="hvac-heroes">
-          <div class="acct-item-top">
-            <div><div class="acct-name">Hvac Heroes</div><div class="acct-meta"><span class="acct-pill pill-red">45.02% pacing</span><span>Gap: $44,604</span><span>Goal: $49,775</span></div><div class="acct-meta"><a href="mailto:hvacheroes@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ hvacheroes@gmail.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('hvac-heroes',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-hvac-heroes"><textarea placeholder="Add a note…" onblur="saveNote('hvac-heroes',this.value)"></textarea></div>
-        </div>
-
-        <div class="acct-item" data-slug="benjamin-franklin-plumbing-ct">
-          <div class="acct-item-top">
-            <div><div class="acct-name">Benjamin Franklin Plumbing of Connecticut</div><div class="acct-meta"><span class="acct-pill pill-red">38.16% pacing</span><span>Gap: $3,023</span><span>Goal: $27,809</span></div><div class="acct-meta"><a href="mailto:s.rochon@bfp13.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ s.rochon@bfp13.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('benjamin-franklin-plumbing-ct',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-benjamin-franklin-plumbing-ct"><textarea placeholder="Add a note…" onblur="saveNote('benjamin-franklin-plumbing-ct',this.value)"></textarea></div>
-        </div>
-
-        <div class="acct-item" data-slug="lane-roofing">
-          <div class="acct-item-top">
-            <div><div class="acct-name">Lane Roofing &amp; Exteriors</div><div class="acct-meta"><span class="acct-pill pill-red">48.06% pacing</span><span>Gap: $2,711</span><span>Goal: $29,686</span></div><div class="acct-meta"><a href="mailto:sarah@laneroofing.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ sarah@laneroofing.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('lane-roofing',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-lane-roofing"><textarea placeholder="Add a note…" onblur="saveNote('lane-roofing',this.value)"></textarea></div>
-        </div>
-
-        <div class="acct-item" data-slug="queta-construction">
-          <div class="acct-item-top">
-            <div><div class="acct-name">Queta Construction Group LLC</div><div class="acct-meta"><span class="acct-pill pill-red">39.41% pacing</span><span>Gap: $2,131</span><span>Goal: $19,994</span></div><div class="acct-meta"><a href="mailto:hrodriguez.qcg@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ hrodriguez.qcg@gmail.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('queta-construction',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-queta-construction"><textarea placeholder="Add a note…" onblur="saveNote('queta-construction',this.value)"></textarea></div>
-        </div>
-
-        <div class="acct-item" data-slug="fuse-hvac-appliance">
-          <div class="acct-item-top">
-            <div><div class="acct-name">Fuse HVAC &amp; Appliance Repair</div><div class="acct-meta"><span class="acct-pill pill-red">20.65% pacing</span><span>Gap: $1,900</span><span>Goal: $13,613</span></div><div class="acct-meta"><a href="mailto:luka23rus@gmail.com" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ luka23rus@gmail.com</a></div></div>
-            <button class="note-btn" onclick="toggleNote('fuse-hvac-appliance',this)">📝</button>
-          </div>
-          <div class="note-inline" id="note-fuse-hvac-appliance"><textarea placeholder="Add a note…" onblur="saveNote('fuse-hvac-appliance',this.value)"></textarea></div>
-        </div>
-
+        <div style="color:#bbb;font-size:12px;padding:14px 16px;">Calculating…</div>
       </div>
     </div>
     <div class="card-footer">
@@ -575,15 +478,8 @@
     </div>
   </div>
 
-  <!-- CARD 3: IN YOUR COURT -->
-  <div class="card" id="card-court">
-    <div class="card-header">
-      <div class="card-header-left">
-        <div class="card-title title-red"><span class="card-title-dot dot-red"></span>In Your Court</div>
-        <div class="card-desc">Pros who've reached out · awaiting you</div>
-      </div>
-      <span class="card-badge badge-red">20</span>
-    </div>
+  <!-- IYC CARD REMOVED IN V4 -->
+  <div class="card" id="card-court" style="display:none!important;">
     <div class="card-body">
       <div class="card-items" id="itc-items">
 
@@ -758,23 +654,20 @@
   <div class="card" id="card-schedule">
     <div class="card-header">
       <div class="card-header-left">
-        <div class="card-title title-teal"><span class="card-title-dot dot-teal"></span>Today's Schedule</div>
-        <div class="card-desc" id="cal-desc">Thursday, April 23 · 3 Pro calls · 10 events</div>
+        <div class="card-title">Today's Schedule</div>
+        <div class="card-desc" id="cal-desc">Loading…</div>
       </div>
-      <span class="card-badge" style="background:#e6faf6;color:#0f8a6a;">10 events</span>
+      <span class="card-badge" style="background:#f0f2f5;color:#666;">8 events</span>
     </div>
     <div class="card-body">
       <div class="card-items" id="cal-items">
-        <a class="cal-item" href="https://www.google.com/calendar/event?eid=M3Q2aWp1NnMzcnI5cW8yODVxODk2bms5MWtfMjAyNjA0MjNUMTMwMDAwWiBkZGlhc0B0aHVtYnRhY2suY29t" target="_blank"><div class="cal-time">9:00a</div><div class="cal-info"><div class="cal-title">Emails, To-Do's, VM's</div><div class="cal-detail">Morning block · 60 min</div></div></a>
-        <a class="cal-item" href="https://www.google.com/calendar/event?eid=NmNuaGMxYWU4OWc1dWl2anAzcTBxZjh2bDIgZGRpYXNAdGh1bWJ0YWNrLmNvbQ" target="_blank"><div class="cal-time">10:00a</div><div class="cal-info"><div class="cal-title">Truchoice integration issues</div><div class="cal-detail">Task · 30 min</div></div></a>
-        <a class="cal-item" href="https://www.google.com/calendar/event?eid=a3JxZHFwa2RqbXNqZTlkZmcxbnU2aTE3aDAgZGRpYXNAdGh1bWJ0YWNrLmNvbQ" target="_blank" style="background:#fff8e1;"><div class="cal-time">10:30a</div><div class="cal-info"><div class="cal-title">★ Sarah Kernizan — Trumbull BF Plumbing</div><div class="cal-detail">YCBM · Auto responder discussion · 15 min · +Destin · <a href="https://docs.google.com/document/d/1r_u6VuB4rj78iiFSoshGzr6Ed3ot4PuCeLtCTUbavVU/edit" target="_blank" style="color:#009FD9;">📋 Prep</a></div></div></a>
-        <a class="cal-item" href="https://www.google.com/calendar/event?eid=MTdqcnAwYjRnZDc5MnRnNWpjMTl0anFqMmRfMjAyNjA0MjNUMTYwMDAwWiBkZGlhc0B0aHVtYnRhY2suY29t" target="_blank"><div class="cal-time">12:00p</div><div class="cal-info"><div class="cal-title">Lunch</div><div class="cal-detail">Recurring · 60 min</div></div></a>
-        <a class="cal-item" href="https://www.google.com/calendar/event?eid=am5jZTg3dGxjMTY0MWFrb2xrN3A5b2Y4NmlfMjAyNjA0MjNUMTcwMDAwWiBkZGlhc0B0aHVtYnRhY2suY29t" target="_blank"><div class="cal-time">1:00p</div><div class="cal-info"><div class="cal-title">Global All Thumbs</div><div class="cal-detail">Internal · All-company · Zoom · 55 min</div></div></a>
-        <a class="cal-item" href="https://www.google.com/calendar/event?eid=N2QxcW1vb3VhMTNhbWRoc2RwbDlhdTY0Y2QgZGRpYXNAdGh1bWJ0YWNrLmNvbQ" target="_blank"><div class="cal-time">2:30p</div><div class="cal-info"><div class="cal-title">Thumbtack Numbers Nationwide Rollout</div><div class="cal-detail">Internal · lharrison + team · 30 min</div></div></a>
-        <a class="cal-item" href="https://www.google.com/calendar/event?eid=MXMyNWYyNnN1YWQzbjRlazFhN3JuMnUyNTUgZGRpYXNAdGh1bWJ0YWNrLmNvbQ" target="_blank"><div class="cal-time">3:00p</div><div class="cal-info"><div class="cal-title">StreetFair/AM Sync</div><div class="cal-detail">Internal · Blake (StreetFair) intro · Zoom · 15 min</div></div></a>
-        <a class="cal-item" href="https://www.google.com/calendar/event?eid=bzE4NmlyZDVoNXNxbzF1amdybGI4cWdlOTRfMjAyNjA0MjNUMTgwMDAwWiBkZGlhc0B0aHVtYnRhY2suY29t" target="_blank" style="background:#fff8e1;"><div class="cal-time">3:00p</div><div class="cal-info"><div class="cal-title">★ James Manchac — All Ears Roofing</div><div class="cal-detail">Monthly · MN expansion + ranking update · 30 min · <a href="https://docs.google.com/document/d/19yvsjQa63QVDWLP2pwVTU2L-GbBWWtt6_t-ay7m7iWo/edit" target="_blank" style="color:#009FD9;">📋 Prep</a></div></div></a>
-        <a class="cal-item" href="https://www.google.com/calendar/event?eid=b29qZWJtOG5paW90ODd2Y2RqY2U2dG5odGMgZGRpYXNAdGh1bWJ0YWNrLmNvbQ" target="_blank" style="background:#fff8e1;"><div class="cal-time">3:30p</div><div class="cal-info"><div class="cal-title">★ Shamla Soans — Star Trade Enterprise</div><div class="cal-detail">YCBM · Intro &amp; demo · 30 min · <a href="https://docs.google.com/document/d/12q_VgW7yTrES0VShrQBv8JftcoB_ghjgcl5Yq4W46bM/edit" target="_blank" style="color:#009FD9;">📋 Prep</a></div></div></a>
-        <a class="cal-item" href="https://www.google.com/calendar/event?eid=MjVobmd2ZzZmc2c1aWhkMnAxb2d1Z2FyMHNfMjAyNjA0MjNUMjAzMDAwWiBkZGlhc0B0aHVtYnRhY2suY29t" target="_blank"><div class="cal-time">4:30p</div><div class="cal-info"><div class="cal-title">EOD Wrap</div><div class="cal-detail">Recurring · 30 min</div></div></a>
+        <a class="cal-item" href="#" target="_blank"><div class="cal-time">6:00a</div><div class="cal-info"><div class="cal-title">Emails, To-Do's, VM's</div><div class="cal-detail">Morning block · 60 min</div></div></a>
+        <a class="cal-item" href="#" target="_blank"><div class="cal-time">9:00a</div><div class="cal-info"><div class="cal-title">Lunch</div><div class="cal-detail">Recurring · 60 min</div></div></a>
+        <a class="cal-item" href="https://thumbtack.zoom.us/j/86277566115?pwd=YZLFhG5oLOn4N3nRN3wkmhKKe8YQHW.1" target="_blank"><div class="cal-time">10:00a</div><div class="cal-info"><div class="cal-title">National AM Sync: Collaboration Time</div><div class="cal-detail">Internal · 55 min · Zoom</div></div></a>
+        <a class="cal-item" href="https://book.youcanbook.me/zoom/IDVJ-JRMK-SHKG" target="_blank" style="background:#fff8e1;"><div class="cal-time">11:00a</div><div class="cal-info"><div class="cal-title">★ Elizabeth &amp; Robbie (Mr. Sparky)</div><div class="cal-detail">Pro call · 30 min · <a href="https://docs.google.com/document/d/1nOhEhftu2-kpz_DCg4HotfFVSdHxq1uWHWQBzRkIb00/edit" target="_blank" style="color:#009FD9;">📋 Prep</a></div></div></a>
+        <a class="cal-item" href="https://book.youcanbook.me/zoom/XQGJ-TXMR-FAQG" target="_blank" style="background:#fff8e1;"><div class="cal-time">12:00p</div><div class="cal-info"><div class="cal-title">★ LeShaundra Greer (Greer Plumbing)</div><div class="cal-detail">Pro call · 30 min · <a href="https://docs.google.com/document/d/1o2bZQgiNLCDYVjyGOprGoQvwQIxwvoLl5bdAOJ8wWXI/edit" target="_blank" style="color:#009FD9;">📋 Prep</a></div></div></a>
+        <a class="cal-item" href="#" target="_blank"><div class="cal-time">12:30p</div><div class="cal-info"><div class="cal-title">Optional: Getting Started with Claude + Q&amp;A</div><div class="cal-detail">Internal · 60 min</div></div></a>
+        <a class="cal-item" href="#" target="_blank"><div class="cal-time">1:30p</div><div class="cal-info"><div class="cal-title">EOD Wrap</div><div class="cal-detail">Recurring · 30 min</div></div></a>
       </div>
     </div>
     <div class="card-footer">
@@ -782,31 +675,13 @@
     </div>
   </div>
 
-  <!-- CARD 5: KEY WINS -->
-  <div class="card" id="card-wins">
-    <div class="card-header">
-      <div class="card-header-left">
-        <div class="card-title title-green"><span class="card-title-dot dot-green"></span>Key Wins</div>
-        <div class="card-desc">Capture your wins as they happen</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="win-input-row">
-        <input class="win-input" id="win-input" type="text" placeholder="e.g. OT Bay signed 3-month deal…" onkeydown="if(event.key==='Enter')addWin()"/>
-        <button class="win-add-btn" onclick="addWin()">+ Add</button>
-      </div>
-      <div class="card-items" id="wins-list"></div>
-    </div>
-    <div class="card-footer">
-      <button class="expand-btn" onclick="toggleExpand('wins-list',this)">Show more</button>
-    </div>
-  </div>
+  <!-- KEY WINS CARD REMOVED IN V4 -->
 
-  <!-- CARD 6: FEEDBACK VAULT -->
+  <!-- CARD 5: FEEDBACK VAULT -->
   <div class="card" id="card-feedback">
     <div class="card-header">
       <div class="card-header-left">
-        <div class="card-title title-purple"><span class="card-title-dot dot-purple"></span>Feedback Vault</div>
+        <div class="card-title">Feedback Vault</div>
         <div class="card-desc">Pro feedback · use for QBRs &amp; coaching</div>
       </div>
     </div>
@@ -825,30 +700,7 @@
   </div>
 
 
-  <!-- CARD 7: ALL ACCOUNTS -->
-  <div class="card full-width" id="card-accounts">
-    <div class="card-header">
-      <div class="card-header-left">
-        <div class="card-title title-blue"><span class="card-title-dot dot-blue"></span>All Accounts</div>
-        <div class="card-desc">Your full book of business · search by name, contact, or email</div>
-      </div>
-      <span class="card-badge badge-blue" id="accts-count-badge"></span>
-    </div>
-    <div class="card-body">
-      <div class="accounts-search-wrap">
-        <input class="accounts-search-input" id="accounts-search" type="text" placeholder="Search by name, contact, or email…" oninput="filterAccountsList(this.value)"/>
-        <span class="accts-count-label" id="accts-count-label"></span>
-      </div>
-      <div class="accts-list-header">
-        <div class="accts-list-header-name">Account / Contact</div>
-        <div class="accts-list-header-col">Revenue</div>
-        <div class="accts-list-header-col">Goal</div>
-        <div class="accts-list-header-pacing">Pacing</div>
-        <div style="width:28px;flex-shrink:0;"></div>
-      </div>
-      <div class="accounts-grid-list" id="accounts-grid-list"></div>
-    </div>
-  </div>
+  <!-- ALL ACCOUNTS CARD REMOVED IN V4 -->
 
 </div>
 
@@ -865,7 +717,18 @@
   <div class="notes-section" id="notes-section">
     <div class="notes-section-header">
       <span class="notes-section-title">📝 All Notes</span>
-      <span id="notes-count-badge" class="card-badge badge-blue">0</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="notes-count-badge" class="card-badge badge-blue">0</span>
+        <button onclick="toggleAddNoteForm()" style="background:#009FD9;color:#fff;border:none;border-radius:6px;width:24px;height:24px;font-size:15px;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;">+</button>
+      </div>
+    </div>
+    <div id="add-note-form" style="display:none;padding:10px 16px 6px;border-bottom:1px solid #f0f2f5;">
+      <input id="add-note-label" type="text" placeholder="Account / label…" style="width:100%;border:1px solid #dde1e8;border-radius:6px;padding:6px 10px;font-size:12px;font-family:inherit;margin-bottom:6px;outline:none;"/>
+      <textarea id="add-note-text" placeholder="Note…" style="width:100%;border:1px solid #dde1e8;border-radius:6px;padding:6px 10px;font-size:12px;font-family:inherit;resize:none;height:52px;outline:none;"></textarea>
+      <div style="display:flex;gap:6px;margin-top:6px;">
+        <button onclick="submitManualNote()" style="background:#009FD9;color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;">Add</button>
+        <button onclick="toggleAddNoteForm()" style="background:#f0f2f5;color:#555;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;">Cancel</button>
+      </div>
     </div>
     <div id="notes-section-list"></div>
   </div>
@@ -873,8 +736,11 @@
 <div style="height:28px;"></div>
 
 <script>
-  // --- Header date ---
-  document.getElementById('header-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  // --- Header + schedule date ---
+  const _today = new Date();
+  const _dateStr = _today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('header-date').textContent = _dateStr;
+  document.getElementById('cal-desc').textContent = _today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
 
   // --- Pace delta color: green if ahead, red if behind ---
   const deltaEl = document.getElementById('pace-delta');
@@ -958,6 +824,8 @@
     saveStateToFile();
   }
 
+  let _notesShowAll = false;
+
   function renderNotesSection() {
     const hubNotes = getNotes();
     const onbNotesRaw = JSON.parse(localStorage.getItem('onboarding-notes') || '{}');
@@ -979,7 +847,9 @@
       return;
     }
     section.style.display = '';
-    list.innerHTML = allEntries.map(n => `
+    const reversed = [...allEntries].reverse();
+    const visible = _notesShowAll ? reversed : reversed.slice(0, 3);
+    const noteHtml = n => `
       <div class="note-entry">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
           <div>
@@ -989,7 +859,31 @@
           <button class="win-del" onclick="${n.type==='account'?`deleteNoteEntry('${n.key}')`:`deleteOnbNoteEntry('${n.key}')`}">✕</button>
         </div>
         <div class="note-text">${n.text}</div>
-      </div>`).join('');
+      </div>`;
+    const toggleBtn = allEntries.length > 3 ? `
+      <div style="padding:8px 16px;text-align:center;border-top:1px solid #f0f2f5;">
+        <button onclick="_notesShowAll=!_notesShowAll;renderNotesSection();" style="background:none;border:none;font-size:11px;font-weight:600;color:#009FD9;cursor:pointer;">
+          ${_notesShowAll ? 'Show less' : `Show all ${allEntries.length} notes`}
+        </button>
+      </div>` : '';
+    list.innerHTML = visible.map(noteHtml).join('') + toggleBtn;
+  }
+
+  function toggleAddNoteForm() {
+    const f = document.getElementById('add-note-form');
+    f.style.display = f.style.display === 'none' ? '' : 'none';
+    if (f.style.display !== 'none') document.getElementById('add-note-label').focus();
+  }
+
+  function submitManualNote() {
+    const label = document.getElementById('add-note-label').value.trim();
+    const text  = document.getElementById('add-note-text').value.trim();
+    if (!label || !text) return;
+    const slug = 'manual-' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    saveNote(slug, text);
+    document.getElementById('add-note-label').value = '';
+    document.getElementById('add-note-text').value = '';
+    toggleAddNoteForm();
   }
 
   refreshNoteButtons();
@@ -1035,7 +929,7 @@
   const STAGE_ORDER  = ['Introduction','Creating Profile','Platform Walkthrough'];
   const STAGE_COLORS = {'Introduction':'stage-blue','Creating Profile':'stage-orange','Platform Walkthrough':'stage-green'};
   const PILL_COLORS  = {'Introduction':'pill-blue','Creating Profile':'pill-yellow','Platform Walkthrough':'pill-green'};
-  const ARCHIVE_STAGES = ['Archive','Onboarding Complete'];
+  const ARCHIVE_STAGES = ['Closed Won','Closed Lost','Archive','Onboarding Complete'];
 
   function getQuarterLabel(isoDate) {
     if (!isoDate) return '';
@@ -1043,6 +937,56 @@
     const q = Math.floor(d.getMonth() / 3) + 1;
     const yr = String(d.getFullYear()).slice(2);
     return `Q${q} '${yr}`;
+  }
+
+  const ONB_CUSTOM_KEY = 'hub_custom_pros';
+
+  function getCustomPros() {
+    return JSON.parse(localStorage.getItem(ONB_CUSTOM_KEY) || '[]');
+  }
+
+  function getDeletedPros() {
+    return JSON.parse(localStorage.getItem('hub_deleted_pros') || '[]');
+  }
+
+  function getAllPros() {
+    const deleted = new Set(getDeletedPros());
+    return [...ONB_PROS, ...getCustomPros()].filter(p => !deleted.has(p.id));
+  }
+
+  function deleteOnbPro(id) {
+    if (!confirm('Remove this pro from the pipeline?')) return;
+    const deleted = getDeletedPros();
+    if (!deleted.includes(id)) deleted.push(id);
+    localStorage.setItem('hub_deleted_pros', JSON.stringify(deleted));
+    renderOnboarding();
+    renderOnboardingKanban();
+    saveStateToFile();
+  }
+
+  function toggleAddProForm() {
+    const f = document.getElementById('add-pro-form');
+    f.style.display = f.style.display === 'none' ? '' : 'none';
+    if (f.style.display !== 'none') document.getElementById('add-pro-name').focus();
+  }
+
+  function submitAddPro() {
+    const name  = document.getElementById('add-pro-name').value.trim();
+    const biz   = document.getElementById('add-pro-biz').value.trim();
+    const email = document.getElementById('add-pro-email').value.trim();
+    const stage = document.getElementById('add-pro-stage').value;
+    if (!name || !biz) return;
+    const id = 'custom-' + Date.now();
+    const custom = getCustomPros();
+    custom.push({id, name, biz, email: email || null, phone: null, stage, days: 0, urgent: false, alert: null});
+    localStorage.setItem(ONB_CUSTOM_KEY, JSON.stringify(custom));
+    document.getElementById('add-pro-name').value = '';
+    document.getElementById('add-pro-biz').value = '';
+    document.getElementById('add-pro-email').value = '';
+    toggleAddProForm();
+    renderOnboarding();
+    renderOnboardingKanban();
+    saveStateToFile();
   }
 
   function changeOnbStatus(id, newStage) {
@@ -1063,7 +1007,7 @@
 
   function renderOnboarding() {
     const saved = JSON.parse(localStorage.getItem(ONB_KEY) || '{}');
-    const pros = ONB_PROS.map(p => ({...p, stage: saved[p.id] || p.stage}))
+    const pros = getAllPros().map(p => ({...p, stage: saved[p.id] || p.stage}))
                          .filter(p => !ARCHIVE_STAGES.includes(p.stage));
 
     const grouped = {};
@@ -1085,10 +1029,8 @@
       if (!list.length) return;
       html += `<div class="stage-header"><span class="stage-label ${STAGE_COLORS[stage]}">${stage}</span><span class="acct-pill ${PILL_COLORS[stage]}">${list.length}</span></div>`;
       list.forEach(pro => {
-        const pillClass = pro.urgent ? 'pill-red' : pro.days <= 7 ? 'pill-yellow' : 'pill-blue';
-        const label = pro.urgent ? `${pro.days}d urgent` : `${pro.days}d`;
         const extra = pro.note ? `<span>${pro.note}</span>` : '';
-        const opts = [...STAGE_ORDER, 'Archive'].map(s =>
+        const opts = [...STAGE_ORDER, 'Closed Won', 'Closed Lost'].map(s =>
           `<option value="${s}"${s === pro.stage ? ' selected' : ''}>${s}</option>`).join('');
         const onbNotes = JSON.parse(localStorage.getItem('onboarding-notes') || '{}');
         const onbNote = onbNotes[pro.id] || '';
@@ -1098,12 +1040,13 @@
             <div class="acct-item-top">
               <div>
                 <div class="acct-name">${pro.name}</div>
-                <div class="acct-meta"><span class="acct-pill ${pillClass}">${label}</span><span>${pro.biz}</span>${extra}</div>
+                <div class="acct-meta"><span>${pro.biz}</span>${extra}</div>
                 ${pro.email ? `<div class="acct-meta" style="margin-top:2px;"><a href="mailto:${pro.email}" style="font-size:11px;color:#009FD9;text-decoration:none;" onclick="event.stopPropagation()">✉ ${pro.email}</a></div>` : ''}
               </div>
               <div style="display:flex;align-items:center;gap:6px;">
                 <select class="onb-stage-select" onchange="changeOnbStatus('${pro.id}',this.value)">${opts}</select>
                 <button class="note-btn${noteBtnHasNote}" onclick="toggleHubOnbNote('${pro.id}',this)">📝</button>
+                <button class="onb-del-btn" onclick="deleteOnbPro('${pro.id}')" title="Remove">✕</button>
               </div>
             </div>
             <div class="note-inline" id="hub-onb-note-${pro.id}">
@@ -1119,12 +1062,52 @@
   renderOnboarding();
   renderNotesSection();
 
+  // --- UPSIDE ACCOUNTS (from ALO Sheet — gap = col L Pacing-to-Goal Revenue − col K Revenue) ---
+  const HUB_UPSIDE_DATA = [
+    {name:'MRS Garage Door Services',                      email:'office@mrsgaragedoor.com',       revenue:5894,  p2g:26204, gap:20310, pacing:22.5},
+    {name:'Royal Moving & Storage',                        email:'office@royalmovingco.com',       revenue:8827,  p2g:22263, gap:13436, pacing:39.6},
+    {name:'Pro stars contractor Inc',                      email:'benithoxkishpix55@gmail.com',    revenue:1686,  p2g:14171, gap:12485, pacing:11.9},
+    {name:'Ocean Remodel',                                 email:'contact@oceanremodel.com',       revenue:4371,  p2g:16557, gap:12186, pacing:26.4},
+    {name:'The Best Air Quality and Restoration',          email:'yourairspecialist@gmail.com',    revenue:4099,  p2g:12450, gap:8351,  pacing:32.9},
+    {name:'Hvac Heroes',                                   email:'hvacheroes@gmail.com',           revenue:6318,  p2g:13128, gap:6810,  pacing:48.1},
+    {name:'Phoenix Pavers and Turf LLC',                   email:'lupe.celaya@yahoo.com',          revenue:273,   p2g:6049,  gap:5776,  pacing:4.5},
+    {name:'Clarity Construction',                          email:'info@clarity-construction.com',  revenue:14768, p2g:20279, gap:5511,  pacing:72.8},
+    {name:'Benjamin Franklin Plumbing of Connecticut',     email:'s.rochon@bfp13.com',             revenue:2735,  p2g:7334,  gap:4599,  pacing:37.3},
+    {name:'RELIABLE MOVING SERVICES - 3 HOUR min. charge', email:'rms3105007174@yahoo.com',        revenue:17553, p2g:21583, gap:4030,  pacing:81.3},
+  ];
+
+  function renderUpsideAccounts() {
+    const allNotes = getNotes();
+    const fmt = n => n >= 1000 ? '$' + Math.round(n/1000) + 'k' : '$' + Math.round(n);
+    const badge = document.getElementById('upside-badge');
+    if (badge) badge.textContent = 'Top 10 · Apr 24';
+    document.getElementById('upside-items').innerHTML = HUB_UPSIDE_DATA.map(a => {
+      const slug = a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const noteText = allNotes[slug] || '';
+      const pillCls = a.pacing < 50 ? 'pill-red' : a.pacing < 80 ? 'pill-yellow' : 'pill-green';
+      return `
+        <div class="acct-item" data-slug="${slug}">
+          <div class="acct-item-top">
+            <div>
+              <div class="acct-name">${a.name}</div>
+              <div class="acct-meta"><span class="acct-pill ${pillCls}">${fmt(a.gap)} gap</span><span>${a.pacing.toFixed(1)}% pacing</span><span>P2G: ${fmt(a.p2g)}</span></div>
+              <div class="acct-meta"><a href="mailto:${a.email}" style="font-size:11px;color:#009FD9;text-decoration:none;">✉ ${a.email}</a></div>
+            </div>
+            <button class="note-btn${noteText ? ' has-note' : ''}" onclick="toggleNote('${slug}',this)">📝</button>
+          </div>
+          <div class="note-inline" id="note-${slug}"><textarea placeholder="Add a note…" onblur="saveNote('${slug}',this.value)">${noteText}</textarea></div>
+        </div>`;
+    }).join('');
+  }
+  renderUpsideAccounts();
+
   // --- ONBOARDING KANBAN (page-mode full view) ---
   function renderOnboardingKanban() {
     const saved = JSON.parse(localStorage.getItem(ONB_KEY) || '{}');
-    const pros  = ONB_PROS.map(p => ({...p, stage: saved[p.id] || p.stage}));
-    const active   = pros.filter(p => !ARCHIVE_STAGES.includes(p.stage));
-    const archived = pros.filter(p =>  ARCHIVE_STAGES.includes(p.stage));
+    const pros  = getAllPros().map(p => ({...p, stage: saved[p.id] || p.stage}));
+    const active    = pros.filter(p => !ARCHIVE_STAGES.includes(p.stage));
+    const closedWon  = pros.filter(p => p.stage === 'Closed Won');
+    const closedLost = pros.filter(p => ['Closed Lost','Archive','Onboarding Complete'].includes(p.stage));
     const grouped  = {};
     STAGE_ORDER.forEach(s => { grouped[s] = []; });
     active.forEach(p => { if (grouped[p.stage]) grouped[p.stage].push(p); });
@@ -1137,7 +1120,8 @@
         <div class="onb-stat"><div class="onb-stat-val" style="color:#009FD9">${grouped['Introduction'].length}</div><div class="onb-stat-label">Intro</div></div>
         <div class="onb-stat"><div class="onb-stat-val" style="color:#F5A623">${grouped['Creating Profile'].length}</div><div class="onb-stat-label">Creating</div></div>
         <div class="onb-stat"><div class="onb-stat-val" style="color:#27AE60">${grouped['Platform Walkthrough'].length}</div><div class="onb-stat-label">Walkthrough</div></div>
-        <div class="onb-stat"><div class="onb-stat-val" style="color:#bbb">${archived.length}</div><div class="onb-stat-label">Archived</div></div>
+        <div class="onb-stat"><div class="onb-stat-val" style="color:#27AE60">${closedWon.length}</div><div class="onb-stat-label">Won</div></div>
+        <div class="onb-stat"><div class="onb-stat-val" style="color:#bbb">${closedLost.length}</div><div class="onb-stat-label">Lost</div></div>
       </div>
       <div class="onb-kanban-grid">`;
 
@@ -1150,17 +1134,15 @@
         </div>
         <div class="onb-col-cards">`;
       list.forEach(pro => {
-        const pillClass = pro.urgent ? 'pill-red' : pro.days <= 7 ? 'pill-yellow' : 'pill-blue';
-        const daysLabel = pro.urgent ? `${pro.days}d urgent` : `${pro.days}d`;
-        const opts = [...STAGE_ORDER, 'Archive'].map(s =>
+        const opts = [...STAGE_ORDER, 'Closed Won', 'Closed Lost'].map(s =>
           `<option value="${s}"${s === pro.stage ? ' selected' : ''}>${s}</option>`).join('');
         const noteText = onbNotes[pro.id] || '';
         const noteBtnHasNote = noteText ? ' has-note' : '';
         html += `
           <div class="onb-pro-card">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
               <div class="onb-pro-name">${pro.name}</div>
-              <span class="acct-pill ${pillClass}" style="font-size:9px;flex-shrink:0;margin-top:2px;">${daysLabel}</span>
+              <button class="onb-del-btn" onclick="deleteOnbPro('${pro.id}')" title="Remove">✕</button>
             </div>
             <div class="onb-pro-biz">${pro.biz}</div>
             <div class="onb-pro-meta">
@@ -1181,24 +1163,42 @@
     });
     html += `</div>`;
 
-    if (archived.length) {
-      const archiveDates = JSON.parse(localStorage.getItem('hub_archive_dates') || '{}');
-      html += `<div style="padding:10px 20px 20px;">
-        <div style="font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">✅ Archived</div>
+    const archiveDates = JSON.parse(localStorage.getItem('hub_archive_dates') || '{}');
+    const renderClosedSection = (list, title, color) => {
+      if (!list.length) return '';
+      let s = `<div style="padding:10px 20px 4px;">
+        <div style="font-size:10px;font-weight:700;color:${color};text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">${title}</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">`;
-      archived.forEach(pro => {
+      const otherClosed = title.includes('Won') ? 'Closed Lost' : 'Closed Won';
+      const moveOpts = (cur) => `<option value="">Move to…</option>${[...STAGE_ORDER, otherClosed].map(s => `<option value="${s}">${s}</option>`).join('')}`;
+      list.forEach(pro => {
         const qLabel = getQuarterLabel(archiveDates[pro.id]);
-        html += `<div class="onb-pro-card" style="opacity:0.55;">
+        const noteText = onbNotes[pro.id] || '';
+        const noteBtnHasNote = noteText ? ' has-note' : '';
+        s += `<div class="onb-pro-card" style="opacity:0.7;">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">
-            <div class="onb-pro-name">${pro.name}</div>
-            ${qLabel ? `<span style="flex-shrink:0;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;background:rgba(180,180,180,0.18);color:#888;">${qLabel}</span>` : ''}
+            <div style="display:flex;align-items:center;gap:4px;">
+              <div class="onb-pro-name">${pro.name}</div>
+              ${qLabel ? `<span style="flex-shrink:0;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;background:rgba(180,180,180,0.18);color:#888;">${qLabel}</span>` : ''}
+            </div>
+            <button class="onb-del-btn" onclick="deleteOnbPro('${pro.id}')" title="Remove">✕</button>
           </div>
           <div class="onb-pro-biz">${pro.biz}</div>
           ${pro.email ? `<div style="font-size:10px;color:#888;">✉ ${pro.email}</div>` : ''}
+          <div class="onb-pro-footer">
+            <select class="onb-stage-select" style="flex:1;" onchange="if(this.value){changeOnbStatus('${pro.id}',this.value);renderOnboardingKanban();}">${moveOpts(pro.stage)}</select>
+            <button class="note-btn${noteBtnHasNote}" onclick="toggleHubOnbKNote('${pro.id}',this)">📝</button>
+          </div>
+          <div class="note-inline" id="hub-onb-knote-${pro.id}">
+            <textarea placeholder="Add a note…" onblur="saveHubOnbNote('${pro.id}',this.value)">${noteText}</textarea>
+          </div>
         </div>`;
       });
-      html += `</div></div>`;
-    }
+      s += `</div></div>`;
+      return s;
+    };
+    html += renderClosedSection(closedWon,  '✅ Closed Won',  '#1a6b3a');
+    html += renderClosedSection(closedLost, '✕ Closed Lost', '#aaa');
 
     document.getElementById('onb-kanban').innerHTML = html;
   }
@@ -1368,104 +1368,15 @@
     { name: 'Mister Sparky of Mansfield', contact: 'Maribel Delgado', email: 'cesar.padilla.gonzalez@hotmail.com', goal: 0, revenue: 0, pacing: 0.0 },
   ];
 
-  function getAccounts() {
-    const stored = localStorage.getItem('hub_accounts');
-    return stored ? JSON.parse(stored) : HUB_ACCOUNTS_DEFAULT;
-  }
-
-  function pacingPill(pct) {
-    if (!pct) return '<span class="accts-pacing" style="background:#f0f2f5;color:#aaa;">—</span>';
-    let bg, color;
-    if (pct >= 100)     { bg='#e8f8f0'; color='#1e8449'; }
-    else if (pct >= 85) { bg='#e6f7ff'; color='#0077aa'; }
-    else if (pct >= 65) { bg='#fef3e2'; color='#b07700'; }
-    else                { bg='#fde8e8'; color='#c0392b'; }
-    return `<span class="accts-pacing" style="background:${bg};color:${color};">${pct.toFixed(1)}%</span>`;
-  }
-
-  function renderAccountsCard(accounts) {
-    accounts = accounts || getAccounts();
-    const list  = document.getElementById('accounts-grid-list');
-    const badge = document.getElementById('accts-count-badge');
-    const label = document.getElementById('accts-count-label');
-    if (badge) badge.textContent = accounts.length + ' accounts';
-    if (label) label.textContent = accounts.length + ' accounts';
-    if (!list) return;
-    if (!accounts.length) {
-      list.innerHTML = '<div style="padding:20px;text-align:center;color:#bbb;font-size:12px;">No accounts match.</div>';
-      return;
-    }
-    const fmt = n => (n && n > 0) ? (n >= 1000 ? '$' + Math.round(n/1000) + 'k' : '$' + Math.round(n)) : '—';
-    const allNotes = getNotes();
-    list.innerHTML = accounts.map(a => {
-      const slug = a.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-      const noteText = allNotes[slug] || '';
-      const noteBtnClass = noteText ? 'note-btn has-note' : 'note-btn';
-      return `
-        <div class="accts-row-wrap">
-          <div class="accts-row">
-            <div class="accts-col-name">
-              <div class="accts-row-name">${a.name}</div>
-              ${a.contact ? `<div class="accts-row-contact">${a.contact}</div>` : ''}
-              ${a.email ? `<div class="accts-row-email">${a.email.split(',')[0].trim()}</div>` : ''}
-            </div>
-            <div class="accts-col-num"><div class="accts-num">${fmt(a.revenue)}</div><div class="accts-num-label">Rev</div></div>
-            <div class="accts-col-num"><div class="accts-num">${fmt(a.goal)}</div><div class="accts-num-label">Goal</div></div>
-            <div class="accts-col-pacing">${pacingPill(a.pacing)}</div>
-            <div class="accts-col-note"><button class="${noteBtnClass}" id="note-btn-${slug}" onclick="toggleAcctNote('${slug}',this)">📝</button></div>
-          </div>
-          <div class="note-inline" id="acct-note-${slug}">
-            <textarea placeholder="Add a note…" onblur="saveNote('${slug}',this.value)">${noteText}</textarea>
-          </div>
-        </div>`;
-    }).join('');
-  }
-
-  function filterAccountsList(query) {
-    const q = query.toLowerCase().trim();
-    const all = getAccounts();
-    renderAccountsCard(q ? all.filter(a =>
-      a.name.toLowerCase().includes(q) ||
-      (a.contact && a.contact.toLowerCase().includes(q)) ||
-      (a.email && a.email.toLowerCase().includes(q))
-    ) : all);
-  }
-
   function updateFeedbackAutocomplete() {
     const dl = document.getElementById('fb-accounts-datalist');
     if (!dl) return;
-    dl.innerHTML = getAccounts().map(a =>
+    dl.innerHTML = HUB_ACCOUNTS_DEFAULT.map(a =>
       `<option value="${a.name}">${a.contact ? a.name + ' — ' + a.contact : ''}</option>`
     ).join('');
   }
 
-  renderAccountsCard();
   updateFeedbackAutocomplete();
-
-  // --- KEY WINS ---
-  function loadWins() {
-    const wins = JSON.parse(localStorage.getItem('hub_wins') || '[]');
-    document.getElementById('wins-list').innerHTML = wins.length === 0
-      ? '<div class="acct-item"><span style="color:#bbb;font-size:12px;">No wins logged yet — add one above!</span></div>'
-      : wins.map((w,i) => `<div class="win-item"><div><div class="win-text">${w.text}</div><div class="win-date">${w.date}</div></div><button class="win-del" onclick="deleteWin(${i})">✕</button></div>`).join('');
-  }
-  function addWin() {
-    const input = document.getElementById('win-input');
-    const text = input.value.trim();
-    if (!text) return;
-    const wins = JSON.parse(localStorage.getItem('hub_wins') || '[]');
-    wins.unshift({text, date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});
-    localStorage.setItem('hub_wins', JSON.stringify(wins));
-    input.value = '';
-    loadWins();
-  }
-  function deleteWin(i) {
-    const wins = JSON.parse(localStorage.getItem('hub_wins') || '[]');
-    wins.splice(i,1);
-    localStorage.setItem('hub_wins', JSON.stringify(wins));
-    loadWins();
-  }
-  loadWins();
 
   // --- FEEDBACK VAULT ---
   function loadFeedback() {
@@ -1484,12 +1395,14 @@
     document.getElementById('fb-account').value = '';
     document.getElementById('fb-text').value = '';
     loadFeedback();
+    saveStateToFile();
   }
   function deleteFeedback(i) {
     const items = JSON.parse(localStorage.getItem('hub_feedback') || '[]');
     items.splice(i,1);
     localStorage.setItem('hub_feedback', JSON.stringify(items));
     loadFeedback();
+    saveStateToFile();
   }
   loadFeedback();
 
@@ -1543,11 +1456,8 @@
   const NAV_CARDS = [
     { id: 'card-onboarding', label: 'Onboarding Pipeline' },
     { id: 'card-upside',     label: 'Upside Accounts' },
-    { id: 'card-court',      label: 'In Your Court' },
     { id: 'card-schedule',   label: "Today's Schedule" },
-    { id: 'card-wins',       label: 'Key Wins' },
     { id: 'card-feedback',   label: 'Feedback Vault' },
-    { id: 'card-accounts',   label: 'All Accounts' },
     { id: 'notes-section-wrap', label: 'All Notes' },
   ];
 
@@ -1585,7 +1495,7 @@
     const bc = document.getElementById('page-breadcrumb');
     if (bc) { bc.style.display = 'none'; bc.textContent = ''; }
     const backBtn = document.getElementById('nav-back-btn');
-    if (backBtn) backBtn.style.display = 'none';
+    if (backBtn) backBtn.style.removeProperty('display');
   }
 
   // --- FILE PERSISTENCE ---
@@ -1646,7 +1556,7 @@
       if (state.hub_feedback)     localStorage.setItem('hub_feedback', JSON.stringify(state.hub_feedback));
       if (state.archive_dates)    localStorage.setItem('hub_archive_dates', JSON.stringify(state.archive_dates));
       _showLinkedIndicator();
-      renderOnboarding(); refreshNoteButtons(); renderNotesSection();
+      renderOnboarding(); refreshNoteButtons(); renderNotesSection(); loadFeedback(); renderUpsideAccounts();
     } catch(e) {
       console.warn('[Hub] Could not load state:', e);
       _showLinkBtn();
@@ -1695,8 +1605,7 @@
     if (!e.key) return;
     if (e.key === 'onboarding-v2')    { renderOnboarding(); }
     if (e.key === 'onboarding-notes') { renderOnboarding(); renderNotesSection(); }
-    if (e.key === 'hub_notes')        { refreshNoteButtons(); renderNotesSection(); }
-    if (e.key === 'hub_wins')         { loadWins(); }
+    if (e.key === 'hub_notes')        { refreshNoteButtons(); renderNotesSection(); renderUpsideAccounts(); }
     if (e.key === 'hub_feedback')     { loadFeedback(); }
   });
 </script>
