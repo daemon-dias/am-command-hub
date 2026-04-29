@@ -184,34 +184,33 @@
     .accounts-grid-list::-webkit-scrollbar { width: 4px; }
     .accounts-grid-list::-webkit-scrollbar-thumb { background: #dde1e8; border-radius: 4px; }
 
-    /* MOBILE RESPONSIVE */
-    @media (max-width: 768px) {
-      .header { padding: 10px 14px; }
-      .header-subtitle, .header-date { display: none; }
-      .dark-toggle span { display: none; }
-      .revenue-bar { padding: 12px 14px; }
-      .rev-top { flex-direction: column; align-items: flex-start; gap: 6px; }
-      .rev-stats { gap: 16px; flex-wrap: wrap; }
-      .rev-stat-value { font-size: 16px; }
-      .rev-pacing { align-self: flex-start; }
-      .quick-actions { padding: 10px 14px 4px; gap: 8px; }
-      .qa-btn { padding: 8px 12px; font-size: 11px; }
-      .main { padding: 12px 14px; grid-template-columns: 1fr; gap: 12px; }
-      .full-width { grid-column: 1; }
-      .card-items { max-height: 300px; }
-      .card-items.expanded { max-height: 520px; }
-      .acct-meta { font-size: 10px; gap: 6px; }
-      .accts-col-num, .accts-list-header-col { width: 60px; font-size: 9px; }
-      .accts-col-pacing, .accts-list-header-pacing { width: 48px; }
-      /* Onboarding kanban page */
-      .onb-kanban-grid { grid-template-columns: 1fr; gap: 10px; padding: 12px 14px; }
-      .onb-summary-bar { padding: 10px 14px; gap: 8px; }
-      .onb-stat { padding: 5px 10px; min-width: 52px; }
-      .onb-stat-val { font-size: 15px; }
-      body.page-mode .main { padding: 12px 14px; }
-      body.page-mode .notes-section-wrap.page-active { margin: 0 14px 14px; }
-      .card.page-active .card-items { max-height: calc(100vh - 120px) !important; }
-    }
+    /* MOBILE RESPONSIVE — applied via body.mobile-view class (auto or manual toggle) */
+    body.mobile-view .header { padding: 10px 14px; }
+    body.mobile-view .header-subtitle, body.mobile-view .header-date { display: none; }
+    body.mobile-view .revenue-bar { padding: 12px 14px; }
+    body.mobile-view .rev-top { flex-direction: column; align-items: flex-start; gap: 6px; }
+    body.mobile-view .rev-stats { gap: 16px; flex-wrap: wrap; }
+    body.mobile-view .rev-stat-value { font-size: 16px; }
+    body.mobile-view .rev-pacing { align-self: flex-start; }
+    body.mobile-view .quick-actions { padding: 10px 14px 4px; gap: 8px; }
+    body.mobile-view .qa-btn { padding: 8px 12px; font-size: 11px; }
+    body.mobile-view .main { padding: 12px 14px; grid-template-columns: 1fr; gap: 12px; }
+    body.mobile-view .full-width { grid-column: 1; }
+    body.mobile-view .card-items { max-height: 300px; }
+    body.mobile-view .card-items.expanded { max-height: 520px; }
+    body.mobile-view .acct-meta { font-size: 10px; gap: 6px; }
+    body.mobile-view .accts-col-num, body.mobile-view .accts-list-header-col { width: 60px; font-size: 9px; }
+    body.mobile-view .accts-col-pacing, body.mobile-view .accts-list-header-pacing { width: 48px; }
+    body.mobile-view .onb-kanban-grid { grid-template-columns: 1fr; gap: 10px; padding: 12px 14px; }
+    body.mobile-view .onb-summary-bar { padding: 10px 14px; gap: 8px; }
+    body.mobile-view .onb-stat { padding: 5px 10px; min-width: 52px; }
+    body.mobile-view .onb-stat-val { font-size: 15px; }
+    body.mobile-view.page-mode .main { padding: 12px 14px; }
+    body.mobile-view.page-mode .notes-section-wrap.page-active { margin: 0 14px 14px; }
+    body.mobile-view .card.page-active .card-items { max-height: calc(100vh - 120px) !important; }
+    .mobile-toggle { background: #f0f2f5; border: 1px solid #e0e4ea; border-radius: 20px; padding: 5px 10px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+    .mobile-toggle:hover { border-color: #009FD9; }
+    body.dark .mobile-toggle { background: #151515; border-color: #2a2a2a; }
 
     /* DARK MODE */
     body.dark { background: #0a0a0a; color: #d0d0d0; }
@@ -386,7 +385,7 @@
     <button class="hamburger-btn" id="hamburger-btn" onclick="openNav()" title="Navigate cards">☰</button>
     <div class="tt-logo">T</div>
     <div>
-      <div class="header-title">AM Command Hub</div>
+      <div class="header-title">AM Dash</div>
       <div class="header-subtitle">Daemon Dias · Thumbtack</div>
     </div>
   </div>
@@ -396,6 +395,7 @@
     <span class="header-date" id="header-date"></span>
     <button id="link-storage-btn" onclick="linkStateFile()" title="Link hub-state.json to persist notes &amp; stages" style="display:none;padding:5px 10px;border-radius:8px;border:1px solid #F5A623;background:rgba(245,166,35,0.1);color:#b07700;font-size:11px;font-weight:700;cursor:pointer;align-items:center;gap:5px;">🔗 Link Storage</button>
     <span id="storage-linked-ind" title="State file linked — all changes auto-save" style="display:none;padding:5px 8px;border-radius:8px;background:rgba(39,174,96,0.1);color:#1a6b3a;font-size:11px;font-weight:700;align-items:center;gap:4px;">💾 Linked</span>
+    <button id="mobile-toggle" class="mobile-toggle" onclick="toggleMobileView()" title="Toggle mobile layout">📱</button>
     <button id="dark-toggle" class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
     <button class="refresh-btn" onclick="window.location.reload()">↻ Refresh</button>
   </div>
@@ -928,6 +928,23 @@
     document.body.classList.add('dark');
     document.getElementById('dark-toggle').textContent = '☀️ Light';
   }
+
+  // MOBILE VIEW TOGGLE
+  function applyMobileView() {
+    const pref = localStorage.getItem('hub_mobile');
+    const autoMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isMobile = pref === '1' || (pref !== '0' && autoMobile);
+    document.body.classList.toggle('mobile-view', isMobile);
+    document.getElementById('mobile-toggle').textContent = isMobile ? '🖥️' : '📱';
+    document.getElementById('mobile-toggle').title = isMobile ? 'Switch to desktop layout' : 'Switch to mobile layout';
+  }
+  function toggleMobileView() {
+    const isMobile = document.body.classList.contains('mobile-view');
+    localStorage.setItem('hub_mobile', isMobile ? '0' : '1');
+    applyMobileView();
+  }
+  window.matchMedia('(max-width: 768px)').addEventListener('change', applyMobileView);
+  applyMobileView();
 
   // --- ONBOARDING CARD (reads/writes localStorage['onboarding-v2']) ---
   const ONB_KEY = 'onboarding-v2';
