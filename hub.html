@@ -184,6 +184,27 @@
     .accounts-grid-list::-webkit-scrollbar { width: 4px; }
     .accounts-grid-list::-webkit-scrollbar-thumb { background: #dde1e8; border-radius: 4px; }
 
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 768px) {
+      .header { padding: 10px 14px; }
+      .header-subtitle, .header-date { display: none; }
+      .dark-toggle span { display: none; }
+      .revenue-bar { padding: 12px 14px; }
+      .rev-top { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .rev-stats { gap: 16px; flex-wrap: wrap; }
+      .rev-stat-value { font-size: 16px; }
+      .rev-pacing { align-self: flex-start; }
+      .quick-actions { padding: 10px 14px 4px; gap: 8px; }
+      .qa-btn { padding: 8px 12px; font-size: 11px; }
+      .main { padding: 12px 14px; grid-template-columns: 1fr; gap: 12px; }
+      .full-width { grid-column: 1; }
+      .card-items { max-height: 300px; }
+      .card-items.expanded { max-height: 520px; }
+      .acct-meta { font-size: 10px; gap: 6px; }
+      .accts-col-num, .accts-list-header-col { width: 60px; font-size: 9px; }
+      .accts-col-pacing, .accts-list-header-pacing { width: 48px; }
+    }
+
     /* DARK MODE */
     body.dark { background: #0a0a0a; color: #d0d0d0; }
     body.dark .header { background: #0f0f0f; border-color: #1e1e1e; }
