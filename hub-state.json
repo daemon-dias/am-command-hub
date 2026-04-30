@@ -44,6 +44,14 @@
   "account_notes": {
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
+  "last_summary": {
+    "goal": 1446004,
+    "rev": 391031,
+    "p2g": 460820,
+    "rev_pct": 27.04,
+    "p2g_pct": 31.87,
+    "updated": "2026-04-30"
+  },
   "hub_wins": [],
   "hub_feedback": [],
   "archive_dates": {
