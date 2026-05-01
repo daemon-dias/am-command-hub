@@ -18,6 +18,7 @@
     "card-urmi-marshall": "Introduction",
     "card-shahbaaz": "Archive",
     "card-ed-adams": "Introduction",
+    "card-robbie-sparky": "Introduction",
     "custom-1777405332834": "Closed Won"
   },
   "onboarding_notes": {
@@ -39,29 +40,33 @@
     "card-keith-lagreze": "Ghosted",
     "card-mike-day": "Ghosted",
     "card-treva-mcdaniels": "Ghosted",
-    "card-aleshia-rogers": "CW"
+    "card-aleshia-rogers": "CW",
+    "card-robbie-sparky": "Reno conference Apr 22 — forwarding to marketing contact Elizebeth"
   },
   "account_notes": {
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1446004,
-    "rev": 391031,
-    "p2g": 460820,
-    "rev_pct": 27.04,
-    "p2g_pct": 31.87,
-    "updated": "2026-04-30"
+    "goal": 1406779,
+    "rev": 387099,
+    "p2g": 463773,
+    "rev_pct": 27.52,
+    "p2g_pct": 32.97,
+    "updated": "2026-05-01"
   },
   "hub_wins": [],
   "hub_feedback": [],
   "archive_dates": {
     "card-jim-jones": "2026-03-31T16:38:06.434Z",
     "card-cesar-padilla": "2026-03-31T18:11:59.750Z",
-    "card-eric-beezhold": "2026-03-31T18:12:51.345Z",
+    "card-eric-beezhold": "2026-03-31T18:12:51.843Z",
     "card-shahbaaz": "2026-04-21T15:43:34.940Z",
     "card-stacey-davis": "2026-04-21T15:46:37.243Z",
     "card-aleshia-rogers": "2026-04-24T15:53:18.022Z",
     "card-nolan-jacobs": "2026-04-24T19:26:50.228Z",
     "custom-1777405332834": "2026-04-28T19:42:22.201Z"
+  },
+  "card_start_dates": {
+    "card-robbie-sparky": "2026-05-01"
   }
 }
