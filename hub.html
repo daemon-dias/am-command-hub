@@ -430,7 +430,7 @@
           <div class="pacing-pct" style="color:#9b7fd4;font-size:22px;">32.97%</div>
         </div>
       </div>
-      <div id="pace-delta" style="text-align:right;margin-top:4px;font-size:11px;font-weight:700;color:#E74C3C;">Q2 Day 31 · $408,495 booked · P2G $477,673 · 32.97% of QTR goal · ↓ $85,101 behind pace</div>
+      <div id="pace-delta" style="text-align:right;margin-top:4px;font-size:11px;font-weight:700;color:#E74C3C;">Q2 Day 31 · $408,495 booked · P2G $477,673 · 32.97% of QTR goal · ↓ $69,178 behind P2G</div>
     </div>
   </div>
   <div class="progress-track" style="position:relative;">
@@ -1112,21 +1112,21 @@
 
   // --- UPSIDE ACCOUNTS (from ALO Sheet — gap = col L Pacing-to-Goal Revenue − col K Revenue) ---
   const HUB_UPSIDE_DATA = [
-    {name:'MRS Garage Door Services',                      email:'office@mrsgaragedoor.com',        revenue:7815,  p2g:32755, gap:24940, pacing:23.86},
-    {name:'Royal Moving & Storage',                        email:'office@royalmovingco.com',        revenue:11084, p2g:27829, gap:16745, pacing:39.83},
-    {name:'Pro stars contractor Inc',                      email:'benithoxkishpix55@gmail.com',     revenue:1919,  p2g:17713, gap:15794, pacing:10.84},
-    {name:'Ocean Remodel',                                 email:'contact@oceanremodel.com',        revenue:7871,  p2g:20696, gap:12825, pacing:38.03},
-    {name:'The Best Air Quality and Restoration',          email:'yourairspecialist@gmail.com',     revenue:5726,  p2g:15562, gap:9836,  pacing:36.8},
-    {name:'Phoenix Pavers and Turf LLC',                   email:'lupe.celaya@yahoo.com',           revenue:1086,  p2g:7561,  gap:6475,  pacing:14.36},
-    {name:'Benjamin Franklin Plumbing of Connecticut',     email:'s.rochon@bfp13.com',              revenue:3495,  p2g:9168,  gap:5673,  pacing:38.12},
-    {name:'Hvac Heroes',                                   email:'hvacheroes@gmail.com',            revenue:12039, p2g:16409, gap:4370,  pacing:73.37},
-    {name:'RELIABLE MOVING SERVICES - 3 HOUR min. charge',email:'rms3105007174@yahoo.com',          revenue:23012, p2g:26978, gap:3966,  pacing:85.30},
-    {name:'Fuse HVAC & Appliance repair',                  email:'luka23rus@gmail.com',             revenue:587,   p2g:4488,  gap:3901,  pacing:13.07},
+    {name:'MRS Garage Door Services',                      email:'office@mrsgaragedoor.com',        revenue:7815,  p2g:32755, gap:-24940, pacing:23.86},
+    {name:'Royal Moving & Storage',                        email:'office@royalmovingco.com',        revenue:11084, p2g:27829, gap:-16745, pacing:39.83},
+    {name:'Pro stars contractor Inc',                      email:'benithoxkishpix55@gmail.com',     revenue:1919,  p2g:17713, gap:-15794, pacing:10.84},
+    {name:'Ocean Remodel',                                 email:'contact@oceanremodel.com',        revenue:7871,  p2g:20696, gap:-12825, pacing:38.03},
+    {name:'The Best Air Quality and Restoration',          email:'yourairspecialist@gmail.com',     revenue:5726,  p2g:15562, gap:-9836,  pacing:36.8},
+    {name:'Phoenix Pavers and Turf LLC',                   email:'lupe.celaya@yahoo.com',           revenue:1086,  p2g:7561,  gap:-6475,  pacing:14.36},
+    {name:'Benjamin Franklin Plumbing of Connecticut',     email:'s.rochon@bfp13.com',              revenue:3495,  p2g:9168,  gap:-5673,  pacing:38.12},
+    {name:'Hvac Heroes',                                   email:'hvacheroes@gmail.com',            revenue:12039, p2g:16409, gap:-4370,  pacing:73.37},
+    {name:'RELIABLE MOVING SERVICES - 3 HOUR min. charge',email:'rms3105007174@yahoo.com',          revenue:23012, p2g:26978, gap:-3966,  pacing:85.30},
+    {name:'Fuse HVAC & Appliance repair',                  email:'luka23rus@gmail.com',             revenue:587,   p2g:4488,  gap:-3901,  pacing:13.07},
   ];
 
   function renderUpsideAccounts() {
     const allNotes = getNotes();
-    const fmt = n => n >= 1000 ? '$' + Math.round(n/1000) + 'k' : '$' + Math.round(n);
+    const fmt = n => { const abs = Math.abs(n); const s = abs >= 1000 ? '$' + Math.round(abs/1000) + 'k' : '$' + Math.round(abs); return n < 0 ? '-' + s : s; };
     const badge = document.getElementById('upside-badge');
     if (badge) badge.textContent = 'Top 10 · May 1';
     document.getElementById('upside-items').innerHTML = HUB_UPSIDE_DATA.map(a => {
