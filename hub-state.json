@@ -47,12 +47,12 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1448942,
-    "rev": 408495,
-    "p2g": 477673,
-    "rev_pct": 28.19,
-    "p2g_pct": 32.97,
-    "updated": "2026-05-01"
+    "goal": 1424317,
+    "rev": 430697,
+    "p2g": 516509,
+    "rev_pct": 30.24,
+    "p2g_pct": 36.26,
+    "updated": "2026-05-04"
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -68,6 +68,7 @@
   },
   "card_start_dates": {
     "card-robbie-sparky": "2026-05-01",
-    "card-somesh-drymedic": "2026-05-01"
+    "card-somesh-drymedic": "2026-05-01",
+    "card-jason-waldie": "2026-05-04"
   }
 }
