@@ -684,20 +684,21 @@
     <div class="card-header">
       <div class="card-header-left">
         <div class="card-title">Today's Schedule</div>
-        <div class="card-desc" id="cal-desc" style="font-size:12px;color:var(--text-muted)">Mon, May 4</div>
+        <div class="card-desc" id="cal-desc" style="font-size:12px;color:var(--text-muted)">Fri, May 8</div>
       </div>
-      <span class="card-badge" style="background:#f0f2f5;color:#666;">8 events</span>
+      <span class="card-badge" style="background:#f0f2f5;color:#666;">9 events</span>
     </div>
     <div class="card-body">
       <div class="card-items" id="cal-items">
         <a class="cal-item" href="#" target="_blank"><div class="cal-time">9:00a</div><div class="cal-info"><div class="cal-title">Emails, To-Do's, VM's</div><div class="cal-detail">Morning block · 60 min</div></div></a>
-        <a class="cal-item" href="#" target="_blank"><div class="cal-time">10:00a</div><div class="cal-info"><div class="cal-title">FUSE volume issues</div><div class="cal-detail">Internal task · 30 min</div></div></a>
-        <a class="cal-item" href="#" target="_blank"><div class="cal-time">11:30a</div><div class="cal-info"><div class="cal-title">keptcompanies - webhook</div><div class="cal-detail">Internal task · 30 min</div></div></a>
+        <a class="cal-item" href="https://book.youcanbook.me/zoom/ZGEZ-UDVS-MBVA" target="_blank"><div class="cal-time">10:00a</div><div class="cal-info"><div class="cal-title">Check-in call with Craig and Daemon</div><div class="cal-detail">Craig Hoskins · BF Plumbing Intown Atlanta · 30 min</div></div></a>
+        <a class="cal-item" href="https://thumbtack.zoom.us/j/88355574672?pwd=T9kakOEbUm3GmD8ifrZRh83F7D58Pk.1" target="_blank"><div class="cal-time">11:30a</div><div class="cal-info"><div class="cal-title">Stronghouse &lt;&gt; Thumbtack: Alan &amp; Daemon (Check-in)</div><div class="cal-detail">Alan Salmeron · Stronghouse Brands · 25 min ⚠️ Declined</div></div></a>
         <a class="cal-item" href="#" target="_blank"><div class="cal-time">12:00p</div><div class="cal-info"><div class="cal-title">Lunch</div><div class="cal-detail">Break · 60 min</div></div></a>
-        <a class="cal-item" href="https://thumbtack.zoom.us/j/86277566115" target="_blank"><div class="cal-time">1:00p</div><div class="cal-info"><div class="cal-title">National AM Sync: Collaboration Time</div><div class="cal-detail">Internal · Zoom · 55 min</div></div></a>
-        <a class="cal-item" href="https://thumbtack.zoom.us/j/83250132074" target="_blank"><div class="cal-time">1:00p</div><div class="cal-info"><div class="cal-title">NTL Product - Close the Loop</div><div class="cal-detail">Internal · Zoom · 60 min</div></div></a>
-        <a class="cal-item" href="#" target="_blank"><div class="cal-time">4:00p</div><div class="cal-info"><div class="cal-title">franchise 1 pager deepdive</div><div class="cal-detail">Internal task · 30 min</div></div></a>
-        <a class="cal-item" href="#" target="_blank"><div class="cal-time">4:30p</div><div class="cal-info"><div class="cal-title">EOD Wrap</div><div class="cal-detail">Recurring · 30 min</div></div></a>
+        <a class="cal-item" href="#" target="_blank"><div class="cal-time">1:15p</div><div class="cal-info"><div class="cal-title">TT number dials</div><div class="cal-detail">Intermediation Nationwide Rollout · 2 hr</div></div></a>
+        <a class="cal-item" href="#" target="_blank"><div class="cal-time">3:30p</div><div class="cal-info"><div class="cal-title">franchise 1 pager deepdive</div><div class="cal-detail">Internal task · 45 min</div></div></a>
+        <a class="cal-item" href="#" target="_blank"><div class="cal-time">4:30p</div><div class="cal-info"><div class="cal-title">EOW Wrap &amp; Fill out 1:1 Doc</div><div class="cal-detail">Recurring · 31 min</div></div></a>
+        <a class="cal-item" href="#" target="_blank"><div class="cal-time">4:45p</div><div class="cal-info"><div class="cal-title">Update Betterworks OKRs</div><div class="cal-detail">Recurring · 15 min</div></div></a>
+        <a class="cal-item" href="#" target="_blank"><div class="cal-time">6:30p</div><div class="cal-info"><div class="cal-title">⚽️</div><div class="cal-detail">Personal · 30 min</div></div></a>
       </div>
     </div>
     <div class="card-footer">
@@ -1132,7 +1133,7 @@
     const allNotes = getNotes();
     const fmt = n => { const abs = Math.abs(n); const s = abs >= 1000 ? '$' + Math.round(abs/1000) + 'k' : '$' + Math.round(abs); return n < 0 ? '-' + s : s; };
     const badge = document.getElementById('upside-badge');
-    if (badge) badge.textContent = 'Top 10 · May 6';
+    if (badge) badge.textContent = 'Top 10 · May 8';
     document.getElementById('upside-items').innerHTML = HUB_UPSIDE_DATA.map(a => {
       const slug = a.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       const noteText = allNotes[slug] || '';
