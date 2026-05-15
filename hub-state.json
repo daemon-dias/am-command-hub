@@ -52,7 +52,8 @@
     "p2g": 652734,
     "rev_pct": 36.63,
     "p2g_pct": 45.05,
-    "updated": "2026-05-12"
+    "updated": "2026-05-12",
+    "note": "MD export of ALO sheet has no summary row; row sums today were $519K rev / $662K p2g / $1.37M goal (undercounts due to Multi-Location Centralized exclusion). Cached May 12 figures retained as canonical."
   },
   "hub_wins": [],
   "hub_feedback": [],
