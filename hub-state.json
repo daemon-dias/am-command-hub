@@ -48,12 +48,12 @@
   },
   "last_summary": {
     "goal": 1448942,
-    "rev": 530681,
-    "p2g": 652734,
-    "rev_pct": 36.63,
-    "p2g_pct": 45.05,
-    "updated": "2026-05-12",
-    "note": "MD export of ALO sheet has no summary row; row sums today were $519K rev / $662K p2g / $1.37M goal (undercounts due to Multi-Location Centralized exclusion). Cached May 12 figures retained as canonical."
+    "rev": 654793,
+    "p2g": 780200,
+    "rev_pct": 45.19,
+    "p2g_pct": 53.85,
+    "updated": "2026-05-19",
+    "note": "CSV PRO_LEVEL row sum matches goal exactly ($1,448,942). qtd_goal field (cents) used as P2G. Gap -$125,406 behind P2G."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -74,6 +74,8 @@
     "card-craig-hoskins": "2026-05-05",
     "card-ian-kenney": "2026-05-04",
     "card-arif-bfp-roseville": "2026-05-12",
-    "card-carlo-spraynet": "2026-05-14"
+    "card-carlo-spraynet": "2026-05-14",
+    "card-clark-smith": "2026-05-19",
+    "card-julio-hernandez": "2026-05-19"
   }
 }
