@@ -47,13 +47,13 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1446004,
-    "rev": 652753,
-    "p2g": 778620,
-    "rev_pct": 45.14,
-    "p2g_pct": 53.85,
-    "updated": "2026-05-20",
-    "note": "Row sum from markdown export (gcloud auth expired, CSV summary row unavailable). Q2 Day 50. Gap -$125,867 behind P2G."
+    "goal": 1448942,
+    "rev": 687646,
+    "p2g": 812044,
+    "rev_pct": 47.46,
+    "p2g_pct": 56.04,
+    "updated": "2026-05-21",
+    "note": "Row sum from CSV export (PRO_LEVEL rows; goal/p2g cols divided by 100). Q2 Day 51. Gap -$124,398 behind P2G."
   },
   "hub_wins": [],
   "hub_feedback": [],
