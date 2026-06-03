@@ -47,13 +47,13 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1446004,
-    "rev": 840732,
-    "p2g": 985196,
-    "rev_pct": 58.14,
-    "p2g_pct": 68.13,
-    "updated": "2026-06-02",
-    "note": "Row sum from markdown export Table 2 (PRO_LEVEL rows, dollar-formatted columns). Q2 Day 63. Gap -$144,464 behind P2G."
+    "goal": 1370729,
+    "rev": 768693,
+    "p2g": 964032,
+    "rev_pct": 56.08,
+    "p2g_pct": 70.33,
+    "updated": "2026-06-03",
+    "note": "Row sum from markdown export Table 2 (PRO_LEVEL rows, dollar-formatted columns), 53 accounts. Q2 Day 64. Gap -$195,339 behind P2G."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -78,6 +78,7 @@
     "card-clark-smith": "2026-05-19",
     "card-julio-hernandez": "2026-05-19",
     "card-bernard-etienne": "2026-05-28",
-    "card-taja-roberts": "2026-06-02"
+    "card-taja-roberts": "2026-06-02",
+    "card-kevin-obregon": "2026-06-03"
   }
 }
