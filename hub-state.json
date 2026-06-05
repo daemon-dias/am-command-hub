@@ -19,6 +19,8 @@
     "card-shahbaaz": "Archive",
     "card-ed-adams": "Introduction",
     "card-robbie-sparky": "Introduction",
+    "card-sieera-gay": "Introduction",
+    "card-don-gunderson": "Introduction",
     "custom-1777405332834": "Closed Won"
   },
   "onboarding_notes": {
@@ -47,13 +49,13 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1370729,
-    "rev": 768693,
-    "p2g": 964032,
-    "rev_pct": 56.08,
-    "p2g_pct": 70.33,
-    "updated": "2026-06-03",
-    "note": "Row sum from markdown export Table 2 (PRO_LEVEL rows, dollar-formatted columns), 53 accounts. Q2 Day 64. Gap -$195,339 behind P2G."
+    "goal": 1446004,
+    "rev": 888010,
+    "p2g": 1032864,
+    "rev_pct": 61.41,
+    "p2g_pct": 71.43,
+    "updated": "2026-06-05",
+    "note": "Row sum from markdown export Table 2 (formatted account table, 107 rows). Q2 Day 66. Gap -$144,854 behind P2G."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -79,6 +81,8 @@
     "card-julio-hernandez": "2026-05-19",
     "card-bernard-etienne": "2026-05-28",
     "card-taja-roberts": "2026-06-02",
-    "card-kevin-obregon": "2026-06-03"
+    "card-kevin-obregon": "2026-06-03",
+    "card-sieera-gay": "2026-06-05",
+    "card-don-gunderson": "2026-06-05"
   }
 }
