@@ -50,12 +50,12 @@
   },
   "last_summary": {
     "goal": 1446004,
-    "rev": 888010,
-    "p2g": 1032864,
-    "rev_pct": 61.41,
-    "p2g_pct": 71.43,
-    "updated": "2026-06-05",
-    "note": "Row sum from markdown export Table 2 (formatted account table, 107 rows). Q2 Day 66. Gap -$144,854 behind P2G."
+    "rev": 917203,
+    "p2g": 1080535,
+    "rev_pct": 63.43,
+    "p2g_pct": 74.73,
+    "updated": "2026-06-08",
+    "note": "Row sum from markdown export formatted account table (107 rows). Q2 Day 69. Gap -$163,332 behind P2G."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -83,6 +83,7 @@
     "card-taja-roberts": "2026-06-02",
     "card-kevin-obregon": "2026-06-03",
     "card-sieera-gay": "2026-06-05",
-    "card-don-gunderson": "2026-06-05"
+    "card-don-gunderson": "2026-06-05",
+    "card-byron-davis": "2026-06-08"
   }
 }
