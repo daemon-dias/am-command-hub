@@ -50,12 +50,12 @@
   },
   "last_summary": {
     "goal": 1448942,
-    "rev": 1137378,
-    "p2g": 1273795,
-    "rev_pct": 78.5,
-    "p2g_pct": 87.91,
-    "updated": "2026-06-19",
-    "note": "Row sum from full ALO CSV export, PRO_LEVEL rows (168). total_quarterly_goal/qtd_revenue/qtd_goal -> goal/rev/p2g. Q2 Day 80. Gap -$136,418 behind P2G."
+    "rev": 1168725,
+    "p2g": 1321562,
+    "rev_pct": 80.66,
+    "p2g_pct": 91.21,
+    "updated": "2026-06-22",
+    "note": "PRO_LEVEL row sum (168 rows) from ALO CSV export. total_quarterly_goal/qtd_revenue/qtd_goal -> goal/rev/p2g. Q2 Day 83. Gap -$152,837 behind P2G."
   },
   "hub_wins": [],
   "hub_feedback": [],
