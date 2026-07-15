@@ -54,7 +54,7 @@
     "rev": 106358,
     "p2g": 108942,
     "rev_pct": 8.49,
-    "p2g_pct": 8.70,
+    "p2g_pct": 8.7,
     "updated": "2026-07-08",
     "note": "PRO_LEVEL row sum (154 rows) from ALO CSV export. total_quarterly_goal/qtd_revenue/qtd_goal -> goal/rev/p2g. Q3 Day 8. Gap -$2,584 behind P2G. 65 upside accounts (pacing<70% & gap<0)."
   },
@@ -92,6 +92,7 @@
     "card-chris-spraynet": "2026-06-29",
     "card-bernie-sousa": "2026-07-02",
     "card-orcun-selimoglu": "2026-07-03",
-    "card-brooks-comeno": "2026-07-14"
+    "card-brooks-comeno": "2026-07-14",
+    "card-jeff-yax": "2026-07-15"
   }
 }
