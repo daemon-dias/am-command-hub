@@ -50,13 +50,13 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1252833,
-    "rev": 106358,
-    "p2g": 108942,
-    "rev_pct": 8.49,
-    "p2g_pct": 8.7,
-    "updated": "2026-07-08",
-    "note": "PRO_LEVEL row sum (154 rows) from ALO CSV export. total_quarterly_goal/qtd_revenue/qtd_goal -> goal/rev/p2g. Q3 Day 8. Gap -$2,584 behind P2G. 65 upside accounts (pacing<70% & gap<0)."
+    "goal": 1215263,
+    "rev": 305088,
+    "p2g": 356650,
+    "rev_pct": 25.1,
+    "p2g_pct": 29.35,
+    "updated": "2026-07-28",
+    "note": "Q3 Day 28. Parsed 68 Q3 PRO_LEVEL rows from ALO markdown export (65/68 pacing-validated). Drive export was misaligned (Q2+Q3 mixed, columns reordered) — filtered to 7/1/2026 rows only. Goal $1.22M passes ~$1.25M sanity check. Gap rev-p2g = -$51,562 behind P2G. 23 upside accounts (pacing<70 & gap<0)."
   },
   "hub_wins": [],
   "hub_feedback": [],
