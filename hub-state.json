@@ -50,13 +50,13 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1215263,
-    "rev": 305088,
-    "p2g": 356650,
-    "rev_pct": 25.1,
-    "p2g_pct": 29.35,
-    "updated": "2026-07-28",
-    "note": "Q3 Day 28. Parsed 68 Q3 PRO_LEVEL rows from ALO markdown export (65/68 pacing-validated). Drive export was misaligned (Q2+Q3 mixed, columns reordered) \u2014 filtered to 7/1/2026 rows only. Goal $1.22M passes ~$1.25M sanity check. Gap rev-p2g = -$51,562 behind P2G. 23 upside accounts (pacing<70 & gap<0)."
+    "goal": 1252833,
+    "rev": 481968,
+    "p2g": 422150,
+    "rev_pct": 38.47,
+    "p2g_pct": 33.7,
+    "updated": "2026-07-31",
+    "note": "Q3 Day 31. Clean CSV export: 176 unique PRO_LEVEL rows, all refreshed 7/31/2026 12:56, no dupes, columns aligned to header names (rev=qtd_revenue, p2g=qtd_goal). No summary row in this export, so totals are row sums; goal $1,252,833 passes ~$1.25M sanity check. Gap rev-p2g = +$59,818 AHEAD of P2G. 56 upside accounts (pacing<70 & gap<0). Daemon OOO today, 0 Pro calls."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -96,6 +96,8 @@
     "card-jeff-yax": "2026-07-15",
     "card-alec-goldman": "2026-07-27",
     "card-emanuel-thompson": "2026-07-30",
-    "card-jason-jones": "2026-07-30"
+    "card-jason-jones": "2026-07-30",
+    "card-andres-llerena": "2026-07-31",
+    "card-shay-graffius": "2026-07-31"
   }
 }
