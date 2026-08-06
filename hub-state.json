@@ -50,13 +50,13 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1252833,
-    "rev": 558231,
-    "p2g": 490239,
-    "rev_pct": 44.56,
-    "p2g_pct": 39.13,
-    "updated": "2026-08-05",
-    "note": "Q3 Day 36. Markdown export was TRUNCATED (only 23 PRO_LEVEL rows, goal $269K) - fell back to CSV export which was clean: header at CSV index 2, 194 unique PRO_LEVEL rows, no dupes, goal $1,252,833 matches Aug 4 exactly. NOTE: sheet columns shifted +2 vs hub.md mapping (parent_name/ultimate_name added); parse by header NAME not index. p2g = qtd_goal col, rev = qtd_revenue col. Gap rev-p2g = +$67,992 AHEAD of P2G. 55 upside accounts. 16 events today, 5 Pro calls (Risner 11:30, Shay Graffius 1:00, Malisa Eslin 1:30, Craig Hoskins 2:30, OT Bay Builders 3:00) - all 5 prep docs created + attached. 1 new lead: Malisa Eslin. No go-live completions."
+    "goal": 1267962,
+    "rev": 583033,
+    "p2g": 505565,
+    "rev_pct": 45.98,
+    "p2g_pct": 39.87,
+    "updated": "2026-08-06",
+    "note": "Q3 Day 37. CSV export (base64-decoded) clean: header at CSV index 2, 194 unique PRO_LEVEL rows, no dupes, goal $1,267,962 (up $15K vs Aug 5 - new accounts added). Parsed by header NAME: total_quarterly_goal/qtd_goal(p2g)/qtd_revenue(rev)/pacing_pct. Gap rev-p2g = +$77,468 AHEAD of P2G. 59 upside accounts (pacing<70% and gap<0). 18 events today, 3 Pro calls (Jesse Martinez/ServiceMinds 11:30, Alec Goldman/All My Sons 12:00, Latika Sharma/247SGD 2:00). SCHEDULED RUN FIRED 5:29 PM EDT - all 3 calls already happened; briefs delivered in-session as post-call recaps, no Google Docs created (no auth in scheduled run). 1 new lead: Eric Waynick (Monster Tree Service, via BuyMax). No go-live completions."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -99,6 +99,7 @@
     "card-jason-jones": "2026-07-30",
     "card-andres-llerena": "2026-07-31",
     "card-shay-graffius": "2026-07-31",
-    "card-malisa-eslin": "2026-08-05"
+    "card-malisa-eslin": "2026-08-05",
+    "card-eric-waynick": "2026-08-06"
   }
 }
