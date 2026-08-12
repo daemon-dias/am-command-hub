@@ -22,7 +22,8 @@
     "card-sieera-gay": "Introduction",
     "card-don-gunderson": "Introduction",
     "card-bernie-sousa": "Introduction",
-    "custom-1777405332834": "Closed Won"
+    "custom-1777405332834": "Closed Won",
+    "card-lenny-hughes": "Introduction"
   },
   "onboarding_notes": {
     "card-john-harrison": "Waiting for hatch integration",
@@ -51,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1267962,
-    "rev": 583033,
-    "p2g": 505565,
-    "rev_pct": 45.98,
-    "p2g_pct": 39.87,
-    "updated": "2026-08-06",
-    "note": "Q3 Day 37. CSV export (base64-decoded) clean: header at CSV index 2, 194 unique PRO_LEVEL rows, no dupes, goal $1,267,962 (up $15K vs Aug 5 - new accounts added). Parsed by header NAME: total_quarterly_goal/qtd_goal(p2g)/qtd_revenue(rev)/pacing_pct. Gap rev-p2g = +$77,468 AHEAD of P2G. 59 upside accounts (pacing<70% and gap<0). 18 events today, 3 Pro calls (Jesse Martinez/ServiceMinds 11:30, Alec Goldman/All My Sons 12:00, Latika Sharma/247SGD 2:00). SCHEDULED RUN FIRED 5:29 PM EDT - all 3 calls already happened; briefs delivered in-session as post-call recaps, no Google Docs created (no auth in scheduled run). 1 new lead: Eric Waynick (Monster Tree Service, via BuyMax). No go-live completions."
+    "rev": 684305,
+    "p2g": 588736,
+    "rev_pct": 53.97,
+    "p2g_pct": 46.43,
+    "updated": "2026-08-12",
+    "note": "Q3 Day 43. ALO sheet last_refresh 8/12/2026 12:14:57 — fresh. 195 PRO_LEVEL rows, parsed by header NAME (total_quarterly_goal/qtd_goal=p2g/qtd_revenue=rev/pacing_pct; pacing_pct is a 0-1 FRACTION — multiply by 100 before the <70% filter). goal $1,267,962 (flat vs Aug 7) / rev $684,305 / p2g $588,736, gap +$95,569 AHEAD. 57 upside accounts. 15 events today, 1 Pro call (Latika Sharma + Alexia Bejarano / Supreme Garage Door Repair 11:30). SCHEDULED RUN FIRED 5:07 PM EDT — Latika call already done (Gemini notes captured); brief delivered in-session as post-call recap, no Google Doc. 1 new lead: Lenny Hughes (Mister Sparky Farmington MI, YCBM onboarding call Aug 13 4:00 PM). 0 go-live completions. NOTE: Aug 7 run's hub edits were never committed — included in today's commit."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -100,6 +101,7 @@
     "card-andres-llerena": "2026-07-31",
     "card-shay-graffius": "2026-07-31",
     "card-malisa-eslin": "2026-08-05",
-    "card-eric-waynick": "2026-08-06"
+    "card-eric-waynick": "2026-08-06",
+    "card-lenny-hughes": "2026-08-12"
   }
 }
