@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1267962,
-    "rev": 684305,
-    "p2g": 588736,
-    "rev_pct": 53.97,
-    "p2g_pct": 46.43,
-    "updated": "2026-08-12",
-    "note": "Q3 Day 43. ALO sheet last_refresh 8/12/2026 12:14:57 — fresh. 195 PRO_LEVEL rows, parsed by header NAME (total_quarterly_goal/qtd_goal=p2g/qtd_revenue=rev/pacing_pct; pacing_pct is a 0-1 FRACTION — multiply by 100 before the <70% filter). goal $1,267,962 (flat vs Aug 7) / rev $684,305 / p2g $588,736, gap +$95,569 AHEAD. 57 upside accounts. 15 events today, 1 Pro call (Latika Sharma + Alexia Bejarano / Supreme Garage Door Repair 11:30). SCHEDULED RUN FIRED 5:07 PM EDT — Latika call already done (Gemini notes captured); brief delivered in-session as post-call recap, no Google Doc. 1 new lead: Lenny Hughes (Mister Sparky Farmington MI, YCBM onboarding call Aug 13 4:00 PM). 0 go-live completions. NOTE: Aug 7 run's hub edits were never committed — included in today's commit."
+    "rev": 771149,
+    "p2g": 658044,
+    "rev_pct": 60.82,
+    "p2g_pct": 51.9,
+    "updated": "2026-08-17",
+    "note": "Q3 Day 48. ALO CSV export: summary header rows exported BLANK, so totals computed from 195 PRO_LEVEL row sums parsed by header NAME (total_quarterly_goal / qtd_goal=p2g / qtd_revenue=rev / pacing_pct is a 0-1 FRACTION). Sanity check passed: goal $1,267,962.10 matches Aug 12 cached goal exactly, so export not truncated. rev $771,149 (up from $684,305 Aug 12) / p2g $658,044, gap +$113,105 AHEAD. 57 upside accounts (unchanged count). 15 events, 2 Pro calls: Craig Hoskins GLD 10:45 (BFP Intown Atlanta went LIVE today) and Orcun Selimoglu 15:00. SCHEDULED RUN FIRED 3:00 PM EDT - Craig call already done (Granola captured, recap delivered in-session); Orcun prep doc created + attached to invite. 0 new leads, 0 go-live completions. NOTE: Desktop hub path was read-only this run (cp/python EPERM) - edited via fresh /private/tmp clone at deaaf4e."
   },
   "hub_wins": [],
   "hub_feedback": [],
