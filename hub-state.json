@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1267962,
-    "rev": 793867,
-    "p2g": 671906,
-    "rev_pct": 62.61,
-    "p2g_pct": 52.99,
-    "updated": "2026-08-18",
-    "note": "Q3 Day 49. ALO CSV export: summary header rows again exported BLANK, so totals computed from 197 PRO_LEVEL row sums parsed by header NAME (total_quarterly_goal / qtd_goal=p2g / qtd_revenue=rev / pacing_pct is a 0-1 FRACTION). Sanity check passed: goal $1,267,962.10 matches Aug 17 cached goal exactly. rev $793,867 (up $22,718 from Aug 17) / p2g $671,906, gap +$121,961 AHEAD. 55 upside accounts (down from 57). 14 events, 1 Pro call: Darren White / NSD-MOTIFY 'Process Review with TT' 11:30 AM. 1 new lead added: Cleon Stora (Mister Sparky Pittsburgh). 0 go-live completions. SCHEDULED RUN 9:32 AM EDT - Desktop hub path WAS writable this run (no EPERM). Google Docs/Calendar API unavailable (gcloud reauth required, non-interactive) so Darren prep doc NOT created/attached - brief delivered in-session only."
+    "rev": 850341,
+    "p2g": 699630,
+    "rev_pct": 67.06,
+    "p2g_pct": 55.18,
+    "updated": "2026-08-20",
+    "note": "Q3 Day 51. ALO CSV export: summary header rows exported BLANK again, so totals computed from 197 PRO_LEVEL row sums parsed by header NAME (total_quarterly_goal=goal / qtd_goal=p2g / qtd_revenue=rev / pacing_pct is a 0-1 FRACTION). Sanity check PASSED: goal $1,267,962 matches Aug 18 cached goal exactly. rev $850,341 (up $56,474 from Aug 18) / p2g $699,630, gap +$150,711 AHEAD of P2G. 56 upside accounts (up from 55). 18 events, 2 Pro calls: Anytime Garage Doors 11:00a (Shay Graffius + Kalyan Marella) and ServiceMinds weekly 11:30a (Jesse Martinez) - both already CONCLUDED by the 1:07 PM EDT run time; Granola notes captured for both. 1 new lead added: Ryan Vo (LionShield), referred by Alicia Johnston LB Capital Aug 18. 0 go-live completions in 90d. SCHEDULED RUN 1:07 PM EDT - Desktop hub path writable (no EPERM). gcloud token reauth required (non-interactive) so Google Docs NOT created / not attached to calendar - prep briefs delivered in-session only."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -103,6 +103,7 @@
     "card-malisa-eslin": "2026-08-05",
     "card-eric-waynick": "2026-08-06",
     "card-lenny-hughes": "2026-08-12",
-    "card-cleon-stora": "2026-08-18"
+    "card-cleon-stora": "2026-08-18",
+    "card-ryan-vo": "2026-08-20"
   }
 }
