@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1267962,
-    "rev": 850341,
-    "p2g": 699630,
-    "rev_pct": 67.06,
-    "p2g_pct": 55.18,
-    "updated": "2026-08-20",
-    "note": "Q3 Day 51. ALO CSV export: summary header rows exported BLANK again, so totals computed from 197 PRO_LEVEL row sums parsed by header NAME (total_quarterly_goal=goal / qtd_goal=p2g / qtd_revenue=rev / pacing_pct is a 0-1 FRACTION). Sanity check PASSED: goal $1,267,962 matches Aug 18 cached goal exactly. rev $850,341 (up $56,474 from Aug 18) / p2g $699,630, gap +$150,711 AHEAD of P2G. 56 upside accounts (up from 55). 18 events, 2 Pro calls: Anytime Garage Doors 11:00a (Shay Graffius + Kalyan Marella) and ServiceMinds weekly 11:30a (Jesse Martinez) - both already CONCLUDED by the 1:07 PM EDT run time; Granola notes captured for both. 1 new lead added: Ryan Vo (LionShield), referred by Alicia Johnston LB Capital Aug 18. 0 go-live completions in 90d. SCHEDULED RUN 1:07 PM EDT - Desktop hub path writable (no EPERM). gcloud token reauth required (non-interactive) so Google Docs NOT created / not attached to calendar - prep briefs delivered in-session only."
+    "rev": 873894,
+    "p2g": 713491,
+    "rev_pct": 68.92,
+    "p2g_pct": 56.27,
+    "updated": "2026-08-21",
+    "note": "Q3 Day 52. ALO CSV export via download_file_content (base64 -> decode). Summary header rows 0-1 exported BLANK again, so totals computed from 199 PRO_LEVEL row sums parsed by header NAME (total_quarterly_goal=goal / qtd_goal=p2g / qtd_revenue=rev / pacing_pct is a 0-1 FRACTION). Sanity check PASSED: goal $1,267,962 matches Aug 18+20 cached goal exactly. rev $873,894 (up $23,553 from Aug 20) / p2g $713,491, gap +$160,403 AHEAD of P2G. 57 upside accounts (up from 56). 19 events, 4 Pro calls: Authority Brands Pipeline Accelerator 10:30a (Erika Flores + Juliette Barbush), Ryan Van Orden onboarding 1:00p (LionShield), Daniel Kelly check-in 1:30p (Lawn Gurus ESCALATION - asked for senior mgmt), Magnetic Services 4:00p (Avi + Brenda). 0 new leads (Ryan Vo + Cleon Stora already tracked). 0 go-live completions in 90d. 32 card days recalculated. SCHEDULED RUN - Desktop hub path writable (no EPERM). gcloud token call BLOCKED by permission classifier in non-interactive run, so Google Docs NOT created / not attached to calendar - prep briefs delivered in-session only."
   },
   "hub_wins": [],
   "hub_feedback": [],
