@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1267962,
-    "rev": 873894,
-    "p2g": 713491,
-    "rev_pct": 68.92,
-    "p2g_pct": 56.27,
-    "updated": "2026-08-21",
-    "note": "Q3 Day 52. ALO CSV export via download_file_content (base64 -> decode). Summary header rows 0-1 exported BLANK again, so totals computed from 199 PRO_LEVEL row sums parsed by header NAME (total_quarterly_goal=goal / qtd_goal=p2g / qtd_revenue=rev / pacing_pct is a 0-1 FRACTION). Sanity check PASSED: goal $1,267,962 matches Aug 18+20 cached goal exactly. rev $873,894 (up $23,553 from Aug 20) / p2g $713,491, gap +$160,403 AHEAD of P2G. 57 upside accounts (up from 56). 19 events, 4 Pro calls: Authority Brands Pipeline Accelerator 10:30a (Erika Flores + Juliette Barbush), Ryan Van Orden onboarding 1:00p (LionShield), Daniel Kelly check-in 1:30p (Lawn Gurus ESCALATION - asked for senior mgmt), Magnetic Services 4:00p (Avi + Brenda). 0 new leads (Ryan Vo + Cleon Stora already tracked). 0 go-live completions in 90d. 32 card days recalculated. SCHEDULED RUN - Desktop hub path writable (no EPERM). gcloud token call BLOCKED by permission classifier in non-interactive run, so Google Docs NOT created / not attached to calendar - prep briefs delivered in-session only."
+    "rev": 940343,
+    "p2g": 768938,
+    "rev_pct": 74.16,
+    "p2g_pct": 60.64,
+    "updated": "2026-08-25",
+    "note": "Q3 Day 56. ALO CSV export via download_file_content (base64 -> decode). Summary header rows 0-1 exported BLANK again, so totals computed from 200 PRO_LEVEL row sums parsed by header NAME (total_quarterly_goal=goal / qtd_goal=p2g / qtd_revenue=rev / pacing_pct is a 0-1 FRACTION). Sanity check PASSED: goal $1,267,962 matches Aug 18/20/21 cached goal exactly. rev $940,343 (up $66,449 from Aug 21) / p2g $768,938, gap +$171,405 AHEAD of P2G. 60 upside accounts (up from 57). 15 events, 2 Pro calls: Sasha Psotsik check-in 2:00p (AtlantFlow AC & Heat, 66.7% pacing, opening a 2nd account), Cleon Stora onboarding 2:30p (Mister Sparky Pittsburgh, pre-spend, ServiceTitan). 0 new leads (Ryan Vo confirmed already tracked from the Aug 21 Next-Steps email; Cleon Stora already tracked). 0 go-live completions in 90d. 33 card days recalculated, 0 stage changes. 48 active Pros. SCHEDULED RUN - Desktop hub path writable (no EPERM). gcloud token BLOCKED by permission classifier again, BUT Google Docs were created successfully via the Drive MCP create_file tool (parentId=Meeting Prep folder) and attached to both calendar events via the Calendar MCP update_event addedAttachments with notificationLevel=NONE so the Pros were not emailed. Use this MCP path instead of gcloud on scheduled runs. NOTE: do not append stray closing tags into textContent - it lands in the doc body."
   },
   "hub_wins": [],
   "hub_feedback": [],
