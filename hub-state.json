@@ -51,13 +51,13 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1267962,
-    "rev": 940343,
-    "p2g": 768938,
-    "rev_pct": 74.16,
-    "p2g_pct": 60.64,
-    "updated": "2026-08-25",
-    "note": "Q3 Day 56. ALO CSV export via download_file_content (base64 -> decode). Summary header rows 0-1 exported BLANK again, so totals computed from 200 PRO_LEVEL row sums parsed by header NAME (total_quarterly_goal=goal / qtd_goal=p2g / qtd_revenue=rev / pacing_pct is a 0-1 FRACTION). Sanity check PASSED: goal $1,267,962 matches Aug 18/20/21 cached goal exactly. rev $940,343 (up $66,449 from Aug 21) / p2g $768,938, gap +$171,405 AHEAD of P2G. 60 upside accounts (up from 57). 15 events, 2 Pro calls: Sasha Psotsik check-in 2:00p (AtlantFlow AC & Heat, 66.7% pacing, opening a 2nd account), Cleon Stora onboarding 2:30p (Mister Sparky Pittsburgh, pre-spend, ServiceTitan). 0 new leads (Ryan Vo confirmed already tracked from the Aug 21 Next-Steps email; Cleon Stora already tracked). 0 go-live completions in 90d. 33 card days recalculated, 0 stage changes. 48 active Pros. SCHEDULED RUN - Desktop hub path writable (no EPERM). gcloud token BLOCKED by permission classifier again, BUT Google Docs were created successfully via the Drive MCP create_file tool (parentId=Meeting Prep folder) and attached to both calendar events via the Calendar MCP update_event addedAttachments with notificationLevel=NONE so the Pros were not emailed. Use this MCP path instead of gcloud on scheduled runs. NOTE: do not append stray closing tags into textContent - it lands in the doc body."
+    "goal": 1037637,
+    "rev": 258714,
+    "p2g": 180459,
+    "rev_pct": 24.93,
+    "p2g_pct": 17.39,
+    "updated": "2026-10-16",
+    "note": "Q4 Day 16 (new quarter, new book). Totals summed from 213 unique PRO_LEVEL rows of CSV export (rows 0-1 blank again). Goal $1,037,637 — NEW Q4 goal, not comparable to Q3 $1.27M; sanity check: p2g/goal 17.4% matches day 16/92. Gap +$78,256 ahead. 58 upside accounts. 15 events, 4 Pro calls (Cody Risner, Alissa Fritz, David Barrero, Charles StClair) - prep docs created via Drive MCP + attached (NONE notify). Gmail connector INVALIDATED this run - no lead scan; Granola unauthorized."
   },
   "hub_wins": [],
   "hub_feedback": [],
