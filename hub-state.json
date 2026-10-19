@@ -51,13 +51,13 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1037637,
-    "rev": 258714,
-    "p2g": 180459,
-    "rev_pct": 24.93,
-    "p2g_pct": 17.39,
-    "updated": "2026-10-16",
-    "note": "Q4 Day 16 (new quarter, new book). Totals summed from 213 unique PRO_LEVEL rows of CSV export (rows 0-1 blank again). Goal $1,037,637 — NEW Q4 goal, not comparable to Q3 $1.27M; sanity check: p2g/goal 17.4% matches day 16/92. Gap +$78,256 ahead. 58 upside accounts. 15 events, 4 Pro calls (Cody Risner, Alissa Fritz, David Barrero, Charles StClair) - prep docs created via Drive MCP + attached (NONE notify). Gmail connector INVALIDATED this run - no lead scan; Granola unauthorized."
+    "goal": 1121309,
+    "rev": 329146,
+    "p2g": 231575,
+    "rev_pct": 29.35,
+    "p2g_pct": 20.65,
+    "updated": "2026-10-19",
+    "note": "Q4 Day 19. Summed 252 unique PRO_LEVEL rows (data_grain filter) from CSV export. Goal up from $1,037,637 (Oct 16, 213 rows) to $1,121,309 - book grew; sanity: p2g/goal 20.65% == day 19/92. Gap +$97,571 ahead. 69 upside accounts. 11 events, 2 Pro calls (James Bischoff/Bacon, Yerbol/RMS) - prep docs via Drive MCP + attached (NONE). Gmail connector INVALIDATED again - no Gmail lead scan; Slack scan found no new leads."
   },
   "hub_wins": [],
   "hub_feedback": [],
