@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1121309,
-    "rev": 329146,
-    "p2g": 231575,
-    "rev_pct": 29.35,
-    "p2g_pct": 20.65,
-    "updated": "2026-10-19",
-    "note": "Q4 Day 19. Summed 252 unique PRO_LEVEL rows (data_grain filter) from CSV export. Goal up from $1,037,637 (Oct 16, 213 rows) to $1,121,309 - book grew; sanity: p2g/goal 20.65% == day 19/92. Gap +$97,571 ahead. 69 upside accounts. 11 events, 2 Pro calls (James Bischoff/Bacon, Yerbol/RMS) - prep docs via Drive MCP + attached (NONE). Gmail connector INVALIDATED again - no Gmail lead scan; Slack scan found no new leads."
+    "rev": 355309,
+    "p2g": 243763,
+    "rev_pct": 31.69,
+    "p2g_pct": 21.74,
+    "updated": "2026-10-20",
+    "note": "Q4 Day 20. Summed 253 unique PRO_LEVEL rows from CSV; goal unchanged vs Oct 19 ($1,121,309); sanity p2g/goal 21.74% == day 20/92. Gap +$111,546 ahead. 65 upside accounts. 14 events, 3 Pro calls (Erick Sousa/FCI, Yerbol/RMS, Kat Kostukevich/Mister Sparky). Gmail connector INVALIDATED - no Gmail lead scan; new leads from Calendar (Kat) + Granola (Andrew Kopp)."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -104,6 +104,8 @@
     "card-eric-waynick": "2026-08-06",
     "card-lenny-hughes": "2026-08-12",
     "card-cleon-stora": "2026-08-18",
-    "card-ryan-vo": "2026-08-20"
+    "card-ryan-vo": "2026-08-20",
+    "card-kat-kostukevich": "2026-10-20",
+    "card-andrew-kopp": "2026-10-20"
   }
 }
