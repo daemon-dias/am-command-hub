@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1121309,
-    "rev": 355309,
-    "p2g": 243763,
-    "rev_pct": 31.69,
-    "p2g_pct": 21.74,
-    "updated": "2026-10-20",
-    "note": "Q4 Day 20. Summed 253 unique PRO_LEVEL rows from CSV; goal unchanged vs Oct 19 ($1,121,309); sanity p2g/goal 21.74% == day 20/92. Gap +$111,546 ahead. 65 upside accounts. 14 events, 3 Pro calls (Erick Sousa/FCI, Yerbol/RMS, Kat Kostukevich/Mister Sparky). Gmail connector INVALIDATED - no Gmail lead scan; new leads from Calendar (Kat) + Granola (Andrew Kopp)."
+    "rev": 376584,
+    "p2g": 255951,
+    "rev_pct": 33.58,
+    "p2g_pct": 22.83,
+    "updated": "2026-10-21",
+    "note": "Q4 Day 21. Summed 253 unique PRO_LEVEL rows from CSV; goal unchanged vs Oct 20 ($1,121,309); sanity p2g/goal 22.83% == day 21/92. Gap +$120,633. 61 upside accounts. 15 events, 4 Pro calls (Jesse Martinez/BFP Bradenton, Bryan Hayes/76 Fence, Yerbol/RMS VM, Jeff White/BFP CT). Gmail connector INVALIDATED - no Gmail lead scan; new lead from Calendar YCBM (Jeff White)."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -106,6 +106,7 @@
     "card-cleon-stora": "2026-08-18",
     "card-ryan-vo": "2026-08-20",
     "card-kat-kostukevich": "2026-10-20",
-    "card-andrew-kopp": "2026-10-20"
+    "card-andrew-kopp": "2026-10-20",
+    "card-jeff-white": "2026-10-21"
   }
 }
