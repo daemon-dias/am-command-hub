@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1121309,
-    "rev": 376584,
-    "p2g": 255951,
-    "rev_pct": 33.58,
-    "p2g_pct": 22.83,
-    "updated": "2026-10-21",
-    "note": "Q4 Day 21. Summed 253 unique PRO_LEVEL rows from CSV; goal unchanged vs Oct 20 ($1,121,309); sanity p2g/goal 22.83% == day 21/92. Gap +$120,633. 61 upside accounts. 15 events, 4 Pro calls (Jesse Martinez/BFP Bradenton, Bryan Hayes/76 Fence, Yerbol/RMS VM, Jeff White/BFP CT). Gmail connector INVALIDATED - no Gmail lead scan; new lead from Calendar YCBM (Jeff White)."
+    "rev": 398294,
+    "p2g": 268139,
+    "rev_pct": 35.52,
+    "p2g_pct": 23.91,
+    "updated": "2026-10-22",
+    "note": "Q4 Day 22. Summed 253 unique PRO_LEVEL rows (goal=total_quarterly_goal, rev=qtd_revenue, p2g=qtd_goal); sanity p2g/goal 23.91% ~= day 22/92. Gap +130,155. 61 upside accounts. 14 events, 3 Pro calls (Andrew Taylor/76 Fence, Jonathan Walton/Refined Roofing, Mike deFisser/Elegant Bath). Gmail connector INVALIDATED - no Gmail lead scan; no new leads from Slack/Granola/Calendar."
   },
   "hub_wins": [],
   "hub_feedback": [],
