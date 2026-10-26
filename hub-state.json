@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1130055,
-    "rev": 420586,
-    "p2g": 280574,
-    "rev_pct": 37.22,
-    "p2g_pct": 24.83,
-    "updated": "2026-10-23",
-    "note": "Q4 Day 23. Summed 255 unique PRO_LEVEL rows; sanity p2g/goal 24.83% ~= day 23/92. Gap +140,012. 64 upside accounts. 15 events, 4 Pro calls. Gmail connector INVALIDATED + Granola unauthenticated - no Gmail lead scan; no new leads from Slack/Calendar."
+    "rev": 479889,
+    "p2g": 317508,
+    "rev_pct": 42.47,
+    "p2g_pct": 28.1,
+    "updated": "2026-10-26",
+    "note": "Q4 Day 26. Summed 255 unique PRO_LEVEL rows; goal matches Oct 23 to the dollar; p2g/goal 28.10% ~= day 26/92. Gap +162,381. 63 upside accounts. Gmail connector INVALIDATED + Granola unauthenticated - no Gmail lead scan."
   },
   "hub_wins": [],
   "hub_feedback": [],
