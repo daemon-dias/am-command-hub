@@ -51,13 +51,13 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1130055,
-    "rev": 479889,
-    "p2g": 317508,
-    "rev_pct": 42.47,
-    "p2g_pct": 28.1,
-    "updated": "2026-10-26",
-    "note": "Q4 Day 26. Summed 255 unique PRO_LEVEL rows; goal matches Oct 23 to the dollar; p2g/goal 28.10% ~= day 26/92. Gap +162,381. 63 upside accounts. Gmail connector INVALIDATED + Granola unauthenticated - no Gmail lead scan."
+    "goal": 1106904,
+    "rev": 505810,
+    "p2g": 329128,
+    "rev_pct": 45.7,
+    "p2g_pct": 29.73,
+    "updated": "2026-10-27",
+    "note": "Q4 Day 27. Summed 255 unique PRO_LEVEL rows; goal down ~$23K vs Oct 26 ($1,130,055) - likely book reassignment; p2g/goal 29.73% ~= day 27/92 (29.35%). Gap +176,682. 65 upside accounts. Gmail connector INVALIDATED + Granola unauthenticated - no Gmail lead scan."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -107,6 +107,7 @@
     "card-ryan-vo": "2026-08-20",
     "card-kat-kostukevich": "2026-10-20",
     "card-andrew-kopp": "2026-10-20",
-    "card-jeff-white": "2026-10-21"
+    "card-jeff-white": "2026-10-21",
+    "card-mark-halliday": "2026-10-27"
   }
 }
