@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1106904,
-    "rev": 505810,
-    "p2g": 329128,
-    "rev_pct": 45.7,
-    "p2g_pct": 29.73,
-    "updated": "2026-10-27",
-    "note": "Q4 Day 27. Summed 255 unique PRO_LEVEL rows; goal down ~$23K vs Oct 26 ($1,130,055) - likely book reassignment; p2g/goal 29.73% ~= day 27/92 (29.35%). Gap +176,682. 65 upside accounts. Gmail connector INVALIDATED + Granola unauthenticated - no Gmail lead scan."
+    "rev": 531176,
+    "p2g": 341093,
+    "rev_pct": 48.0,
+    "p2g_pct": 30.82,
+    "updated": "2026-10-28",
+    "note": "Q4 Day 28. Summed 255 unique PRO_LEVEL rows by header (total_quarterly_goal/qtd_revenue/qtd_goal). Goal unchanged vs Oct 27. Gap +190,083. 64 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan."
   },
   "hub_wins": [],
   "hub_feedback": [],
