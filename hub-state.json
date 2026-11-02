@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1106904,
-    "rev": 580074,
-    "p2g": 365025,
-    "rev_pct": 52.4,
-    "p2g_pct": 33.0,
-    "updated": "2026-10-30",
-    "note": "Q4 Day 30. Summed 256 unique PRO_LEVEL rows by header. Goal unchanged vs Oct 29 (export complete). Gap +215,049. 63 upside accounts. Gmail connector INVALIDATED and Slack timing out - no lead scan."
+    "rev": 628595,
+    "p2g": 400922,
+    "rev_pct": 56.8,
+    "p2g_pct": 36.2,
+    "updated": "2026-11-02",
+    "note": "Q4 Day 33. Summed 256 unique PRO_LEVEL rows by header. Goal unchanged vs Oct 30 (export complete). Gap +227,673. 60 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack/Granola scanned, no new leads."
   },
   "hub_wins": [],
   "hub_feedback": [],
