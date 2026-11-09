@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1106904,
-    "rev": 657550,
-    "p2g": 412888,
-    "rev_pct": 59.4,
-    "p2g_pct": 37.3,
-    "updated": "2026-11-03",
-    "note": "Q4 Day 34. Summed 256 unique PRO_LEVEL rows by header. Goal unchanged vs Nov 2 (export complete). Gap +244,661. 61 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack scanned, no new leads. Granola needs auth."
+    "rev": 771782,
+    "p2g": 484683,
+    "rev_pct": 69.7,
+    "p2g_pct": 43.8,
+    "updated": "2026-11-09",
+    "note": "Q4 Day 40. Summed 256 unique PRO_LEVEL rows by header. Goal unchanged vs Nov 3 (export complete). Gap +287,099. 57 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack + Granola + Calendar scanned; added Shaun Mealy (FCI) from YCBM onboarding booking."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -108,6 +108,7 @@
     "card-kat-kostukevich": "2026-10-20",
     "card-andrew-kopp": "2026-10-20",
     "card-jeff-white": "2026-10-21",
-    "card-mark-halliday": "2026-10-27"
+    "card-mark-halliday": "2026-10-27",
+    "card-shaun-mealy": "2026-11-09"
   }
 }
