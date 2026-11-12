@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1103036,
-    "rev": 798270,
-    "p2g": 496503,
-    "rev_pct": 72.4,
-    "p2g_pct": 45.0,
-    "updated": "2026-11-10",
-    "note": "Q4 Day 41. Summed 258 unique PRO_LEVEL rows by header (CSV export). Gap +301,767. 53 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack + Granola + Calendar scanned; added Kyle Sullivan (Mister Sparky) from YCBM onboarding booking."
+    "rev": 834995,
+    "p2g": 520288,
+    "rev_pct": 75.7,
+    "p2g_pct": 47.2,
+    "updated": "2026-11-12",
+    "note": "Q4 Day 43. Summed 258 unique PRO_LEVEL rows by header (CSV export; p2g = qtd_goal). Gap +314,707. 52 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack + Granola + Calendar scanned; no new leads (Kyle Sullivan already tracked)."
   },
   "hub_wins": [],
   "hub_feedback": [],
