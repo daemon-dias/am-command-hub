@@ -53,11 +53,11 @@
   "last_summary": {
     "goal": 1103036,
     "rev": 834995,
-    "p2g": 520288,
+    "p2g": 532181,
     "rev_pct": 75.7,
-    "p2g_pct": 47.2,
-    "updated": "2026-11-12",
-    "note": "Q4 Day 43. Summed 258 unique PRO_LEVEL rows by header (CSV export; p2g = qtd_goal). Gap +314,707. 52 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack + Granola + Calendar scanned; no new leads (Kyle Sullivan already tracked)."
+    "p2g_pct": 48.2,
+    "updated": "2026-11-13",
+    "note": "Q4 Day 44. Summed 259 unique PRO_LEVEL rows by header via Sheets connector (ALO V3 Raw Data tab; p2g = qtd_goal). Gap +302,814. 56 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack + Granola + Calendar scanned; no new leads."
   },
   "hub_wins": [],
   "hub_feedback": [],
