@@ -51,13 +51,13 @@
     "nolan-jacobs-iyc": "Solved, Nivah's account"
   },
   "last_summary": {
-    "goal": 1103036,
-    "rev": 834995,
-    "p2g": 532181,
-    "rev_pct": 75.7,
-    "p2g_pct": 48.2,
-    "updated": "2026-11-13",
-    "note": "Q4 Day 44. Summed 259 unique PRO_LEVEL rows by header via Sheets connector (ALO V3 Raw Data tab; p2g = qtd_goal). Gap +302,814. 56 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack + Granola + Calendar scanned; no new leads."
+    "goal": 1100240,
+    "rev": 1004661,
+    "p2g": 662859,
+    "rev_pct": 91.3,
+    "p2g_pct": 60.2,
+    "updated": "2026-11-24",
+    "note": "Q4 Day 55. Summed 260 unique PRO_LEVEL rows by header via Drive CSV export (p2g = qtd_goal). Gap +341,802. 57 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack + Granola + Calendar scanned; 1 new lead (Josh Kennon)."
   },
   "hub_wins": [],
   "hub_feedback": [],
@@ -110,6 +110,7 @@
     "card-jeff-white": "2026-10-21",
     "card-mark-halliday": "2026-10-27",
     "card-shaun-mealy": "2026-11-09",
-    "card-kyle-sullivan": "2026-11-10"
+    "card-kyle-sullivan": "2026-11-10",
+    "card-josh-kennon": "2026-11-24"
   }
 }
