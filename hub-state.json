@@ -52,12 +52,12 @@
   },
   "last_summary": {
     "goal": 1100240,
-    "rev": 1004661,
-    "p2g": 662859,
-    "rev_pct": 91.3,
-    "p2g_pct": 60.2,
-    "updated": "2026-11-24",
-    "note": "Q4 Day 55. Summed 260 unique PRO_LEVEL rows by header via Drive CSV export (p2g = qtd_goal). Gap +341,802. 57 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack + Granola + Calendar scanned; 1 new lead (Josh Kennon)."
+    "rev": 1026041,
+    "p2g": 674680,
+    "rev_pct": 93.3,
+    "p2g_pct": 61.3,
+    "updated": "2026-11-25",
+    "note": "Q4 Day 56. 260 unique PRO_LEVEL rows via Sheets get_values 'ALO V3 Raw Data'. Gap +351,361. 57 upside accounts. Gmail connector INVALIDATED - no Gmail lead scan; Slack + Calendar scanned (Granola tools failed to load); 0 new leads."
   },
   "hub_wins": [],
   "hub_feedback": [],
